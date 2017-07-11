@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gdsign" >
+  <resultMap id="BaseResultMap" type="com.simple.model.GdSign" >
+		<id column="id" property="id" jdbcType="VARCHAR"/>
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="tanent_id" property="tanentId" jdbcType="VARCHAR"/>
+		<result column="homework_id" property="homeworkId" jdbcType="INTEGER"/>
+		<result column="status" property="status" jdbcType="INTEGER"/>
+		<result column="create_date" property="createDate" jdbcType="DATE"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+	id,create_time,tanent_id,homework_id,status,create_date
+  </sql>
+  
+    <insert id="insert" parameterType="com.simple.model.GdSign">
+  	insert into gd_sign (id,create_time,tanent_id,homework_id,status,create_date) 
+  		values (#{id},#{createTime},#{tanentId},#{homeworkId},#{status},#{createDate})
+  </insert>
+  
+  <select id="queryByTHD" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from gd_sign where tanent_id = #{tanentId} and homework_id = #{homeworkId} and create_date = #{createDate}
+  </select>
+</mapper>

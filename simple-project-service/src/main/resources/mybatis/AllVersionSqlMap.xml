@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="allversion" >
+  <resultMap id="BaseResultMap" type="com.simple.model.AllVersion" >
+		<id column="v_type" property="vType" jdbcType="INTEGER"/>
+		<result column="v_version" property="vVersion" jdbcType="INTEGER"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+	v_type,v_version
+  </sql>
+  
+  <select id="queryVersion" resultType="Integer" parameterType="Integer">
+  	select v_version from all_version where v_type =#{type}
+  </select>
+  
+  <update id="updateVersion" parameterType="Integer">
+  	update all_version set v_version=v_version+1 where v_type =#{type}
+  </update>
+  
+</mapper>

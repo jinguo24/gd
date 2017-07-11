@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="courseRanking" >
+  <resultMap id="BaseResultMap" type="com.simple.model.CourseWatch" >
+		<id column="LINEID" property="lineId" jdbcType="INTEGER"/>
+		<result column="COURSE_CODE" property="courseCode" jdbcType="VARCHAR"/>
+		<result column="TANENT_ID" property="tanentId" jdbcType="VARCHAR"/>
+		<result column="WATCH_COUNT" property="watchCount" jdbcType="INTEGER"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+	LINEID,TANENT_ID,COURSE_CODE,WATCH_COUNT
+  </sql>
+  
+  <insert id="insert" parameterType="com.simple.model.CourseWatch">
+  	insert into course_ranking (COURSE_CODE,TANENT_ID,WATCH_COUNT) 
+  		values (#{courseCode},#{tanentId},#{watchCount})
+  </insert>
+  
+  <select id="queryByTanentIdAndCourse" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from course_ranking where TANENT_ID = #{tanentId} and  COURSE_CODE = #{courseCode}
+  </select>
+  
+  <update id="updateWatchCount" parameterType="java.util.Map">
+  	update course_ranking set WATCH_COUNT = WATCH_COUNT+1 where TANENT_ID = #{tanentId} and  COURSE_CODE = #{courseCode}
+  </update>
+  
+  <resultMap id="RankingBaseResultMap" type="com.simple.model.CourseRanking" >
+		<result column="COURSE_CODE" property="courseCode" jdbcType="VARCHAR"/>
+		<result column="WATCH_COUNT" property="watchCount" jdbcType="INTEGER"/>
+  </resultMap>
+  
+  <select id="query" resultMap="RankingBaseResultMap" parameterType="java.util.Map">
+  	select COURSE_CODE,sum(WATCH_COUNT) as WATCH_COUNT 
+  	from course_ranking group by COURSE_CODE ORDER BY WATCH_COUNT DESC
+  	limit #{begin},#{size}
+  </select>
+  
+  <select id="queryCount" parameterType="java.util.Map" resultType="Integer">
+	SELECT COUNT(1) FROM ( SELECT COUNT(1) FROM course_ranking GROUP BY COURSE_CODE ) AS temp
+  </select>
+  
+</mapper>

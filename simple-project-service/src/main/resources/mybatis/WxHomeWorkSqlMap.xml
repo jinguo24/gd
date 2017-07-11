@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wxhomework" >
+  <resultMap id="BaseResultMap" type="com.simple.model.WxHomeWork" >
+		<id column="id" property="ID" jdbcType="INTEGER"/>
+		<result column="SchoolID" property="schoolId" jdbcType="VARCHAR"/>
+		<result column="Title" property="title" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+	id,SchoolID,Title
+  </sql>
+  
+  <select id="queryBySchoolId" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from wx_homework where SchoolID = #{schoolId} and Type=0 And  HomeworkType=1  and Status=1
+  	limit #{begin},#{size}
+  </select>
+  
+    <select id="queryCount" resultType="Integer" parameterType="java.util.Map">
+  	select count(1)
+  	from wx_homework where SchoolID = #{schoolId} and Type=0 And  HomeworkType=1  and Status=1
+  </select>
+</mapper>
