@@ -43,6 +43,15 @@ public class ClassRegisterController {
 		return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", dictionarys);
 	}
 	
+	@RequestMapping(value = "current",method=RequestMethod.GET)
+	@ResponseBody
+	public String current(HttpServletRequest request, HttpServletResponse response) {
+		ClassRegister tclass = new ClassRegister();
+		tclass.setTanentid(LoginUserUtil.getLeaseholderId(request));
+		PageResult dictionarys =  classRegistorService.query(tclass,null,null, 1, 1);
+		return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", dictionarys);
+	}
+	
 	@RequestMapping(value = "register",method=RequestMethod.POST)
 	@ResponseBody
 	public String uploadStudent(HttpServletRequest request, HttpServletResponse response) {
