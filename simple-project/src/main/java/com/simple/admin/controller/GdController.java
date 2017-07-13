@@ -83,6 +83,7 @@ public class GdController {
 	public String homeworkWorkersItemInfo(String cardNo,String gdSignId,HttpServletRequest request, HttpServletResponse response) {
 		try {
 			GdHomeWorkWorkersItem pr = gdService.queryHomeworkWorkersItem(gdSignId, cardNo);
+			//TODO 查询分数等信息
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", pr);
 		}catch(Exception e) {
 			log.error("gd kaike error.",e);
@@ -98,10 +99,39 @@ public class GdController {
 		try {
 			GdHomeWorkWorkersItem gi = gdService.queryHomeworkWorkersItem(gdSignId, cardNo);
 			gi.setCreateTime(new Date());
+			//TODO 查询答题的时间
 			gi.setHomeworkTime(homeworkTime);
 			gi.setItemJson(itemJson);
 			gdService.updateGdHomeWorkWorkersItem(gi);
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"更新成功", null);
+		}catch(Exception e) {
+			log.error("gd kaike error.",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+	
+	@RequestMapping(value = "homeworkWorkersItemReport",method=RequestMethod.POST)
+	@ResponseBody
+	public String homeworkWorkersItemReport(String cardNo,Integer homeworkId,String beginTime,String endTime, int page,
+			int pageSize,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			PageResult pr = gdService.queryHomeworkWorkersItem(LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, page, pageSize);
+			//TODO 查询其他信息
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", pr);
+		}catch(Exception e) {
+			log.error("gd kaike error.",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+	
+	@RequestMapping(value = "homeworkWorkersItemReportExport",method=RequestMethod.POST)
+	@ResponseBody
+	public String homeworkWorkersItemReportExport(String cardNo,Integer homeworkId,String beginTime,String endTime, int page,
+			int pageSize,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			PageResult pr = gdService.queryHomeworkWorkersItem(LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, page, pageSize);
+			//TODO 查询其他信息
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", pr);
 		}catch(Exception e) {
 			log.error("gd kaike error.",e);
 			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
