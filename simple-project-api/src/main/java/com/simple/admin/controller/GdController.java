@@ -56,6 +56,7 @@ public class GdController {
 			GdSignWorkers gsw =gdService.queryBySC(gsid, cardNo);
 			if (null == gsw) {
 				gsw = new GdSignWorkers();
+				gsw.setId(PrimaryKeyUtil.getUUID());
 				gsw.setGdSignId(gsid);
 				gsw.setCardNo(cardNo);
 				gsw.setCardImage(cardImage);

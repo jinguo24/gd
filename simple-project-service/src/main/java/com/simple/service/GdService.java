@@ -6,9 +6,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.simple.dao.GdHomeWorkItemsDao;
+import com.simple.dao.GdHomeWorkWorkersItemDao;
 import com.simple.dao.GdSignDao;
 import com.simple.dao.GdSignWorkersDao;
 import com.simple.dao.WxHomeWorkDao;
+import com.simple.model.GdHomeWorkItems;
+import com.simple.model.GdHomeWorkWorkersItem;
 import com.simple.model.GdSign;
 import com.simple.model.GdSignWorkers;
 import com.simple.model.PageResult;
@@ -23,6 +27,10 @@ public class GdService {
 	private GdSignWorkersDao gdSignWordersDao;
 	@Autowired
 	private WxHomeWorkDao wxHomeWorkDao;
+	@Autowired
+	private GdHomeWorkItemsDao gdHomeWorkItemDao;
+	@Autowired
+	private GdHomeWorkWorkersItemDao gdHomeWorkWorkersItemDao;
 	
 	public void addGdSign(GdSign gdSign) {
 		gdSignDao.addGdSign(gdSign);
@@ -52,4 +60,48 @@ public class GdService {
 		return new PageResult(count,pageSize,pageIndex,registers);
 	}
 	
+	public void addGdHomeWorkItems(GdHomeWorkItems homeworkItems) {
+		gdHomeWorkItemDao.addGdHomeWorkItems(homeworkItems);
+	}
+	
+	public void updateGdHomeWorkItems(GdHomeWorkItems homeworkItems) {
+		gdHomeWorkItemDao.updateGdHomeWorkItems(homeworkItems);
+	}
+	
+	public PageResult queryHomeworkItems(String tanentId,int pageIndex,int pageSize) {
+		List<GdHomeWorkItems> registers = gdHomeWorkItemDao.query(tanentId, pageIndex, pageSize);
+		int count = gdHomeWorkItemDao.queryCount(tanentId);
+		return new PageResult(count,pageSize,pageIndex,registers);
+	}
+	
+	public GdHomeWorkItems queryHomeWorkItem(String tanentId,String homeworkId) {
+		return gdHomeWorkItemDao.queryOne(tanentId, homeworkId);
+	}
+	
+	public void deleteHomeWorkItem (String tanentId,String homeworkId) {
+		gdHomeWorkItemDao.delete(tanentId, homeworkId);
+	}
+	
+	public void addGdHomeWorkWorkersItem(GdHomeWorkWorkersItem homeworkWorkersItem) {
+		gdHomeWorkWorkersItemDao.addGdHomeWorkWorkersItem(homeworkWorkersItem);
+	}
+	
+	public void updateGdHomeWorkWorkersItem(GdHomeWorkWorkersItem homeworkWorkersItem) {
+		gdHomeWorkWorkersItemDao.updateGdHomeWorkWorkersItem(homeworkWorkersItem);
+	}
+	
+	public PageResult queryHomeworkWorkersItemquery(String tanentId,String cardNo,int homeworkId,String beginTime,
+			String endTime,int pageIndex,int pageSize) {
+		List<GdHomeWorkWorkersItem> registers = gdHomeWorkWorkersItemDao.query(tanentId, cardNo, homeworkId, beginTime, endTime, pageIndex, pageSize);
+		int count = gdHomeWorkWorkersItemDao.queryCount(tanentId, cardNo, homeworkId, beginTime, endTime);
+		return new PageResult(count,pageSize,pageIndex,registers);
+	}
+	
+	public GdHomeWorkWorkersItem queryOne(String gdSignId,String cardNo) {
+		return gdHomeWorkWorkersItemDao.queryOne(gdSignId, cardNo);
+	}
+	
+	public void delete (String gdSignId,String cardNo) {
+		gdHomeWorkWorkersItemDao.delete(gdSignId, cardNo);
+	}
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gdhomeworkItems" >
+  <resultMap id="BaseResultMap" type="com.simple.model.GdHomeWorkItems" >
+		<id column="id" property="id" jdbcType="INTEGER"/>
+		<result column="tanent_id" property="tanentId" jdbcType="VARCHAR"/>
+		<result column="homework_id" property="homeworkId" jdbcType="INTEGER"/>
+		<result column="item_names" property="itemNames" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+	id,tanent_id,homework_id,item_names
+  </sql>
+  
+    <insert id="insert" parameterType="com.simple.model.GdHomeWorkItems">
+  	insert into gd_homework_items (tanent_id,homework_id,item_names) 
+  		values (#{tanentId},#{homeworkId},#{itemNames})
+  </insert>
+  
+  <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from gd_homework_items where tanent_id = #{tanentId} order by id desc
+  	limit #{begin},#{size} 
+  </select>
+
+  <select id="queryCount" parameterType="java.util.Map" resultType="int">
+	SELECT count(1) from gd_homework_items where tanent_id = #{tanentId}
+  </select>
+
+  <update id="update" parameterType="com.simple.model.GdHomeWorkItems">
+    update gd_homework_items set item_names = #{itemNames} where tanent_id=#{tanentId} and homework_id = #{homeworkId}
+  </update>
+
+  
+  <select id="queryOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from gd_homework_items where tanent_id=#{tanentId} and homework_id = #{homeworkId}
+  </select>
+  
+  <delete id="delete" parameterType="java.util.Map">
+  	delete from gd_homework_items where tanent_id=#{tanentId} and homework_id = #{homeworkId}
+  </delete>
+  
+  
+  
+</mapper>
