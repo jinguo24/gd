@@ -9,12 +9,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.simple.common.util.AjaxWebUtil;
 import com.simple.common.util.PrimaryKeyUtil;
+import com.simple.model.GdHomeWorkWorkersItem;
 import com.simple.model.GdSign;
 import com.simple.model.GdSignWorkers;
 import com.simple.model.PageResult;
@@ -29,7 +31,7 @@ public class GdController {
 	
 	@RequestMapping(value = "kaike",method=RequestMethod.POST)
 	@ResponseBody
-	public String kaike(String tanentId,String homeworkId,HttpServletRequest request, HttpServletResponse response) {
+	public String kaike(String tanentId,int homeworkId,HttpServletRequest request, HttpServletResponse response) {
 		try {
 			GdSign gs = gdService.queryByTHD(tanentId, homeworkId, new Date());
 			if (null == gs) {
@@ -51,8 +53,12 @@ public class GdController {
 	
 	@RequestMapping(value = "sign",method=RequestMethod.POST)
 	@ResponseBody
-	public String sign(String gsid,String cardNo,String cardImage,String name,String tanentId,String homeworkId,HttpServletRequest request, HttpServletResponse response) {
+	public String sign(String gsid,String cardNo,String cardImage,String name,int homeworkId,String tanentId,HttpServletRequest request, HttpServletResponse response) {
 		try {
+			if (StringUtils.isEmpty(cardNo)) {
+				return AjaxWebUtil.sendAjaxResponse(request, response, false,"身份证号不能为空", "身份证号不能为空");
+			}
+			
 			GdSignWorkers gsw =gdService.queryBySC(gsid, cardNo);
 			if (null == gsw) {
 				gsw = new GdSignWorkers();
@@ -63,6 +69,14 @@ public class GdController {
 				gsw.setName(name);
 				gsw.setCreateTime(new Date());
 				gdService.addGdSignWorkers(gsw);
+				
+				GdHomeWorkWorkersItem gi = new GdHomeWorkWorkersItem();
+				gi.setCardNo(cardNo);
+				gi.setGdSignId(gsid);
+				gi.setHomeworkId(homeworkId);
+				gi.setName(name);
+				gi.setTanentId(tanentId);
+				gdService.addGdHomeWorkWorkersItem(gi);
 			}
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"签到成功", gsw);
 		}catch(Exception e) {

@@ -19,12 +19,15 @@
   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
   	select 
   	<include refid="Base_Column_List"></include>
-  	from gd_homework_items where tanent_id = #{tanentId} order by id desc
+  	from gd_homework_items where tanent_id = #{tanentId} 
+  	<if test="homeworkId != null and homeworkId > 0 " > and homework_id = #{homeworkId} </if>
+  	order by id desc
   	limit #{begin},#{size} 
   </select>
 
   <select id="queryCount" parameterType="java.util.Map" resultType="int">
 	SELECT count(1) from gd_homework_items where tanent_id = #{tanentId}
+	<if test="homeworkId != null and homeworkId > 0 " > and homework_id = #{homeworkId} </if>
   </select>
 
   <update id="update" parameterType="com.simple.model.GdHomeWorkItems">

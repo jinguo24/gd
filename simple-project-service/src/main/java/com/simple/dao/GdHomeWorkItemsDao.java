@@ -28,7 +28,7 @@ public class GdHomeWorkItemsDao extends BaseIbatisDao {
 		this.sqlSession.insert("gdhomeworkItems.update", homeworkItems);
 	}
 	
-	public List<GdHomeWorkItems> query(String tanentId,int pageIndex,int pageSize) {
+	public List<GdHomeWorkItems> query(String tanentId,Integer homeworkId,int pageIndex,int pageSize) {
 		Map param = new HashMap();
 		param.put("tanentId", tanentId);
 		if (pageIndex < 1) {
@@ -39,13 +39,13 @@ public class GdHomeWorkItemsDao extends BaseIbatisDao {
 		return this.sqlSession.selectList("gdhomeworkItems.query",param);
 	}
 	
-	public int queryCount(String tanentId) {
+	public int queryCount(String tanentId,Integer homeworkId) {
 		Map param = new HashMap();
 		param.put("tanentId", tanentId);
 		return this.sqlSession.selectOne("gdhomeworkItems.queryCount",param);
 	}
 	
-	public GdHomeWorkItems queryOne(String tanentId,String homeworkId) {
+	public GdHomeWorkItems queryOne(String tanentId,int homeworkId) {
 		Map param = new HashMap();
 		param.put("tanentId", tanentId);
 		param.put("homeworkId", homeworkId);

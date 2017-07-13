@@ -9,7 +9,7 @@ public class GdSign implements Serializable{
 	private String id;
 	private Date createTime;
 	private String tanentId;
-	private String homeworkId;
+	private int homeworkId;
 	private int status;
 	private Date createDate;
 	public String getId() {
@@ -30,10 +30,10 @@ public class GdSign implements Serializable{
 	public void setTanentId(String tanentId) {
 		this.tanentId = tanentId;
 	}
-	public String getHomeworkId() {
+	public int getHomeworkId() {
 		return homeworkId;
 	}
-	public void setHomeworkId(String homeworkId) {
+	public void setHomeworkId(int homeworkId) {
 		this.homeworkId = homeworkId;
 	}
 	public int getStatus() {

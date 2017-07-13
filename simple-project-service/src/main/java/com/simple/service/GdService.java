@@ -36,7 +36,7 @@ public class GdService {
 		gdSignDao.addGdSign(gdSign);
 	}
 	
-	public GdSign queryByTHD(String tanentId,String homeworkId,Date date) {
+	public GdSign queryByTHD(String tanentId,int homeworkId,Date date) {
 		return gdSignDao.queryByTHD(tanentId, homeworkId, date);
 	}
 	
@@ -68,13 +68,13 @@ public class GdService {
 		gdHomeWorkItemDao.updateGdHomeWorkItems(homeworkItems);
 	}
 	
-	public PageResult queryHomeworkItems(String tanentId,int pageIndex,int pageSize) {
-		List<GdHomeWorkItems> registers = gdHomeWorkItemDao.query(tanentId, pageIndex, pageSize);
-		int count = gdHomeWorkItemDao.queryCount(tanentId);
+	public PageResult queryHomeworkItems(String tanentId,Integer homeworkId,int pageIndex,int pageSize) {
+		List<GdHomeWorkItems> registers = gdHomeWorkItemDao.query(tanentId,homeworkId, pageIndex, pageSize);
+		int count = gdHomeWorkItemDao.queryCount(tanentId,homeworkId);
 		return new PageResult(count,pageSize,pageIndex,registers);
 	}
 	
-	public GdHomeWorkItems queryHomeWorkItem(String tanentId,String homeworkId) {
+	public GdHomeWorkItems queryHomeWorkItem(String tanentId,int homeworkId) {
 		return gdHomeWorkItemDao.queryOne(tanentId, homeworkId);
 	}
 	
@@ -90,14 +90,14 @@ public class GdService {
 		gdHomeWorkWorkersItemDao.updateGdHomeWorkWorkersItem(homeworkWorkersItem);
 	}
 	
-	public PageResult queryHomeworkWorkersItemquery(String tanentId,String cardNo,int homeworkId,String beginTime,
+	public PageResult queryHomeworkWorkersItem(String tanentId,String cardNo,int homeworkId,String beginTime,
 			String endTime,int pageIndex,int pageSize) {
 		List<GdHomeWorkWorkersItem> registers = gdHomeWorkWorkersItemDao.query(tanentId, cardNo, homeworkId, beginTime, endTime, pageIndex, pageSize);
 		int count = gdHomeWorkWorkersItemDao.queryCount(tanentId, cardNo, homeworkId, beginTime, endTime);
 		return new PageResult(count,pageSize,pageIndex,registers);
 	}
 	
-	public GdHomeWorkWorkersItem queryOne(String gdSignId,String cardNo) {
+	public GdHomeWorkWorkersItem queryHomeworkWorkersItem(String gdSignId,String cardNo) {
 		return gdHomeWorkWorkersItemDao.queryOne(gdSignId, cardNo);
 	}
 	

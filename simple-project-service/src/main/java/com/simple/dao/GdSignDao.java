@@ -22,7 +22,7 @@ public class GdSignDao extends BaseIbatisDao {
 		this.sqlSession.insert("gdsign.insert", gdSign);
 	}
 	
-	public GdSign queryByTHD(String tanentId,String homeworkId,Date date) {
+	public GdSign queryByTHD(String tanentId,int homeworkId,Date date) {
 		Map param = new HashMap();
 		param.put("tanentId", tanentId);
 		param.put("homeworkId", homeworkId);
