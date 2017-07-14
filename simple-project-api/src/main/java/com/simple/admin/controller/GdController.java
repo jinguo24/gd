@@ -76,6 +76,7 @@ public class GdController {
 				gi.setHomeworkId(homeworkId);
 				gi.setName(name);
 				gi.setTanentId(tanentId);
+				gi.setSignTime(gsw.getCreateTime());
 				gdService.addGdHomeWorkWorkersItem(gi);
 			}
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"签到成功", gsw);

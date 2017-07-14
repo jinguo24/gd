@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wxmemberhomework" >
+  <resultMap id="BaseResultMap" type="com.simple.model.WxMemberHomeWork" >
+		<id column="id" property="ID" jdbcType="INTEGER"/>
+		<result column="HomeworkID" property="homeworkId" jdbcType="VARCHAR"/>
+		<result column="SchoolID" property="schoolId" jdbcType="VARCHAR"/>
+		<result column="StudentNo" property="studentNo" jdbcType="TIMESTAMP"/>
+		<result column="SignID" property="signId" jdbcType="TIMESTAMP"/>
+		<result column="Score" property="score" jdbcType="TIMESTAMP"/>
+		<result column="CreateTime" property="createTime" jdbcType="TIMESTAMP"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+	id,HomeworkID,SchoolID,StudentNo,SignID,Score,CreateTime
+  </sql>
+  
+  <select id="queryOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from wx_memberhomework where HomeworkID = #{homeworkId} and StudentNo = #{studentNo} and SignID = #{signId} and SchoolID = #{schoolId}
+  </select>
+  
+</mapper>

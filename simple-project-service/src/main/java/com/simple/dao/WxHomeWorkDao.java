@@ -34,4 +34,8 @@ public class WxHomeWorkDao extends BaseIbatisDao {
 		param.put("schoolId", schoolId);
 		return this.sqlSession.selectOne("wxhomework.queryCount",param);
 	}
+	
+	public WxHomeWork queryById(int id) {
+		return this.sqlSession.selectOne("wxhomework.queryById",id);
+	}
 }

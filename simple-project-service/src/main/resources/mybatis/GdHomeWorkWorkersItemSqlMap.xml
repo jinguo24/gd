@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="gdhomeworkWorkersItem" >
-  <resultMap id="BaseResultMap" type="com.simple.model.GdHomeWorkWorkersItem" >
+  <resultMap id="BaseResultMap" type="com.simple.model.gdhomeworkworkersitem" >
 		<id column="id" property="id" jdbcType="INTEGER"/>
 		<result column="gd_sign_id" property="gdSignId" jdbcType="VARCHAR"/>
 		<result column="card_no" property="cardNo" jdbcType="VARCHAR"/>
 		<result column="name" property="name" jdbcType="VARCHAR"/>
 		<result column="item_json" property="itemJson" jdbcType="VARCHAR"/>
 		<result column="homework_id" property="homeworkId" jdbcType="INTEGER"/>
-		<result column="homework_time" property="homeworkTime" jdbcType="TIMESTAMP"/>
+		<result column="sign_time" property="signTime" jdbcType="TIMESTAMP"/>
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
 		<result column="tanent_id" property="tanentId" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
-	id,gd_sign_id,card_no,name,item_json,homework_id,homework_time,create_time,tanent_id
+	id,gd_sign_id,card_no,name,item_json,homework_id,sign_time,create_time,tanent_id
   </sql>
   
     <insert id="insert" parameterType="com.simple.model.GdHomeWorkWorkersItem">
-  	insert into gd_homework_workers_items (gd_sign_id,card_no,name,item_json,homework_id,homework_time,create_time,tanent_id) 
-  		values (#{gdSignId},#{cardNo},#{name},#{itemJson}，#{homeworkId},#{homeworkTime},#{createTime},#{tanentId})
+  	insert into gd_homework_workers_items (gd_sign_id,card_no,name,item_json,homework_id,sign_time,create_time,tanent_id) 
+  		values (#{gdSignId},#{cardNo},#{name},#{itemJson}，#{homeworkId},#{signTime},#{createTime},#{tanentId})
   </insert>
   
   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
@@ -27,8 +27,8 @@
   	from gd_homework_workers_items where tanent_id = #{tanentId} 
   	<if test="cardNo != null and cardNo != ''" > and card_no = #{cardNo} </if>
   	<if test="homeworkId > 0 " > and homework_id = #{homeworkId} </if>
-  	<if test="beginTime != null and beginTime != ''" > and homework_time &gt;= #{beginTime} </if>
-	<if test="endTime != null and endTime != ''" > and homework_time &lt;= #{endTime} </if>
+  	<if test="beginTime != null and beginTime != ''" > and sign_time &gt;= #{beginTime} </if>
+	<if test="endTime != null and endTime != ''" > and sign_time &lt;= #{endTime} </if>
   	order by id desc
   	limit #{begin},#{size} 
   </select>
@@ -39,8 +39,8 @@
   	from gd_homework_workers_items where tanent_id = #{tanentId} 
   	<if test="cardNo != null and cardNo != ''" > and card_no = #{cardNo} </if>
   	<if test="homeworkId > 0 " > and homework_id = #{homeworkId} </if>
-  	<if test="beginTime != null and beginTime != ''" > and homework_time &gt;= #{beginTime} </if>
-	<if test="endTime != null and endTime != ''" > and homework_time &lt;= #{endTime} </if>
+  	<if test="beginTime != null and beginTime != ''" > and sign_time &gt;= #{beginTime} </if>
+	<if test="endTime != null and endTime != ''" > and sign_time &lt;= #{endTime} </if>
   </select>
 
   <update id="update" parameterType="com.simple.model.GdHomeWorkWorkersItem">

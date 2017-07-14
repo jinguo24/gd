@@ -7,7 +7,9 @@ public class GdHomeWorkItems implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String tanentId;
+	private String tanentName;
 	private int homeworkId;
+	private String homeworkName;
 	private String itemNames;
 	public int getId() {
 		return id;
@@ -32,5 +34,17 @@ public class GdHomeWorkItems implements Serializable {
 	}
 	public void setItemNames(String itemNames) {
 		this.itemNames = itemNames;
+	}
+	public String getTanentName() {
+		return tanentName;
+	}
+	public void setTanentName(String tanentName) {
+		this.tanentName = tanentName;
+	}
+	public String getHomeworkName() {
+		return homeworkName;
+	}
+	public void setHomeworkName(String homeworkName) {
+		this.homeworkName = homeworkName;
 	}
 }

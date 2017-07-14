@@ -1,22 +1,31 @@
 package com.simple.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.simple.common.excel.DownLoadExcel;
+import com.simple.common.excel.DownLoadExcutor;
+import com.simple.common.util.DateUtil;
+import com.simple.common.util.ResponseInfo;
 import com.simple.dao.GdHomeWorkItemsDao;
 import com.simple.dao.GdHomeWorkWorkersItemDao;
 import com.simple.dao.GdSignDao;
 import com.simple.dao.GdSignWorkersDao;
 import com.simple.dao.WxHomeWorkDao;
+import com.simple.dao.WxMemberHomeWorkDao;
 import com.simple.model.GdHomeWorkItems;
 import com.simple.model.GdHomeWorkWorkersItem;
 import com.simple.model.GdSign;
 import com.simple.model.GdSignWorkers;
 import com.simple.model.PageResult;
 import com.simple.model.WxHomeWork;
+import com.simple.model.WxMemberHomeWork;
 
 @Service
 public class GdService {
@@ -31,6 +40,8 @@ public class GdService {
 	private GdHomeWorkItemsDao gdHomeWorkItemDao;
 	@Autowired
 	private GdHomeWorkWorkersItemDao gdHomeWorkWorkersItemDao;
+	@Autowired
+	private WxMemberHomeWorkDao wxMemberHomeWorkDao;
 	
 	public void addGdSign(GdSign gdSign) {
 		gdSignDao.addGdSign(gdSign);
@@ -58,6 +69,10 @@ public class GdService {
 		List<WxHomeWork> registers = wxHomeWorkDao.query(tanentId, pageIndex, pageSize);
 		int count = wxHomeWorkDao.queryCount(tanentId);
 		return new PageResult(count,pageSize,pageIndex,registers);
+	}
+	
+	public WxHomeWork queryWxHomeWork(int id) {
+		return wxHomeWorkDao.queryById(id);
 	}
 	
 	public void addGdHomeWorkItems(GdHomeWorkItems homeworkItems) {
@@ -103,5 +118,28 @@ public class GdService {
 	
 	public void delete (String gdSignId,String cardNo) {
 		gdHomeWorkWorkersItemDao.delete(gdSignId, cardNo);
+	}
+	
+	public WxMemberHomeWork queryWxMemberHomeWork(String schoolId,String studentNo,String signId,int homeworkId) {
+		return wxMemberHomeWorkDao.queryOne(schoolId, studentNo, signId, homeworkId);
+	}
+	
+	public ResponseInfo downloadWorkerItems(List<GdHomeWorkWorkersItem> items) {
+		String[] titles = new String[]{"工地名称","试卷","身份证号码","工人姓名","考试成绩","考试时间","评分结果"};
+		return DownLoadExcel.download(items, Arrays.asList(titles), new DownLoadExcutor() {
+			@Override
+			public List<String> getCellValues(Object o) {
+				GdHomeWorkWorkersItem log = (GdHomeWorkWorkersItem) o;
+				List<String> sl = new ArrayList<String>();
+				sl.add(String.valueOf(log.getTanentName()));
+				sl.add(log.getHomeworkName());
+				sl.add(log.getCardNo());
+				sl.add(log.getName());
+				sl.add(String.valueOf(log.getScore()));
+				sl.add(DateUtil.date2AllString(log.getHomeworkTime()));
+				sl.add(StringUtils.trimToEmpty(log.getItemJson()));
+				return sl;
+			}
+		});
 	}
 }

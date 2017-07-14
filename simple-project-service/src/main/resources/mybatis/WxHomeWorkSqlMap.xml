@@ -5,9 +5,10 @@
 		<id column="id" property="ID" jdbcType="INTEGER"/>
 		<result column="SchoolID" property="schoolId" jdbcType="VARCHAR"/>
 		<result column="Title" property="title" jdbcType="VARCHAR"/>
+		<result column="PublishTime" property="publishTime" jdbcType="TIMESTAMP"/>
   </resultMap>
   <sql id="Base_Column_List" >
-	id,SchoolID,Title
+	id,SchoolID,Title,PublishTime
   </sql>
   
   <select id="queryBySchoolId" resultMap="BaseResultMap" parameterType="java.util.Map">
@@ -17,8 +18,14 @@
   	limit #{begin},#{size}
   </select>
   
-    <select id="queryCount" resultType="Integer" parameterType="java.util.Map">
+  <select id="queryCount" resultType="Integer" parameterType="java.util.Map">
   	select count(1)
   	from wx_homework where SchoolID = #{schoolId} and Type=0 And  HomeworkType=1  and Status=1
+  </select>
+  
+  <select id="queryById" resultMap="BaseResultMap" parameterType="Integer">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from wx_homework where id = #{id}
   </select>
 </mapper>
