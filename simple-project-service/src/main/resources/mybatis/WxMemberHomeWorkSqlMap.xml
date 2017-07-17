@@ -3,21 +3,44 @@
 <mapper namespace="wxmemberhomework" >
   <resultMap id="BaseResultMap" type="com.simple.model.WxMemberHomeWork" >
 		<id column="id" property="ID" jdbcType="INTEGER"/>
-		<result column="HomeworkID" property="homeworkId" jdbcType="VARCHAR"/>
+		<result column="HomeworkID" property="homeworkId" jdbcType="INTEGER"/>
 		<result column="SchoolID" property="schoolId" jdbcType="VARCHAR"/>
-		<result column="StudentNo" property="studentNo" jdbcType="TIMESTAMP"/>
-		<result column="SignID" property="signId" jdbcType="TIMESTAMP"/>
-		<result column="Score" property="score" jdbcType="TIMESTAMP"/>
+		<result column="StudentNo" property="studentNo" jdbcType="VARCHAR"/>
+		<result column="StudentName" property="studentName" jdbcType="VARCHAR"/>
+		<result column="SignID" property="signId" jdbcType="VARCHAR"/>
+		<result column="Score" property="score" jdbcType="DECIMAL"/>
 		<result column="CreateTime" property="createTime" jdbcType="TIMESTAMP"/>
   </resultMap>
   <sql id="Base_Column_List" >
-	id,HomeworkID,SchoolID,StudentNo,SignID,Score,CreateTime
+	id,HomeworkID,SchoolID,StudentNo,StudentName,SignID,Score,CreateTime
   </sql>
   
   <select id="queryOne" resultMap="BaseResultMap" parameterType="java.util.Map">
   	select 
   	<include refid="Base_Column_List"></include>
   	from wx_memberhomework where HomeworkID = #{homeworkId} and StudentNo = #{studentNo} and SignID = #{signId} and SchoolID = #{schoolId}
+  </select>
+  
+  <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from wx_memberhomework where SchoolID = #{schoolId} 
+  	<if test="studentNo != null and studentNo != ''" > and StudentNo = #{studentNo} </if>
+  	<if test="homeworkId > 0 " > and HomeworkID = #{homeworkId} </if>
+  	<if test="beginTime != null and beginTime != ''" > and CreateTime &gt;= #{beginTime} </if>
+	<if test="endTime != null and endTime != ''" > and CreateTime &lt;= #{endTime} </if>
+  	order by id desc
+  	limit #{begin},#{size} 
+  </select>
+
+  <select id="queryCount" parameterType="java.util.Map" resultType="int">
+	select 
+  	count(1)
+  	from wx_memberhomework where SchoolID = #{schoolId} 
+  	<if test="studentNo != null and studentNo != ''" > and StudentNo = #{studentNo} </if>
+  	<if test="homeworkId > 0 " > and HomeworkID = #{homeworkId} </if>
+  	<if test="beginTime != null and beginTime != ''" > and CreateTime &gt;= #{beginTime} </if>
+	<if test="endTime != null and endTime != ''" > and CreateTime &lt;= #{endTime} </if>
   </select>
   
 </mapper>

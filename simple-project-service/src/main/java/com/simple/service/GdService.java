@@ -120,24 +120,31 @@ public class GdService {
 		gdHomeWorkWorkersItemDao.delete(gdSignId, cardNo);
 	}
 	
+	public PageResult queryWxMemberHomeWork(String schoolId,String studentNo,int homeworkId,String beginTime,
+			String endTime,int pageIndex,int pageSize) {
+		List<WxMemberHomeWork> registers = wxMemberHomeWorkDao.queryList(schoolId, studentNo, homeworkId, beginTime, endTime, pageIndex, pageSize);
+		int count = wxMemberHomeWorkDao.queryCount(schoolId, studentNo, homeworkId, beginTime, endTime);
+		return new PageResult(count,pageSize,pageIndex,registers);
+	}
+	
 	public WxMemberHomeWork queryWxMemberHomeWork(String schoolId,String studentNo,String signId,int homeworkId) {
 		return wxMemberHomeWorkDao.queryOne(schoolId, studentNo, signId, homeworkId);
 	}
 	
-	public ResponseInfo downloadWorkerItems(List<GdHomeWorkWorkersItem> items) {
+	public ResponseInfo downloadWorkerItems(List<WxMemberHomeWork> items) {
 		String[] titles = new String[]{"工地名称","试卷","身份证号码","工人姓名","考试成绩","考试时间","评分结果"};
 		return DownLoadExcel.download(items, Arrays.asList(titles), new DownLoadExcutor() {
 			@Override
 			public List<String> getCellValues(Object o) {
-				GdHomeWorkWorkersItem log = (GdHomeWorkWorkersItem) o;
+				WxMemberHomeWork log = (WxMemberHomeWork) o;
 				List<String> sl = new ArrayList<String>();
 				sl.add(String.valueOf(log.getTanentName()));
 				sl.add(log.getHomeworkName());
-				sl.add(log.getCardNo());
-				sl.add(log.getName());
+				sl.add(log.getStudentNo());
+				sl.add(log.getStudentName());
 				sl.add(String.valueOf(log.getScore()));
-				sl.add(DateUtil.date2AllString(log.getHomeworkTime()));
-				sl.add(StringUtils.trimToEmpty(log.getItemJson()));
+				sl.add(DateUtil.date2AllString(log.getCreateTime()));
+				sl.add(StringUtils.trimToEmpty(log.getContent()));
 				return sl;
 			}
 		});

@@ -10,11 +10,15 @@ public class WxMemberHomeWork implements Serializable {
 
 	private int id;
 	private int homeworkId;
+	private String homeworkName;
 	private String schoolId;
+	private String tanentName;
 	private String studentNo;
+	private String studentName;
 	private String signId;
 	private BigDecimal score;
 	private Date createTime;
+	private String content;
 	public int getId() {
 		return id;
 	}
@@ -56,5 +60,29 @@ public class WxMemberHomeWork implements Serializable {
 	}
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+	public String getTanentName() {
+		return tanentName;
+	}
+	public void setTanentName(String tanentName) {
+		this.tanentName = tanentName;
+	}
+	public String getStudentName() {
+		return studentName;
+	}
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public String getHomeworkName() {
+		return homeworkName;
+	}
+	public void setHomeworkName(String homeworkName) {
+		this.homeworkName = homeworkName;
 	}
 }

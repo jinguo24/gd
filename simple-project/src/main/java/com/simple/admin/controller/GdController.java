@@ -82,8 +82,6 @@ public class GdController {
 		}
 	}
 	
-
-	
 	@RequestMapping(value = "updateHomeworkItems",method=RequestMethod.POST)
 	@ResponseBody
 	public String updateHomeworkItems(int homeworkId,String items,HttpServletRequest request, HttpServletResponse response) {
@@ -103,24 +101,53 @@ public class GdController {
 	public String homeworkWorkersItemList(String cardNo,Integer homeworkId,String beginTime,String endTime, int page,
 			int pageSize,HttpServletRequest request, HttpServletResponse response) {
 		try {
-			PageResult pr = gdService.queryHomeworkWorkersItem(LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, page, pageSize);
+			PageResult pr = gdService.queryWxMemberHomeWork(LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, page, pageSize);
 			if ( null != pr && null != pr.getDatas()) {
 				for (int i =0 ;i < pr.getDatas().size(); i ++) {
-					GdHomeWorkWorkersItem gwwi = (GdHomeWorkWorkersItem) pr.getDatas().get(i);
+					WxMemberHomeWork gwwi = (WxMemberHomeWork) pr.getDatas().get(i);
 					gwwi.setTanentName(LoginUserUtil.getCurrentUser(request).getName());
-					WxHomeWork whw = gdService.queryWxHomeWork(homeworkId);
+					//查询评分内容
+					GdHomeWorkWorkersItem  wi = gdService.queryHomeworkWorkersItem(gwwi.getSignId(), gwwi.getStudentNo());
+					if ( null != wi) {
+						gwwi.setContent(wi.getItemJson());
+					}
+					WxHomeWork whw = gdService.queryWxHomeWork(gwwi.getHomeworkId());
 					if (null != whw) {
 						gwwi.setHomeworkName(whw.getTitle());
-					}
-					//查询分数和考试时间
-					WxMemberHomeWork wmhw = gdService.queryWxMemberHomeWork(LoginUserUtil.getLeaseholderId(request), cardNo, gwwi.getGdSignId(), homeworkId);
-					if ( null != wmhw) {
-						gwwi.setScore(wmhw.getScore());
-						gwwi.setHomeworkTime(wmhw.getCreateTime());
 					}
 				}
 			}
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", pr);
+		}catch(Exception e) {
+			log.error("gd kaike error.",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+
+	@RequestMapping(value = "homeworkWorkersItemExport",method=RequestMethod.POST)
+	@ResponseBody
+	public String homeworkWorkersItemReportExport(String cardNo,Integer homeworkId,String beginTime,String endTime, int page,
+			int pageSize,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			PageResult pr = gdService.queryWxMemberHomeWork(LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, page, pageSize);
+			if ( null != pr && null != pr.getDatas()) {
+				for (int i =0 ;i < pr.getDatas().size(); i ++) {
+					WxMemberHomeWork gwwi = (WxMemberHomeWork) pr.getDatas().get(i);
+					gwwi.setTanentName(LoginUserUtil.getCurrentUser(request).getName());
+					//查询评分内容
+					GdHomeWorkWorkersItem  wi = gdService.queryHomeworkWorkersItem(gwwi.getSignId(), gwwi.getStudentNo());
+					if ( null != wi) {
+						gwwi.setContent(wi.getItemJson());
+					}
+					WxHomeWork whw = gdService.queryWxHomeWork(gwwi.getHomeworkId());
+					if (null != whw) {
+						gwwi.setHomeworkName(whw.getTitle());
+					}
+				}
+				return JSONObject.toJSONString(gdService.downloadWorkerItems(pr.getDatas()));
+			}else {
+				return AjaxWebUtil.sendAjaxResponse(request, response, false,"没有匹配的数据", "没有匹配的数据");
+			}
 		}catch(Exception e) {
 			log.error("gd kaike error.",e);
 			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
@@ -166,37 +193,6 @@ public class GdController {
 		}
 	}
 	
-	@RequestMapping(value = "homeworkWorkersItemExport",method=RequestMethod.POST)
-	@ResponseBody
-	public String homeworkWorkersItemReportExport(String cardNo,Integer homeworkId,String beginTime,String endTime, int page,
-			int pageSize,HttpServletRequest request, HttpServletResponse response) {
-		try {
-			PageResult pr = gdService.queryHomeworkWorkersItem(LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, page, pageSize);
-			//TODO 查询其他信息
-			if (null != pr && null != pr.getDatas()) {
-				for (int i =0 ;i < pr.getDatas().size(); i ++) {
-					GdHomeWorkWorkersItem gwwi = (GdHomeWorkWorkersItem) pr.getDatas().get(i);
-					gwwi.setTanentName(LoginUserUtil.getCurrentUser(request).getName());
-					WxHomeWork whw = gdService.queryWxHomeWork(homeworkId);
-					if (null != whw) {
-						gwwi.setHomeworkName(whw.getTitle());
-					}
-					//查询分数和考试时间
-					WxMemberHomeWork wmhw = gdService.queryWxMemberHomeWork(LoginUserUtil.getLeaseholderId(request), cardNo, gwwi.getGdSignId(), homeworkId);
-					if ( null != wmhw) {
-						gwwi.setScore(wmhw.getScore());
-						gwwi.setHomeworkTime(wmhw.getCreateTime());
-					}
-				}
-				return JSONObject.toJSONString(gdService.downloadWorkerItems(pr.getDatas()));
-			}else {
-				return AjaxWebUtil.sendAjaxResponse(request, response, false,"没有匹配的数据", "没有匹配的数据");
-			}
-			
-		}catch(Exception e) {
-			log.error("gd kaike error.",e);
-			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
-		}
-	}
+
 	
 }
