@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.simple.common.excel.DownLoadExcel;
 import com.simple.common.excel.DownLoadExcutor;
 import com.simple.common.util.DateUtil;
@@ -144,6 +145,50 @@ public class GdService {
 				sl.add(log.getStudentName());
 				sl.add(String.valueOf(log.getScore()));
 				sl.add(DateUtil.date2AllString(log.getCreateTime()));
+				sl.add(StringUtils.trimToEmpty(log.getContent()));
+				return sl;
+			}
+		});
+	}
+	
+	public ResponseInfo downloadWorkerItemsReport(List<WxMemberHomeWork> items,GdHomeWorkItems gwi) {
+		final String[] ites = gwi.getItemNameArray();
+		String[] titles = null;
+		if ( null != ites) {
+			titles = new String[6+ites.length];
+			titles[0] = "工地名称";
+			titles[1] = "试卷";
+			titles[2] = "身份证号码";
+			titles[3] = "工人姓名";
+			titles[4] = "考试成绩";
+			titles[5] = "考试时间";
+			for (int i = 6 ; i < ites.length; i ++ ) {
+				titles[i] = ites[i-6];
+			}
+		}else {
+			titles = new String[]{"工地名称","试卷","身份证号码","工人姓名","考试成绩","考试时间"};
+		}
+		return DownLoadExcel.download(items, Arrays.asList(titles), new DownLoadExcutor() {
+			@Override
+			public List<String> getCellValues(Object o) {
+				WxMemberHomeWork log = (WxMemberHomeWork) o;
+				List<String> sl = new ArrayList<String>();
+				sl.add(String.valueOf(log.getTanentName()));
+				sl.add(log.getHomeworkName());
+				sl.add(log.getStudentNo());
+				sl.add(log.getStudentName());
+				sl.add(String.valueOf(log.getScore()));
+				sl.add(DateUtil.date2AllString(log.getCreateTime()));
+				if ( null != ites ) {
+					String content = log.getContent();
+					if (!StringUtils.isEmpty(content)) {
+						JSONObject jo = JSONObject.parseObject(content);
+						for (int i = 0 ; i < ites.length; i ++) {
+							String column = ites[i];
+							sl.add(jo.get(column).toString());
+						}
+					}
+				}
 				sl.add(StringUtils.trimToEmpty(log.getContent()));
 				return sl;
 			}

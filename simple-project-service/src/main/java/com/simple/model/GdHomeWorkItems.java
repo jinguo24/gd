@@ -2,6 +2,10 @@ package com.simple.model;
 
 import java.io.Serializable;
 
+import org.springframework.util.StringUtils;
+
+import freemarker.template.utility.StringUtil;
+
 public class GdHomeWorkItems implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -46,5 +50,11 @@ public class GdHomeWorkItems implements Serializable {
 	}
 	public void setHomeworkName(String homeworkName) {
 		this.homeworkName = homeworkName;
+	}
+	public String[] getItemNameArray() {
+		if (!StringUtils.isEmpty(this.itemNames)) {
+			return this.itemNames.split(",");
+		}
+		return null;
 	}
 }
