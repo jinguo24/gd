@@ -55,7 +55,7 @@ public class SysUserService {
 			user.setBirthday(DateUtil.stringToDate("1900-01-01"));
 		}
 		String avarta = user.getPhoto();
-		if (null != avarta && (!avarta.startsWith("http:"))) {
+		if ((!StringUtils.isEmpty(avarta)) && (!avarta.startsWith("http:"))) {
 			avarta = EnvPropertiesConfiger.getValue("fileDomain")+"/"+avarta;
 		}
 		user.setAvarta(avarta);
@@ -88,7 +88,7 @@ public class SysUserService {
 		user.setId(od.getId());
 		user.setLeaseholderId(leaseholderId);
 		String avarta = user.getPhoto();
-		if (null != avarta && (!avarta.startsWith("http:"))) {
+		if ((!StringUtils.isEmpty(avarta)) && (!avarta.startsWith("http:"))) {
 			avarta = EnvPropertiesConfiger.getValue("fileDomain")+"/"+avarta;
 		}
 		user.setAvarta(avarta);

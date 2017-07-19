@@ -52,7 +52,7 @@ public class GdController {
 				for (int i = 0 ; i < gs.getDatas().size();i++) {
 					GdHomeWorkItems wh = (GdHomeWorkItems) gs.getDatas().get(i);
 					wh.setTanentName(LoginUserUtil.getCurrentUser(request).getName());
-					WxHomeWork whw = gdService.queryWxHomeWork(homeworkId);
+					WxHomeWork whw = gdService.queryWxHomeWork(wh.getHomeworkId());
 					if (null != whw) {
 						wh.setHomeworkName(whw.getTitle());
 					}
@@ -64,8 +64,8 @@ public class GdController {
 			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
 		}
 	}
-	
-	@RequestMapping(value = "homeworksInfo",method=RequestMethod.GET)
+
+	@RequestMapping(value = "homeworkItemsInfo",method=RequestMethod.GET)
 	@ResponseBody
 	public String homeworksInfo(int homeworkId,HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -126,7 +126,7 @@ public class GdController {
 
 	@RequestMapping(value = "homeworkWorkersItemExport",method=RequestMethod.POST)
 	@ResponseBody
-	public String homeworkWorkersItemReportExport(String cardNo,Integer homeworkId,String beginTime,String endTime, int page,
+	public String homeworkWorkersItemExport(String cardNo,Integer homeworkId,String beginTime,String endTime, int page,
 			int pageSize,HttpServletRequest request, HttpServletResponse response) {
 		try {
 			PageResult pr = gdService.queryWxMemberHomeWork(LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, page, pageSize);
@@ -193,9 +193,9 @@ public class GdController {
 		}
 	}
 	
-	@RequestMapping(value = "homeworkWorkersItemExport",method=RequestMethod.POST)
+	@RequestMapping(value = "homeworkWorkersItemReportExport",method=RequestMethod.POST)
 	@ResponseBody
-	public String homeworkWorkersItemExport(String cardNo,Integer homeworkId,String beginTime,String endTime, int page,
+	public String homeworkWorkersItemReportExport(String cardNo,Integer homeworkId,String beginTime,String endTime, int page,
 			int pageSize,HttpServletRequest request, HttpServletResponse response) {
 		try {
 			PageResult pr = gdService.queryWxMemberHomeWork(LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, page, pageSize);

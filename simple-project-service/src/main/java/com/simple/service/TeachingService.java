@@ -103,25 +103,28 @@ public class TeachingService {
 			if ( null != css) {
 				for (int i = 0 ; i < css.length; i ++) {
 					Course cq = new Course();
-					cq.setCode(kkhj.getKcbh());
+					cq.setCode(css[i]);
 					List<Course> courses = courseDao.query(cq,1,1);
 					if ( null != courses && courses.size() > 0  ) {
 						Course c = courses.get(0);
-						TeachingLogCourse tc = new TeachingLogCourse();
-						tc.setTanentid(kkhj.getTanentId());
-						tc.setSkbh(kkhj.getSkbh());
-						tc.setKcbh(css[i]);
-						tc.setKcmc(c.getName());
-						tc.setKcxlbh(c.getKcxlbh());
-						tc.setKcxlmc(c.getKcxlmc());
-						tc.setTeacherWenjuan(c.getTeacherWenjuan());
-						tc.setStudentWenjuan(c.getStudentWenjuan());
-						tc.setOtherWenjuan(c.getOtherWenjuan());
-						tc.setKtzyWenjuan(c.getKtzyWenjuan());
-						tc.setKhzyWenjuan(c.getKhzyWenjuan());
-						tc.setKksj(new Date());
-						tc.setXn(xn);
-						teachingLogCourseDao.addTeachingLogCourse(tc);
+						try {
+							TeachingLogCourse tc = new TeachingLogCourse();
+							tc.setTanentid(kkhj.getTanentId());
+							tc.setSkbh(kkhj.getSkbh());
+							tc.setKcbh(css[i]);
+							tc.setKcmc(c.getName());
+							tc.setKcxlbh(c.getKcxlbh());
+							tc.setKcxlmc(c.getKcxlmc());
+							tc.setTeacherWenjuan(c.getTeacherWenjuan());
+							tc.setStudentWenjuan(c.getStudentWenjuan());
+							tc.setOtherWenjuan(c.getOtherWenjuan());
+							tc.setKtzyWenjuan(c.getKtzyWenjuan());
+							tc.setKhzyWenjuan(c.getKhzyWenjuan());
+							tc.setKksj(new Date());
+							tc.setXn(xn);
+							teachingLogCourseDao.addTeachingLogCourse(tc);
+						}catch(Exception e) {
+						}
 					}
 				}
 			}

@@ -5,14 +5,14 @@ import java.util.Date;
 public class WxHomeWork implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private String id;
+	private int id;
 	private String schoolId;
 	private String title;
 	private Date publishTime;
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getSchoolId() {

@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="wxhomework" >
   <resultMap id="BaseResultMap" type="com.simple.model.WxHomeWork" >
-		<id column="id" property="ID" jdbcType="INTEGER"/>
+		<id column="ID" property="id" jdbcType="INTEGER"/>
 		<result column="SchoolID" property="schoolId" jdbcType="VARCHAR"/>
 		<result column="Title" property="title" jdbcType="VARCHAR"/>
 		<result column="PublishTime" property="publishTime" jdbcType="TIMESTAMP"/>
   </resultMap>
   <sql id="Base_Column_List" >
-	id,SchoolID,Title,PublishTime
+	ID,SchoolID,Title,PublishTime
   </sql>
   
   <select id="queryBySchoolId" resultMap="BaseResultMap" parameterType="java.util.Map">

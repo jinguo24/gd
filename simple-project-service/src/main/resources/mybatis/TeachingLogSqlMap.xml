@@ -11,7 +11,7 @@
 		<result column="BJBH" property="bjbh" jdbcType="VARCHAR"/>
 		<result column="BJMC" property="bjmc" jdbcType="VARCHAR"/>
 		<result column="XM" property="xm" jdbcType="VARCHAR"/>
-		<result column="SKSJ" property="sksj" jdbcType="DATE"/>
+		<result column="SKSJ" property="sksj" jdbcType="TIMESTAMP"/>
 		<result column="XXBH" property="xxbh" jdbcType="VARCHAR"/>
 		<result column="XXMC" property="xxmc" jdbcType="VARCHAR"/>
 		<result column="GH" property="gh" jdbcType="VARCHAR"/>
