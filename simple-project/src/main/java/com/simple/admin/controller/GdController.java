@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -96,7 +97,7 @@ public class GdController {
 		}
 	}
 	
-	@RequestMapping(value = "homeworkWorkersItemList",method=RequestMethod.POST)
+	@RequestMapping(value = "homeworkWorkersItemList",method=RequestMethod.GET)
 	@ResponseBody
 	public String homeworkWorkersItemList(String cardNo,Integer homeworkId,String beginTime,String endTime, int page,
 			int pageSize,HttpServletRequest request, HttpServletResponse response) {
@@ -115,6 +116,19 @@ public class GdController {
 					if (null != whw) {
 						gwwi.setHomeworkName(whw.getTitle());
 					}
+					if (StringUtils.isEmpty(gwwi.getContent())) {
+						GdHomeWorkItems ghi = gdService.queryHomeWorkItem(LoginUserUtil.getLeaseholderId(request), gwwi.getHomeworkId());
+						if (null != ghi && (null != ghi.getItemNameArray())) {
+							StringBuffer sb = new StringBuffer();
+							String[] items = ghi.getItemNameArray();
+							for (int j = 0 ; j < items.length; j++ ) {
+								sb.append(items[j]+":0,");
+							}
+							if (sb.length()>0) {
+								gwwi.setContent(sb.toString().substring(0,sb.length()-1));
+							}
+						}
+					}
 				}
 			}
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", pr);
@@ -126,10 +140,9 @@ public class GdController {
 
 	@RequestMapping(value = "homeworkWorkersItemExport",method=RequestMethod.POST)
 	@ResponseBody
-	public String homeworkWorkersItemExport(String cardNo,Integer homeworkId,String beginTime,String endTime, int page,
-			int pageSize,HttpServletRequest request, HttpServletResponse response) {
+	public String homeworkWorkersItemExport(String cardNo,Integer homeworkId,String beginTime,String endTime,HttpServletRequest request, HttpServletResponse response) {
 		try {
-			PageResult pr = gdService.queryWxMemberHomeWork(LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, page, pageSize);
+			PageResult pr = gdService.queryWxMemberHomeWork(LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, 1, 60000);
 			if ( null != pr && null != pr.getDatas()) {
 				for (int i =0 ;i < pr.getDatas().size(); i ++) {
 					WxMemberHomeWork gwwi = (WxMemberHomeWork) pr.getDatas().get(i);
@@ -179,8 +192,7 @@ public class GdController {
 	
 	@RequestMapping(value = "updateHomeworkWorkersItem",method=RequestMethod.POST)
 	@ResponseBody
-	public String updateHomeworkWorkersItem(String gdSignId,String cardNo,String itemJson,String beginTime,String endTime, int page,
-			int pageSize,HttpServletRequest request, HttpServletResponse response) {
+	public String updateHomeworkWorkersItem(String gdSignId,String cardNo,String itemJson,HttpServletRequest request, HttpServletResponse response) {
 		try {
 			GdHomeWorkWorkersItem gi = gdService.queryHomeworkWorkersItem(gdSignId, cardNo);
 			gi.setCreateTime(new Date());

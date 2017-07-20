@@ -10,15 +10,15 @@ public class WxMemberHomeWork implements Serializable {
 
 	private int id;
 	private int homeworkId;
-	private String homeworkName;
-	private String schoolId;
-	private String tanentName;
-	private String studentNo;
-	private String studentName;
-	private String signId;
-	private BigDecimal score;
+	private String homeworkName="";
+	private String schoolId="";
+	private String tanentName="";
+	private String studentNo="";
+	private String studentName="";
+	private String signId="";
+	private BigDecimal score= new BigDecimal(0);
 	private Date createTime;
-	private String content;
+	private String content="";
 	public int getId() {
 		return id;
 	}
