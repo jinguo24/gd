@@ -14,6 +14,7 @@ import com.simple.common.excel.DownLoadExcel;
 import com.simple.common.excel.DownLoadExcutor;
 import com.simple.common.util.DateUtil;
 import com.simple.common.util.ResponseInfo;
+import com.simple.dao.GdCardMakeDao;
 import com.simple.dao.GdHomeWorkItemsDao;
 import com.simple.dao.GdHomeWorkWorkersItemDao;
 import com.simple.dao.GdSignDao;
@@ -43,6 +44,8 @@ public class GdService {
 	private GdHomeWorkWorkersItemDao gdHomeWorkWorkersItemDao;
 	@Autowired
 	private WxMemberHomeWorkDao wxMemberHomeWorkDao;
+	@Autowired
+	private GdCardMakeDao gdCardMakeDao;
 	
 	public void addGdSign(GdSign gdSign) {
 		gdSignDao.addGdSign(gdSign);
@@ -100,10 +103,12 @@ public class GdService {
 	
 	public void addGdHomeWorkWorkersItem(GdHomeWorkWorkersItem homeworkWorkersItem) {
 		gdHomeWorkWorkersItemDao.addGdHomeWorkWorkersItem(homeworkWorkersItem);
+		//TODO 如果每个项都是合格，则往制证表里面加入
 	}
 	
 	public void updateGdHomeWorkWorkersItem(GdHomeWorkWorkersItem homeworkWorkersItem) {
 		gdHomeWorkWorkersItemDao.updateGdHomeWorkWorkersItem(homeworkWorkersItem);
+		//TODO 如果每个项都是合格，则往制证表里面加入；如果有一项不合格，则从制证表中删除
 	}
 	
 	public PageResult queryHomeworkWorkersItem(String tanentId,String cardNo,int homeworkId,String beginTime,

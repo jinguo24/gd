@@ -11,15 +11,14 @@
 		<result column="sign_time" property="signTime" jdbcType="TIMESTAMP"/>
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
 		<result column="tanent_id" property="tanentId" jdbcType="VARCHAR"/>
-		<result column="has_make" property="hasMake" jdbcType="INTEGER"/>
   </resultMap>
   <sql id="Base_Column_List" >
-	id,gd_sign_id,card_no,name,item_json,homework_id,sign_time,create_time,tanent_id,has_make
+	id,gd_sign_id,card_no,name,item_json,homework_id,sign_time,create_time,tanent_id
   </sql>
   
     <insert id="insert" parameterType="com.simple.model.GdHomeWorkWorkersItem">
-  	insert into gd_homework_workers_items (gd_sign_id,card_no,name,item_json,homework_id,sign_time,create_time,tanent_id,has_make) 
-  		values (#{gdSignId},#{cardNo},#{name},#{itemJson},#{homeworkId},#{signTime},#{createTime},#{tanentId},#{hasMake})
+  	insert into gd_homework_workers_items (gd_sign_id,card_no,name,item_json,homework_id,sign_time,create_time,tanent_id) 
+  		values (#{gdSignId},#{cardNo},#{name},#{itemJson},#{homeworkId},#{signTime},#{createTime},#{tanentId})
   </insert>
   
   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">

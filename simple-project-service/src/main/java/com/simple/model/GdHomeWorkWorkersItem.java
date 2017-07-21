@@ -21,7 +21,7 @@ public class GdHomeWorkWorkersItem implements Serializable {
 	private Date createTime;
 	private String tanentId;
 	private String tanentName;
-	private int hasMake = 1;
+	private int hasMake;
 	public int getId() {
 		return id;
 	}

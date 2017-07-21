@@ -156,6 +156,7 @@ public class GdController {
 					if (null != whw) {
 						gwwi.setHomeworkName(whw.getTitle());
 					}
+					//TODO 查询是否已经制证
 				}
 				return JSONObject.toJSONString(gdService.downloadWorkerItems(pr.getDatas()));
 			}else {
@@ -194,6 +195,7 @@ public class GdController {
 	@ResponseBody
 	public String updateHomeworkWorkersItem(String gdSignId,String cardNo,String itemJson,HttpServletRequest request, HttpServletResponse response) {
 		try {
+			//TODO 查询是否已经制证，如果已经制证，则不能修改
 			GdHomeWorkWorkersItem gi = gdService.queryHomeworkWorkersItem(gdSignId, cardNo);
 			gi.setCreateTime(new Date());
 			gi.setItemJson(itemJson);
