@@ -19,7 +19,7 @@
   
     <insert id="insert" parameterType="com.simple.model.GdHomeWorkWorkersItem">
   	insert into gd_homework_workers_items (gd_sign_id,card_no,name,item_json,homework_id,sign_time,create_time,tanent_id,has_make) 
-  		values (#{gdSignId},#{cardNo},#{name},#{itemJson}，#{homeworkId},#{signTime},#{createTime},#{tanentId},#{hasMake})
+  		values (#{gdSignId},#{cardNo},#{name},#{itemJson},#{homeworkId},#{signTime},#{createTime},#{tanentId},#{hasMake})
   </insert>
   
   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">

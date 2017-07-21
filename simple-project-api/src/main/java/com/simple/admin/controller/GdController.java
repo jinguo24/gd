@@ -63,7 +63,7 @@ public class GdController {
 			if (null == gsw) {
 				gsw = new GdSignWorkers();
 				gsw.setId(PrimaryKeyUtil.getUUID());
-				gsw.setGdSignId(gsid);
+				gsw.setGsid(gsid);
 				gsw.setCardNo(cardNo);
 				gsw.setCardImage(cardImage);
 				gsw.setName(name);

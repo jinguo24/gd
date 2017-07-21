@@ -3,15 +3,18 @@ package com.simple.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.simple.common.util.DateUtil;
+
 public class GdSignWorkers implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
 	private String id;
-	private String gdSignId;
+	private String gsid;
 	private String cardNo;
-	private String cardImage;
+	private String cardImage="";
 	private Date createTime;
+	private String showCreateTime;
 	private String name;
 	public String getId() {
 		return id;
@@ -19,11 +22,11 @@ public class GdSignWorkers implements Serializable{
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getGdSignId() {
-		return gdSignId;
+	public String getGsid() {
+		return gsid;
 	}
-	public void setGdSignId(String gdSignId) {
-		this.gdSignId = gdSignId;
+	public void setGsid(String gsid) {
+		this.gsid = gsid;
 	}
 	public String getCardNo() {
 		return cardNo;
@@ -42,11 +45,17 @@ public class GdSignWorkers implements Serializable{
 	}
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+		if ( null != createTime) {
+			this.showCreateTime = DateUtil.date2AllString(createTime);
+		}
 	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getShowCreateTime() {
+		return showCreateTime;
 	}
 }

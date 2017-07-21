@@ -4,12 +4,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.simple.common.mybatis.annotation.DatabaseTemplate;
 import com.simple.common.mybatis.dao.BaseIbatisDao;
+import com.simple.common.util.DateUtil;
 import com.simple.model.GdSign;
 
 @Repository
@@ -26,7 +28,7 @@ public class GdSignDao extends BaseIbatisDao {
 		Map param = new HashMap();
 		param.put("tanentId", tanentId);
 		param.put("homeworkId", homeworkId);
-		param.put("createDate", date);
+		param.put("createDate", DateUtil.date2String(date));
 		return this.sqlSession.selectOne("gdsign.queryByTHD",param);
 	}
 }

@@ -3,11 +3,14 @@ package com.simple.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.simple.common.util.DateUtil;
+
 public class GdSign implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private String id;
 	private Date createTime;
+	private String showCreateTime;
 	private String tanentId;
 	private int homeworkId;
 	private int status;
@@ -23,6 +26,9 @@ public class GdSign implements Serializable{
 	}
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+		if ( null != createTime) {
+			this.showCreateTime = DateUtil.date2AllString(createTime);
+		}
 	}
 	public String getTanentId() {
 		return tanentId;
@@ -47,5 +53,8 @@ public class GdSign implements Serializable{
 	}
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
+	}
+	public String getShowCreateTime() {
+		return showCreateTime;
 	}
 }

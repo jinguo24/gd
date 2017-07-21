@@ -2,6 +2,8 @@ package com.simple.model;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import com.simple.common.util.DateUtil;
 public class WxHomeWork implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -9,6 +11,7 @@ public class WxHomeWork implements Serializable{
 	private String schoolId;
 	private String title;
 	private Date publishTime;
+	private String showPublishTime;
 	public int getId() {
 		return id;
 	}
@@ -32,5 +35,11 @@ public class WxHomeWork implements Serializable{
 	}
 	public void setPublishTime(Date publishTime) {
 		this.publishTime = publishTime;
+		if ( null != publishTime) {
+			this.showPublishTime = DateUtil.date2AllString(publishTime);
+		}
+	}
+	public String getShowPublishTime() {
+		return showPublishTime;
 	}
 }
