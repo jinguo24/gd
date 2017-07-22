@@ -6,9 +6,10 @@
 		<result column="SchoolID" property="schoolId" jdbcType="VARCHAR"/>
 		<result column="Title" property="title" jdbcType="VARCHAR"/>
 		<result column="PublishTime" property="publishTime" jdbcType="TIMESTAMP"/>
+		<result column="Score" property="score" jdbcType="DECIMAL"/>
   </resultMap>
   <sql id="Base_Column_List" >
-	ID,SchoolID,Title,PublishTime
+	ID,SchoolID,Title,PublishTime,Score
   </sql>
   
   <select id="queryBySchoolId" resultMap="BaseResultMap" parameterType="java.util.Map">

@@ -123,8 +123,11 @@ public class GdService {
 		if (null == wmhw) {
 			return false;
 		}
-		
-		if ((wmhw.getTotalScore().doubleValue()*0.6) > wmhw.getScore().doubleValue()) {
+		WxHomeWork whw = wxHomeWorkDao.queryById(homeworkWorkersItem.getHomeworkId());
+		if (null == whw) {
+			return false;
+		}
+		if ((whw.getScore().doubleValue()*0.6) > wmhw.getScore().doubleValue()) {
 			return false;
 		}
 		

@@ -1,6 +1,7 @@
 package com.simple.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.simple.common.util.DateUtil;
@@ -12,6 +13,7 @@ public class WxHomeWork implements Serializable{
 	private String title;
 	private Date publishTime;
 	private String showPublishTime;
+	private BigDecimal score= new BigDecimal(0);
 	public int getId() {
 		return id;
 	}
@@ -41,5 +43,11 @@ public class WxHomeWork implements Serializable{
 	}
 	public String getShowPublishTime() {
 		return showPublishTime;
+	}
+	public BigDecimal getScore() {
+		return score;
+	}
+	public void setScore(BigDecimal score) {
+		this.score = score;
 	}
 }
