@@ -13,6 +13,7 @@ public class GdHomeWorkWorkersItem implements Serializable {
 	private String cardNo;
 	private String name;
 	private String sex;
+	private String cardImage;
 	private String itemJson;
 	private int homeworkId;
 	private String homeworkName;
@@ -112,5 +113,11 @@ public class GdHomeWorkWorkersItem implements Serializable {
 	}
 	public void setSex(String sex) {
 		this.sex = sex;
+	}
+	public String getCardImage() {
+		return cardImage;
+	}
+	public void setCardImage(String cardImage) {
+		this.cardImage = cardImage;
 	}
 }

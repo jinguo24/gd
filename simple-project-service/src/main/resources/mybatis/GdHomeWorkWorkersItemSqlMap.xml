@@ -5,6 +5,7 @@
 		<id column="id" property="id" jdbcType="INTEGER"/>
 		<result column="gd_sign_id" property="gdSignId" jdbcType="VARCHAR"/>
 		<result column="card_no" property="cardNo" jdbcType="VARCHAR"/>
+		<result column="card_image" property="cardImage" jdbcType="VARCHAR"/>
 		<result column="name" property="name" jdbcType="VARCHAR"/>
 		<result column="item_json" property="itemJson" jdbcType="VARCHAR"/>
 		<result column="homework_id" property="homeworkId" jdbcType="INTEGER"/>
@@ -14,12 +15,12 @@
 		<result column="sex" property="sex" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
-	id,gd_sign_id,card_no,name,item_json,homework_id,sign_time,create_time,tanent_id,sex
+	id,gd_sign_id,card_no,card_image,name,item_json,homework_id,sign_time,create_time,tanent_id,sex
   </sql>
   
     <insert id="insert" parameterType="com.simple.model.GdHomeWorkWorkersItem">
-  	insert into gd_homework_workers_items (gd_sign_id,card_no,name,item_json,homework_id,sign_time,create_time,tanent_id,sex) 
-  		values (#{gdSignId},#{cardNo},#{name},#{itemJson},#{homeworkId},#{signTime},#{createTime},#{tanentId},#{sex})
+  	insert into gd_homework_workers_items (gd_sign_id,card_no,card_image,name,item_json,homework_id,sign_time,create_time,tanent_id,sex) 
+  		values (#{gdSignId},#{cardNo},#{cardImage},#{name},#{itemJson},#{homeworkId},#{signTime},#{createTime},#{tanentId},#{sex})
   </insert>
   
   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">

@@ -13,6 +13,7 @@ public class GdCardMake implements Serializable {
 	private String name;
 	private String sex;
 	private String sequenceNo;
+	private String cardImage;
 	private String type;
 	private Date makeTime;
 	private String showMakeTime="";
@@ -76,5 +77,11 @@ public class GdCardMake implements Serializable {
 	}
 	public void setShowMakeTime(String showMakeTime) {
 		this.showMakeTime = showMakeTime;
+	}
+	public String getCardImage() {
+		return cardImage;
+	}
+	public void setCardImage(String cardImage) {
+		this.cardImage = cardImage;
 	}
 }

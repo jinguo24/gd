@@ -155,6 +155,7 @@ public class GdService {
 		cm.setSex(homeworkWorkersItem.getSex());
 		//TODO 查询问卷的使用类型
 		cm.setType("安莉芳安全教育");
+		cm.setCardImage(homeworkWorkersItem.getCardImage());
 		cm.setSequenceNo(PrimaryKeyUtil.getShortId());
 		gdCardMakeDao.addGdCardMake(cm);
 	}

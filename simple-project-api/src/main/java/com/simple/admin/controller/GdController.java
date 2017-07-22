@@ -80,6 +80,7 @@ public class GdController {
 				gi.setTanentId(tanentId);
 				gi.setSignTime(gsw.getCreateTime());
 				gi.setSex(gsw.getSex());
+				gi.setCardImage(gsw.getCardImage());
 				gdService.addGdHomeWorkWorkersItem(gi);
 			}
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"签到成功", gsw);
