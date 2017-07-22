@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.simple.common.util.AjaxWebUtil;
 import com.simple.common.util.PrimaryKeyUtil;
+import com.simple.model.GdCardMake;
 import com.simple.model.GdHomeWorkWorkersItem;
 import com.simple.model.GdSign;
 import com.simple.model.GdSignWorkers;
@@ -77,6 +78,7 @@ public class GdController {
 				gi.setName(name);
 				gi.setTanentId(tanentId);
 				gi.setSignTime(gsw.getCreateTime());
+				gi.setSex(gsw.getSex());
 				gdService.addGdHomeWorkWorkersItem(gi);
 			}
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"签到成功", gsw);
@@ -109,4 +111,43 @@ public class GdController {
 			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
 		}
 	}
+	
+	@RequestMapping(value = "makeList",method=RequestMethod.GET)
+	@ResponseBody
+	public String makeList(String cardNo,int homeworkId,String name, int status,int pageIndex,int pageSize,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			PageResult pr =gdService.queryCardMake(cardNo, homeworkId, name, status, pageIndex, pageSize);
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", pr);
+		}catch(Exception e) {
+			log.error("gd sign error.",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}	
+	
+	@RequestMapping(value = "makeInfo",method=RequestMethod.GET)
+	@ResponseBody
+	public String makeInfo(String cardNo,int homeworkId,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			GdCardMake pr =gdService.queryCardMake(cardNo, homeworkId);
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", pr);
+		}catch(Exception e) {
+			log.error("gd sign error.",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}	
+	
+	@RequestMapping(value = "makeSuccess",method=RequestMethod.POST)
+	@ResponseBody
+	public String makeSuccess(String cardNo,int homeworkId,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			GdCardMake pr =gdService.queryCardMake(cardNo, homeworkId);
+			pr.setMakeTime(new Date());
+			gdService.make(pr);
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", pr);
+		}catch(Exception e) {
+			log.error("gd sign error.",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+	
 }

@@ -4,20 +4,21 @@
   <resultMap id="BaseResultMap" type="com.simple.model.GdCardMake" >
 		<id column="id" property="id" jdbcType="INTEGER"/>
 		<result column="card_no" property="cardNo" jdbcType="VARCHAR"/>
-		<result column="homework_id" property="homeworkId" jdbcType="VARCHAR"/>
+		<result column="homework_id" property="homeworkId" jdbcType="INTEGER"/>
 		<result column="name" property="name" jdbcType="VARCHAR"/>
 		<result column="sex" property="sex" jdbcType="VARCHAR"/>
-		<result column="sequence_no" property="sequenceNo" jdbcType="INTEGER"/>
+		<result column="sequence_no" property="sequenceNo" jdbcType="VARCHAR"/>
 		<result column="make_time" property="makeTime" jdbcType="TIMESTAMP"/>
-		<result column="make_count" property="makeCount" jdbcType="TIMESTAMP"/>
+		<result column="make_count" property="makeCount" jdbcType="INTEGER"/>
+		<result column="type" property="type" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
-	id,card_no,homework_id,name,sex,sequence_no,make_time,make_count
+	id,card_no,homework_id,name,sex,sequence_no,make_time,make_count,type
   </sql>
   
     <insert id="insert" parameterType="com.simple.model.GdCardMake">
-  	insert into gd_card_make (card_no,homework_id,name,sex,sequence_no,make_time,make_count) 
-  		values (#{cardNo},#{homeworkId},#{name},#{sex},#{sequenceNo},#{makeTime},#{makeCount})
+  	insert into gd_card_make (card_no,homework_id,name,sex,sequence_no,make_time,make_count,type) 
+  		values (#{cardNo},#{homeworkId},#{name},#{sex},#{sequenceNo},#{makeTime},#{makeCount},#{type})
   </insert>
   
   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">

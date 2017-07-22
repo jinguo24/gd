@@ -57,5 +57,14 @@ public class PrimaryKeyUtil {
 		int no = sequence.incrementAndGet();
 		return DateUtil.date2StringWhitNoSpilt(new Date())+machine+no;
 	}
+	
+	public static String getShortId() {
+		String machine = System.getProperty("SIMPLE_MACHINE_SEQUENCE");
+		if (StringUtils.isEmpty(machine)) {
+			machine = "NA";
+		}
+		int no =(int)(Math.random()*900)+100;
+		return DateUtil.date2StringWhitNoSpiltSeconds(new Date())+machine+no;
+	}
 
 }

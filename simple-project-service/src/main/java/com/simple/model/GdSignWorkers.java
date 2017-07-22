@@ -16,6 +16,7 @@ public class GdSignWorkers implements Serializable{
 	private Date createTime;
 	private String showCreateTime;
 	private String name;
+	private String sex="";
 	public String getId() {
 		return id;
 	}
@@ -57,5 +58,11 @@ public class GdSignWorkers implements Serializable{
 	}
 	public String getShowCreateTime() {
 		return showCreateTime;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
 	}
 }

@@ -8,14 +8,15 @@
 		<result column="card_image" property="cardImage" jdbcType="VARCHAR"/>
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
 		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="sex" property="sex" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
-	id,gd_sign_id,card_no,card_image,create_time,name
+	id,gd_sign_id,card_no,card_image,create_time,name,sex
   </sql>
   
     <insert id="insert" parameterType="com.simple.model.GdSignWorkers">
-  	insert into gd_sign_workers (id,gd_sign_id,card_no,card_image,create_time,name) 
-  		values (#{id},#{gsid},#{cardNo},#{cardImage},#{createTime},#{name})
+  	insert into gd_sign_workers (id,gd_sign_id,card_no,card_image,create_time,name,sex) 
+  		values (#{id},#{gsid},#{cardNo},#{cardImage},#{createTime},#{name},#{sex})
   </insert>
   
   <select id="queryBySC" resultMap="BaseResultMap" parameterType="java.util.Map">

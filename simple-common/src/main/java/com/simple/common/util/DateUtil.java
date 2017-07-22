@@ -15,6 +15,10 @@ public class DateUtil {
 		return new SimpleDateFormat("yyyyMMddHHmmssSSS").format(date);
 	}
 	
+	public static String date2StringWhitNoSpiltSeconds(Date date) {
+		return new SimpleDateFormat("yyyyMMddHHmmss").format(date);
+	}
+	
 	public static Date stringToDate(String date) {
 		try {
 			return new SimpleDateFormat("yyyy-MM-dd").parse(date);

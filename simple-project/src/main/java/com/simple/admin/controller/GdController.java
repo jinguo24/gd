@@ -1,7 +1,6 @@
 package com.simple.admin.controller;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONObject;
 import com.simple.admin.util.LoginUserUtil;
 import com.simple.common.util.AjaxWebUtil;
+import com.simple.model.GdCardMake;
 import com.simple.model.GdHomeWorkItems;
 import com.simple.model.GdHomeWorkWorkersItem;
 import com.simple.model.PageResult;
@@ -129,6 +129,7 @@ public class GdController {
 							}
 						}
 					}
+					//TODO 查询是否已经制证
 				}
 			}
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", pr);
@@ -156,7 +157,6 @@ public class GdController {
 					if (null != whw) {
 						gwwi.setHomeworkName(whw.getTitle());
 					}
-					//TODO 查询是否已经制证
 				}
 				return JSONObject.toJSONString(gdService.downloadWorkerItems(pr.getDatas()));
 			}else {
@@ -184,6 +184,11 @@ public class GdController {
 				gwwi.setScore(wmhw.getScore());
 				gwwi.setHomeworkTime(wmhw.getCreateTime());
 			}
+			//查询是否已经制证
+			GdCardMake cardMake = gdService.queryCardMake(cardNo, gwwi.getHomeworkId());
+			if ( null != cardMake && cardMake.getMakeCount() > 0 ) {
+				gwwi.setHasMake(1);
+			}
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", gwwi);
 		}catch(Exception e) {
 			log.error("gd kaike error.",e);
@@ -195,8 +200,13 @@ public class GdController {
 	@ResponseBody
 	public String updateHomeworkWorkersItem(String gdSignId,String cardNo,String itemJson,HttpServletRequest request, HttpServletResponse response) {
 		try {
-			//TODO 查询是否已经制证，如果已经制证，则不能修改
+			//查询是否已经制证，如果已经制证，则不能修改
 			GdHomeWorkWorkersItem gi = gdService.queryHomeworkWorkersItem(gdSignId, cardNo);
+			GdCardMake cardMake = gdService.queryCardMake(cardNo, gi.getHomeworkId());
+			if ( null != cardMake && cardMake.getMakeCount() > 0 ) {
+				return AjaxWebUtil.sendAjaxResponse(request, response, false,"已经制过证，不能修改", null);
+			}
+			
 			gi.setCreateTime(new Date());
 			gi.setItemJson(itemJson);
 			gdService.updateGdHomeWorkWorkersItem(gi);

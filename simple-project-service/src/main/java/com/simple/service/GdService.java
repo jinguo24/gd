@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.simple.common.excel.DownLoadExcel;
 import com.simple.common.excel.DownLoadExcutor;
 import com.simple.common.util.DateUtil;
+import com.simple.common.util.PrimaryKeyUtil;
 import com.simple.common.util.ResponseInfo;
 import com.simple.dao.GdCardMakeDao;
 import com.simple.dao.GdHomeWorkItemsDao;
@@ -21,6 +22,7 @@ import com.simple.dao.GdSignDao;
 import com.simple.dao.GdSignWorkersDao;
 import com.simple.dao.WxHomeWorkDao;
 import com.simple.dao.WxMemberHomeWorkDao;
+import com.simple.model.GdCardMake;
 import com.simple.model.GdHomeWorkItems;
 import com.simple.model.GdHomeWorkWorkersItem;
 import com.simple.model.GdSign;
@@ -103,12 +105,68 @@ public class GdService {
 	
 	public void addGdHomeWorkWorkersItem(GdHomeWorkWorkersItem homeworkWorkersItem) {
 		gdHomeWorkWorkersItemDao.addGdHomeWorkWorkersItem(homeworkWorkersItem);
-		//TODO 如果每个项都是合格，则往制证表里面加入
+		if (isPass(homeworkWorkersItem.getItemJson())) {
+			addGdCardMake(homeworkWorkersItem);
+		}
+	}
+	
+	private boolean isPass(String content) {
+		if (StringUtils.isEmpty(content)) {
+			return false;
+		}
+		String[] ivs = content.split(",");
+		boolean ispass = true;
+		for (int i = 0 ; i < ivs.length; i ++) {
+			String iv = ivs[i];
+			if (!StringUtils.isEmpty(iv)) {
+				String[] is = iv.split(":");
+				int v = Integer.parseInt(is[1]);
+				if (v < 80) {
+					ispass = false;
+					break;
+				}
+			}
+		}
+		return ispass;
+	}
+	
+	private void addGdCardMake(GdHomeWorkWorkersItem homeworkWorkersItem) {
+		//如果每个项都是合格，则往制证表里面加入
+		GdCardMake cm = new GdCardMake();
+		cm.setCardNo(homeworkWorkersItem.getCardNo());
+		cm.setHomeworkId(homeworkWorkersItem.getHomeworkId());
+		cm.setMakeCount(0);
+		cm.setName(homeworkWorkersItem.getName());
+		cm.setSex(homeworkWorkersItem.getSex());
+		//TODO 查询问卷的使用类型
+		cm.setType("安莉芳安全教育");
+		cm.setSequenceNo(PrimaryKeyUtil.getShortId());
+		gdCardMakeDao.addGdCardMake(cm);
+	}
+	
+	public static void main(String[] args) {
+		System.out.println();
 	}
 	
 	public void updateGdHomeWorkWorkersItem(GdHomeWorkWorkersItem homeworkWorkersItem) {
 		gdHomeWorkWorkersItemDao.updateGdHomeWorkWorkersItem(homeworkWorkersItem);
-		//TODO 如果每个项都是合格，则往制证表里面加入；如果有一项不合格，则从制证表中删除
+		//如果每个项都是合格，则往制证表里面加入；如果有一项不合格，则从制证表中删除
+		GdCardMake cm = gdCardMakeDao.queryOne(homeworkWorkersItem.getCardNo(), homeworkWorkersItem.getHomeworkId());
+		if (isPass(homeworkWorkersItem.getItemJson())) {
+			if (null != cm ) {
+				try {
+					addGdCardMake(homeworkWorkersItem);
+				}catch(Exception e) {
+				}
+			}
+		}else {
+			if (null != cm ) {
+				try {
+					gdCardMakeDao.delete(homeworkWorkersItem.getCardNo(), homeworkWorkersItem.getHomeworkId());
+				}catch(Exception e) {
+				}
+			}
+		}
 	}
 	
 	public PageResult queryHomeworkWorkersItem(String tanentId,String cardNo,int homeworkId,String beginTime,
@@ -199,4 +257,27 @@ public class GdService {
 			}
 		});
 	}
+	
+	public void addGdCardMake(GdCardMake cardMake) {
+		gdCardMakeDao.addGdCardMake(cardMake);
+	}
+	
+	public PageResult queryCardMake(String cardNo,int homeworkId,String name, int status,int pageIndex,int pageSize) {
+		List<GdCardMake> registers = gdCardMakeDao.queryList(cardNo, homeworkId, name, status, pageIndex, pageSize);
+		int count = gdCardMakeDao.queryCount(cardNo, homeworkId, name, status);
+		return new PageResult(count,pageSize,pageIndex,registers);
+	}
+	
+	public void make(GdCardMake cardMake) {
+		gdCardMakeDao.make(cardMake);
+	}
+	
+	public GdCardMake queryCardMake(String cardNo,int homeworkId) {
+		return gdCardMakeDao.queryOne(cardNo, homeworkId);
+	}
+	
+	public void delete(String cardNo,int homeworkId) {
+		gdCardMakeDao.delete(cardNo, homeworkId);
+	}
+	
 }

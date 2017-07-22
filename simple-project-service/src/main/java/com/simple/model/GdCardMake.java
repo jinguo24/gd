@@ -13,6 +13,7 @@ public class GdCardMake implements Serializable {
 	private String name;
 	private String sex;
 	private String sequenceNo;
+	private String type;
 	private Date makeTime;
 	private int makeCount;
 	public int getId() {
@@ -62,5 +63,11 @@ public class GdCardMake implements Serializable {
 	}
 	public void setMakeCount(int makeCount) {
 		this.makeCount = makeCount;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 }
