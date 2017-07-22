@@ -16,6 +16,7 @@ public class WxMemberHomeWork implements Serializable {
 	private String studentNo="";
 	private String studentName="";
 	private String signId="";
+	private BigDecimal totalScore= new BigDecimal(0);
 	private BigDecimal score= new BigDecimal(0);
 	private Date createTime;
 	private String content="";
@@ -84,5 +85,11 @@ public class WxMemberHomeWork implements Serializable {
 	}
 	public void setHomeworkName(String homeworkName) {
 		this.homeworkName = homeworkName;
+	}
+	public BigDecimal getTotalScore() {
+		return totalScore;
+	}
+	public void setTotalScore(BigDecimal totalScore) {
+		this.totalScore = totalScore;
 	}
 }

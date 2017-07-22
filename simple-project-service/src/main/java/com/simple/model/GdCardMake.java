@@ -15,6 +15,7 @@ public class GdCardMake implements Serializable {
 	private String sequenceNo;
 	private String type;
 	private Date makeTime;
+	private String showMakeTime="";
 	private int makeCount;
 	public int getId() {
 		return id;
@@ -69,5 +70,11 @@ public class GdCardMake implements Serializable {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public String getShowMakeTime() {
+		return showMakeTime;
+	}
+	public void setShowMakeTime(String showMakeTime) {
+		this.showMakeTime = showMakeTime;
 	}
 }

@@ -54,7 +54,7 @@ public class GdController {
 	
 	@RequestMapping(value = "sign",method=RequestMethod.POST)
 	@ResponseBody
-	public String sign(String gsid,String cardNo,String cardImage,String name,int homeworkId,String tanentId,HttpServletRequest request, HttpServletResponse response) {
+	public String sign(String gsid,String cardNo,String cardImage,String name,String sex,int homeworkId,String tanentId,HttpServletRequest request, HttpServletResponse response) {
 		try {
 			if (StringUtils.isEmpty(cardNo)) {
 				return AjaxWebUtil.sendAjaxResponse(request, response, false,"身份证号不能为空", "身份证号不能为空");
@@ -69,6 +69,7 @@ public class GdController {
 				gsw.setCardImage(cardImage);
 				gsw.setName(name);
 				gsw.setCreateTime(new Date());
+				gsw.setSex(sex);
 				gdService.addGdSignWorkers(gsw);
 				
 				GdHomeWorkWorkersItem gi = new GdHomeWorkWorkersItem();
@@ -143,7 +144,7 @@ public class GdController {
 			GdCardMake pr =gdService.queryCardMake(cardNo, homeworkId);
 			pr.setMakeTime(new Date());
 			gdService.make(pr);
-			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", pr);
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", null);
 		}catch(Exception e) {
 			log.error("gd sign error.",e);
 			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());

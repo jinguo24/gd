@@ -9,10 +9,11 @@
 		<result column="StudentName" property="studentName" jdbcType="VARCHAR"/>
 		<result column="SignID" property="signId" jdbcType="VARCHAR"/>
 		<result column="Score" property="score" jdbcType="DECIMAL"/>
+		<result column="TotalScore" property="totalScore" jdbcType="DECIMAL"/>
 		<result column="CreateTime" property="createTime" jdbcType="TIMESTAMP"/>
   </resultMap>
   <sql id="Base_Column_List" >
-	ID,HomeworkID,SchoolID,StudentNo,StudentName,SignID,Score,CreateTime
+	ID,HomeworkID,SchoolID,StudentNo,StudentName,SignID,Score,CreateTime,TotalScore
   </sql>
   
   <select id="queryOne" resultMap="BaseResultMap" parameterType="java.util.Map">

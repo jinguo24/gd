@@ -1,5 +1,6 @@
 package com.simple.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -105,17 +106,28 @@ public class GdService {
 	
 	public void addGdHomeWorkWorkersItem(GdHomeWorkWorkersItem homeworkWorkersItem) {
 		gdHomeWorkWorkersItemDao.addGdHomeWorkWorkersItem(homeworkWorkersItem);
-		if (isPass(homeworkWorkersItem.getItemJson())) {
+		if (isPass(homeworkWorkersItem)) {
 			addGdCardMake(homeworkWorkersItem);
 		}
 	}
 	
-	private boolean isPass(String content) {
-		if (StringUtils.isEmpty(content)) {
+	private boolean isPass(GdHomeWorkWorkersItem homeworkWorkersItem) {
+		if (StringUtils.isEmpty(homeworkWorkersItem.getItemJson())) {
 			return false;
 		}
-		String[] ivs = content.split(",");
+		String[] ivs = homeworkWorkersItem.getItemJson().split(",");
 		boolean ispass = true;
+		//查询考试成绩，如果小于60%，则不通过
+		WxMemberHomeWork wmhw = wxMemberHomeWorkDao.queryOne(homeworkWorkersItem.getTanentId(), homeworkWorkersItem.getCardNo(), 
+				homeworkWorkersItem.getGdSignId(), homeworkWorkersItem.getHomeworkId());
+		if (null == wmhw) {
+			return false;
+		}
+		
+		if ((wmhw.getTotalScore().doubleValue()*0.6) > wmhw.getScore().doubleValue()) {
+			return false;
+		}
+		
 		for (int i = 0 ; i < ivs.length; i ++) {
 			String iv = ivs[i];
 			if (!StringUtils.isEmpty(iv)) {
@@ -144,15 +156,11 @@ public class GdService {
 		gdCardMakeDao.addGdCardMake(cm);
 	}
 	
-	public static void main(String[] args) {
-		System.out.println();
-	}
-	
 	public void updateGdHomeWorkWorkersItem(GdHomeWorkWorkersItem homeworkWorkersItem) {
 		gdHomeWorkWorkersItemDao.updateGdHomeWorkWorkersItem(homeworkWorkersItem);
 		//如果每个项都是合格，则往制证表里面加入；如果有一项不合格，则从制证表中删除
 		GdCardMake cm = gdCardMakeDao.queryOne(homeworkWorkersItem.getCardNo(), homeworkWorkersItem.getHomeworkId());
-		if (isPass(homeworkWorkersItem.getItemJson())) {
+		if (isPass(homeworkWorkersItem)) {
 			if (null != cm ) {
 				try {
 					addGdCardMake(homeworkWorkersItem);
