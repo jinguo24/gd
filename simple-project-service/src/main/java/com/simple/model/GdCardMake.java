@@ -8,13 +8,13 @@ public class GdCardMake implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int id;
-	private String cardNo;
+	private String cardNo="";
 	private int homeworkId;
-	private String name;
-	private String sex;
-	private String sequenceNo;
-	private String cardImage;
-	private String type;
+	private String name="";
+	private String sex="";
+	private String sequenceNo="";
+	private String cardImage="";
+	private String type="";
 	private Date makeTime;
 	private String showMakeTime="";
 	private int makeCount;

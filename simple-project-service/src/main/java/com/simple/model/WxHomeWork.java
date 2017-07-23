@@ -14,6 +14,7 @@ public class WxHomeWork implements Serializable{
 	private Date publishTime;
 	private String showPublishTime;
 	private BigDecimal score= new BigDecimal(0);
+	private String categoryId;
 	public int getId() {
 		return id;
 	}
@@ -49,5 +50,11 @@ public class WxHomeWork implements Serializable{
 	}
 	public void setScore(BigDecimal score) {
 		this.score = score;
+	}
+	public String getCategoryId() {
+		return categoryId;
+	}
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
 	}
 }

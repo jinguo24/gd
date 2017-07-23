@@ -1,6 +1,5 @@
 package com.simple.service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -14,11 +13,11 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.simple.common.excel.DownLoadExcel;
 import com.simple.common.excel.DownLoadExcutor;
 import com.simple.common.util.DateUtil;
 import com.simple.common.util.PrimaryKeyUtil;
+import com.simple.dao.DictionaryDao;
 import com.simple.dao.GdCardMakeDao;
 import com.simple.dao.GdHomeWorkItemsDao;
 import com.simple.dao.GdHomeWorkWorkersItemDao;
@@ -26,6 +25,7 @@ import com.simple.dao.GdSignDao;
 import com.simple.dao.GdSignWorkersDao;
 import com.simple.dao.WxHomeWorkDao;
 import com.simple.dao.WxMemberHomeWorkDao;
+import com.simple.model.Dictionary;
 import com.simple.model.GdCardMake;
 import com.simple.model.GdHomeWorkItems;
 import com.simple.model.GdHomeWorkWorkersItem;
@@ -52,6 +52,8 @@ public class GdService {
 	private WxMemberHomeWorkDao wxMemberHomeWorkDao;
 	@Autowired
 	private GdCardMakeDao gdCardMakeDao;
+	@Autowired
+	private DictionaryDao dictionaryDao;
 	
 	public void addGdSign(GdSign gdSign) {
 		gdSignDao.addGdSign(gdSign);
@@ -157,7 +159,13 @@ public class GdService {
 		cm.setName(homeworkWorkersItem.getName());
 		cm.setSex(homeworkWorkersItem.getSex());
 		//TODO 查询问卷的使用类型
-		cm.setType("安莉芳安全教育");
+		WxHomeWork whw = wxHomeWorkDao.queryById(homeworkWorkersItem.getHomeworkId());
+		if (null != whw && (!StringUtils.isEmpty(whw.getCategoryId()))) {
+			Dictionary dictionary = dictionaryDao.queryByCode(whw.getCategoryId());
+			if (null != dictionary ) {
+				cm.setType(dictionary.getName());
+			}
+		}
 		cm.setCardImage(homeworkWorkersItem.getCardImage());
 		cm.setSequenceNo(PrimaryKeyUtil.getShortId());
 		gdCardMakeDao.addGdCardMake(cm);

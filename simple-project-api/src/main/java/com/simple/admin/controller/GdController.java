@@ -163,6 +163,9 @@ public class GdController {
 	@ResponseBody
 	public String studentHomeWorkList(String cardNo,int pageIndex,int pageSize,HttpServletRequest request, HttpServletResponse response) {
 		try {
+			if (StringUtils.isEmpty(cardNo)) {
+				return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", null);
+			}
 			PageResult pr =gdService.queryWxMemberHomeWork(null, cardNo, 0, null, null, pageIndex, pageSize);
 			if ( null != pr && null != pr.getDatas()) {
 				for (int i =0 ;i < pr.getDatas().size(); i ++) {
