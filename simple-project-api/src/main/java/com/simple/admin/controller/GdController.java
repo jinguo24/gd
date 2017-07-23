@@ -16,11 +16,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.simple.common.util.AjaxWebUtil;
 import com.simple.common.util.PrimaryKeyUtil;
+import com.simple.model.ClassRegister;
 import com.simple.model.GdCardMake;
+import com.simple.model.GdHomeWorkItems;
 import com.simple.model.GdHomeWorkWorkersItem;
 import com.simple.model.GdSign;
 import com.simple.model.GdSignWorkers;
 import com.simple.model.PageResult;
+import com.simple.model.WxHomeWork;
+import com.simple.model.WxMemberHomeWork;
+import com.simple.service.ClassRegistorService;
 import com.simple.service.GdService;
 @Controller
 @RequestMapping(value = "/gd")
@@ -29,6 +34,8 @@ public class GdController {
 	private static final Logger log = LoggerFactory.getLogger(GdController.class);
 	@Autowired
 	GdService gdService;
+	@Autowired
+	ClassRegistorService classRegisterService;
 	
 	@RequestMapping(value = "kaike",method=RequestMethod.POST)
 	@ResponseBody
@@ -146,6 +153,31 @@ public class GdController {
 			pr.setMakeTime(new Date());
 			gdService.make(pr);
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", null);
+		}catch(Exception e) {
+			log.error("gd sign error.",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+	
+	@RequestMapping(value = "studentHomeWorkList",method=RequestMethod.GET)
+	@ResponseBody
+	public String studentHomeWorkList(String cardNo,int pageIndex,int pageSize,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			PageResult pr =gdService.queryWxMemberHomeWork(null, cardNo, 0, null, null, pageIndex, pageSize);
+			if ( null != pr && null != pr.getDatas()) {
+				for (int i =0 ;i < pr.getDatas().size(); i ++) {
+					WxMemberHomeWork gwwi = (WxMemberHomeWork) pr.getDatas().get(i);
+					ClassRegister cr = classRegisterService.getClassRegister(gwwi.getSchoolId(), null);
+					if ( null != cr ) {
+						gwwi.setTanentName(cr.getJsmc());
+					}
+					WxHomeWork whw = gdService.queryWxHomeWork(gwwi.getHomeworkId());
+					if (null != whw) {
+						gwwi.setHomeworkName(whw.getTitle());
+					}
+				}
+			}
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", pr);
 		}catch(Exception e) {
 			log.error("gd sign error.",e);
 			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());

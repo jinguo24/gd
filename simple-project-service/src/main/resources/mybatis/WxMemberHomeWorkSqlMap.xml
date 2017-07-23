@@ -24,7 +24,8 @@
   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
   	select 
   	<include refid="Base_Column_List"></include>
-  	from wx_memberhomework where SchoolID = #{schoolId} 
+  	from wx_memberhomework where 1=1
+  	<if test="schoolId != null and schoolId != ''" > and SchoolID = #{schoolId} </if>
   	<if test="studentNo != null and studentNo != ''" > and StudentNo = #{studentNo} </if>
   	<if test="homeworkId > 0 " > and HomeworkID = #{homeworkId} </if>
   	<if test="beginTime != null and beginTime != ''" > and CreateTime &gt;= #{beginTime} </if>
@@ -36,7 +37,8 @@
   <select id="queryCount" parameterType="java.util.Map" resultType="int">
 	select 
   	count(1)
-  	from wx_memberhomework where SchoolID = #{schoolId} 
+  	from wx_memberhomework where 1=1 
+  	<if test="schoolId != null and schoolId != ''" > and SchoolID = #{schoolId} </if>
   	<if test="studentNo != null and studentNo != ''" > and StudentNo = #{studentNo} </if>
   	<if test="homeworkId > 0 " > and HomeworkID = #{homeworkId} </if>
   	<if test="beginTime != null and beginTime != ''" > and CreateTime &gt;= #{beginTime} </if>

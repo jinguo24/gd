@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,7 +19,6 @@ import com.simple.common.excel.DownLoadExcel;
 import com.simple.common.excel.DownLoadExcutor;
 import com.simple.common.util.DateUtil;
 import com.simple.common.util.PrimaryKeyUtil;
-import com.simple.common.util.ResponseInfo;
 import com.simple.dao.GdCardMakeDao;
 import com.simple.dao.GdHomeWorkItemsDao;
 import com.simple.dao.GdHomeWorkWorkersItemDao;
@@ -239,12 +240,13 @@ public class GdService {
 			titles[3] = "工人姓名";
 			titles[4] = "考试成绩";
 			titles[5] = "考试时间";
-			for (int i = 6 ; i < ites.length; i ++ ) {
-				titles[i] = ites[i-6];
+			for (int i = 0 ; i < ites.length; i ++ ) {
+				titles[6+i] = ites[i];
 			}
 		}else {
 			titles = new String[]{"工地名称","试卷","身份证号码","工人姓名","考试成绩","考试时间"};
 		}
+		final String[] finalTitiles = titles;
 		DownLoadExcel.download(items, Arrays.asList(titles), new DownLoadExcutor() {
 			@Override
 			public List<String> getCellValues(Object o) {
@@ -259,14 +261,22 @@ public class GdService {
 				if ( null != ites ) {
 					String content = log.getContent();
 					if (!StringUtils.isEmpty(content)) {
-						JSONObject jo = JSONObject.parseObject(content);
-						for (int i = 0 ; i < ites.length; i ++) {
-							String column = ites[i];
-							sl.add(jo.get(column).toString());
+						Map<String,String> cmap = new HashMap<String,String>();
+						String[] ivs = content.split(",");
+						if ( null != ivs ) {
+							for (int i = 0 ;i < ivs.length; i ++) {
+								String iv = ivs[i];
+								if (!StringUtils.isEmpty(iv)) {
+									String[] is = iv.split(":");
+									cmap.put(is[0], is[1]);
+								}
+							}
+						}
+						for (int i=6 ; i< finalTitiles.length; i++) {
+							sl.add(StringUtils.trimToEmpty(cmap.get(finalTitiles[i])));
 						}
 					}
 				}
-				sl.add(StringUtils.trimToEmpty(log.getContent()));
 				return sl;
 			}
 		},response);

@@ -31,6 +31,7 @@ public class ClassRegister implements Serializable{
 	private String showJfrq="";
 	private String email;
 	private String key;
+	private String zzdw="";
 	public int getLineid() {
 		return lineid;
 	}
@@ -163,6 +164,12 @@ public class ClassRegister implements Serializable{
 	public void setKey(String key) {
 		this.key = key;
 	}
+	public String getZzdw() {
+		return zzdw;
+	}
+	public void setZzdw(String zzdw) {
+		this.zzdw = zzdw;
+	}
 	public ClassRegisterForm castToForm() {
 		ClassRegisterForm crf = new ClassRegisterForm();
 		crf.setZhh(this.tanentid);
@@ -182,6 +189,7 @@ public class ClassRegister implements Serializable{
 		}
 		crf.setEmail(this.email);
 		crf.setKey(this.key);
+		crf.setZzdw(this.zzdw);
 		return crf;
 	}
 }

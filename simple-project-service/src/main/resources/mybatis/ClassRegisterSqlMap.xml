@@ -21,16 +21,17 @@
 		<result column="JFRQ" property="jfrq" jdbcType="TIMESTAMP"/>
 		<result column="EMAIL" property="email" jdbcType="VARCHAR"/>
 		<result column="ENCRYPT_KEY" property="key" jdbcType="VARCHAR"/>
+		<result column="ZZDW" property="zzdw" jdbcType="VARCHAR"/>
   </resultMap>
   
   <sql id="Base_Column_List" >
-	LINEID,TANENTID,XXBH,XXMC,JSBH,JSMC,JSDZ,SQZH,SQMM,BZ,CJR,CJSJ,YXZT,VERSION,XZXM,GLYXX,JFRQ,EMAIL,ENCRYPT_KEY
+	LINEID,TANENTID,XXBH,XXMC,JSBH,JSMC,JSDZ,SQZH,SQMM,BZ,CJR,CJSJ,YXZT,VERSION,XZXM,GLYXX,JFRQ,EMAIL,ENCRYPT_KEY,ZZDW
   </sql>
   
   <insert id="insert" useGeneratedKeys="true" keyProperty="lineid" parameterType="com.simple.model.ClassRegister">
-  	insert into class_register (TANENTID,XXBH,XXMC,JSBH,JSMC,JSDZ,SQZH,SQMM,BZ,CJR,CJSJ,YXZT,VERSION,XZXM,GLYXX,JFRQ,EMAIL,ENCRYPT_KEY) 
+  	insert into class_register (TANENTID,XXBH,XXMC,JSBH,JSMC,JSDZ,SQZH,SQMM,BZ,CJR,CJSJ,YXZT,VERSION,XZXM,GLYXX,JFRQ,EMAIL,ENCRYPT_KEY,ZZDW) 
   		values (#{tanentid},#{xxbh},#{xxmc},#{jsbh},#{jsmc},#{jsdz},#{sqzh},#{sqmm},#{bz},#{cjr},
-  		#{cjsj},#{yxzt},#{version},#{xzxm},#{glyxx},#{jfrq},#{email},#{key})
+  		#{cjsj},#{yxzt},#{version},#{xzxm},#{glyxx},#{jfrq},#{email},#{key},#{zzdw})
   </insert>
   
    <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
@@ -77,7 +78,8 @@
 		GLYXX        = #{glyxx},
 		JFRQ         = #{jfrq},
 		EMAIL        = #{email},
-		ENCRYPT_KEY  = #{key}
+		ENCRYPT_KEY  = #{key},
+		ZZDW         = #{zzdw}
   	where TANENTID  = #{tanentid}
   	<if test="jsbh != null and jsbh != ''" > and JSBH = #{jsbh} </if>
   </update>

@@ -44,6 +44,7 @@ public class ClassRegisterForm implements Serializable{
 	private String jfrq;
 	private String email;
 	private String key;
+	private String zzdw;
 	public String getZhh() {
 		return zhh;
 	}
@@ -224,6 +225,12 @@ public class ClassRegisterForm implements Serializable{
 	public void setKey(String key) {
 		this.key = key;
 	}
+	public String getZzdw() {
+		return zzdw;
+	}
+	public void setZzdw(String zzdw) {
+		this.zzdw = zzdw;
+	}
 	public ClassRegister castToRegister() {
 		ClassRegister cr = new ClassRegister();
 		cr.setTanentid(this.zhh);
@@ -246,6 +253,7 @@ public class ClassRegisterForm implements Serializable{
 		}
 		cr.setEmail(this.email);
 		cr.setKey(this.key);
+		cr.setZzdw(this.zzdw);
 		return cr;
 	}
 }

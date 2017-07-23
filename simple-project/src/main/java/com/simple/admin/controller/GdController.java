@@ -248,7 +248,7 @@ public class GdController {
 	@RequestMapping(value = "homeworkWorkersItemReportExport",method=RequestMethod.GET)
 	public String homeworkWorkersItemReportExport(String cardNo,Integer homeworkId,String beginTime,String endTime,HttpServletRequest request, HttpServletResponse response) {
 		try {
-			if (null == homeworkId || homeworkId < 0) {
+			if (null == homeworkId || homeworkId <= 0) {
 				return "请选择问卷导出";
 			}
 			PageResult pr = gdService.queryWxMemberHomeWork(LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, 1, 60000);
