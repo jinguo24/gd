@@ -1,8 +1,10 @@
 package com.simple.common.excel;
 
 import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +20,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.util.StringUtils;
 
 import com.simple.common.config.EnvPropertiesConfiger;
+import com.simple.common.util.DateUtil;
 import com.simple.common.util.PrimaryKeyUtil;
 import com.simple.common.util.ResponseInfo;
 import com.simple.common.util.ResponseStatus;
@@ -32,6 +35,18 @@ public class DownLoadExcel {
 	private static final String ROOT  = "/temp/download/";
 	
 	public static ResponseInfo download(List datas,List<String> titles,DownLoadExcutor downloadExcutor) {
+		try {
+			Workbook workbook = getWorkbook(datas,titles,downloadExcutor);
+			String filefolder = ROOT+System.currentTimeMillis();
+			String filename = PrimaryKeyUtil.getUUID()+"."+ExcelUtil.OFFICE_EXCEL_2010_POSTFIX;
+			ExcelUtil.createFile(workbook, EnvPropertiesConfiger.getValue("uploadDir")+filefolder, filename);
+			return new ResponseInfo(new ResponseStatus(true,"生成文件成功"), filefolder+"/"+filename);
+		}catch(Exception e) {
+			return new ResponseInfo(new ResponseStatus(false,"生成文件失败："+e.getLocalizedMessage()), null);
+		}
+	}
+	
+	private static Workbook getWorkbook(List datas,List<String> titles,DownLoadExcutor downloadExcutor) {
 		try {
 			Workbook workbook = ExcelUtil.getWorkBook(null, ExcelUtil.OFFICE_EXCEL_2010_POSTFIX);
 			Sheet sheet = workbook.createSheet();
@@ -56,14 +71,30 @@ public class DownLoadExcel {
 					}
 				}
 			}
-			String filefolder = ROOT+System.currentTimeMillis();
-			String filename = PrimaryKeyUtil.getUUID()+"."+ExcelUtil.OFFICE_EXCEL_2010_POSTFIX;
-			ExcelUtil.createFile(workbook, EnvPropertiesConfiger.getValue("uploadDir")+filefolder, filename);
-			return new ResponseInfo(new ResponseStatus(true,"生成文件成功"), filefolder+"/"+filename);
+			return workbook;
 		}catch(Exception e) {
-			return new ResponseInfo(new ResponseStatus(false,"生成文件失败："+e.getLocalizedMessage()), null);
+			return null;
 		}
 	}
+	
+	public static void download(List datas,List<String> titles,DownLoadExcutor downloadExcutor,HttpServletResponse response) {
+        try {
+            Workbook workbook = getWorkbook(datas,titles,downloadExcutor);
+            // 清空response
+            response.reset();
+            // 设置response的Header
+            String filename = DateUtil.date2StringWhitNoSpiltSeconds(new Date())+"."+ExcelUtil.OFFICE_EXCEL_2010_POSTFIX;
+            response.setContentType("application/x-msdownload");
+            //String inlineType = "attachment"; // 是否内联附件
+            response.setHeader("Content-Disposition","attachment;filename=\"" + filename + "\"");
+            OutputStream out=response.getOutputStream();
+            workbook.write(out);
+            out.flush();
+            out.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 	
 	public static String splitAndFilterString(String input) {    
         if (input == null || input.trim().equals("")) {    

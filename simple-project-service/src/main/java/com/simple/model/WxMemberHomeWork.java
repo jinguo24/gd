@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.simple.common.util.DateUtil;
+
 public class WxMemberHomeWork implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -18,6 +20,7 @@ public class WxMemberHomeWork implements Serializable {
 	private String signId="";
 	private BigDecimal score= new BigDecimal(0);
 	private Date createTime;
+	private String showCreateTime="";
 	private String content="";
 	public int getId() {
 		return id;
@@ -60,6 +63,9 @@ public class WxMemberHomeWork implements Serializable {
 	}
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+		if ( null != createTime) {
+			this.showCreateTime = DateUtil.date2AllString(createTime);
+		}
 	}
 	public String getTanentName() {
 		return tanentName;
@@ -84,5 +90,8 @@ public class WxMemberHomeWork implements Serializable {
 	}
 	public void setHomeworkName(String homeworkName) {
 		this.homeworkName = homeworkName;
+	}
+	public String getShowCreateTime() {
+		return showCreateTime;
 	}
 }

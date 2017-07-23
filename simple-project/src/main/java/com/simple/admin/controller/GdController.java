@@ -83,6 +83,38 @@ public class GdController {
 		}
 	}
 	
+	@RequestMapping(value = "homeworkItemList",method=RequestMethod.GET)
+	@ResponseBody
+	public String homeworkItemList(int homeworkId,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			GdHomeWorkItems gs = gdService.queryHomeWorkItem(LoginUserUtil.getLeaseholderId(request), homeworkId);
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", gs.getItemNames());
+		}catch(Exception e) {
+			log.error("gd kaike error.",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+
+	@RequestMapping(value = "addHomeworkItems",method=RequestMethod.POST)
+	@ResponseBody
+	public String addHomeworkItems(int homeworkId,String items,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			GdHomeWorkItems gs = gdService.queryHomeWorkItem(LoginUserUtil.getLeaseholderId(request), homeworkId);
+			if ( null != gs) {
+				return AjaxWebUtil.sendAjaxResponse(request, response, false,"该考卷已经设置了评分项", gs);
+			}	
+			gs = new GdHomeWorkItems();
+			gs.setHomeworkId(homeworkId);
+			gs.setTanentId(LoginUserUtil.getLeaseholderId(request));
+			gs.setItemNames(items);
+			gdService.addGdHomeWorkItems(gs);
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"更新成功", gs);
+		}catch(Exception e) {
+			log.error("gd kaike error.",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"更新失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+	
 	@RequestMapping(value = "updateHomeworkItems",method=RequestMethod.POST)
 	@ResponseBody
 	public String updateHomeworkItems(int homeworkId,String items,HttpServletRequest request, HttpServletResponse response) {
@@ -139,9 +171,8 @@ public class GdController {
 		}
 	}
 
-	@RequestMapping(value = "homeworkWorkersItemExport",method=RequestMethod.POST)
-	@ResponseBody
-	public String homeworkWorkersItemExport(String cardNo,Integer homeworkId,String beginTime,String endTime,HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value = "homeworkWorkersItemExport",method=RequestMethod.GET)
+	public void homeworkWorkersItemExport(String cardNo,Integer homeworkId,String beginTime,String endTime,HttpServletRequest request, HttpServletResponse response) {
 		try {
 			PageResult pr = gdService.queryWxMemberHomeWork(LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, 1, 60000);
 			if ( null != pr && null != pr.getDatas()) {
@@ -158,13 +189,10 @@ public class GdController {
 						gwwi.setHomeworkName(whw.getTitle());
 					}
 				}
-				return JSONObject.toJSONString(gdService.downloadWorkerItems(pr.getDatas()));
-			}else {
-				return AjaxWebUtil.sendAjaxResponse(request, response, false,"没有匹配的数据", "没有匹配的数据");
+				gdService.downloadWorkerItems(pr.getDatas(),response);
 			}
 		}catch(Exception e) {
-			log.error("gd kaike error.",e);
-			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+			e.printStackTrace();
 		}
 	}
 	
@@ -217,12 +245,13 @@ public class GdController {
 		}
 	}
 	
-	@RequestMapping(value = "homeworkWorkersItemReportExport",method=RequestMethod.POST)
-	@ResponseBody
-	public String homeworkWorkersItemReportExport(String cardNo,Integer homeworkId,String beginTime,String endTime, int page,
-			int pageSize,HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value = "homeworkWorkersItemReportExport",method=RequestMethod.GET)
+	public String homeworkWorkersItemReportExport(String cardNo,Integer homeworkId,String beginTime,String endTime,HttpServletRequest request, HttpServletResponse response) {
 		try {
-			PageResult pr = gdService.queryWxMemberHomeWork(LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, page, pageSize);
+			if (null == homeworkId || homeworkId < 0) {
+				return "请选择问卷导出";
+			}
+			PageResult pr = gdService.queryWxMemberHomeWork(LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, 1, 60000);
 			if ( null != pr && null != pr.getDatas()) {
 				for (int i =0 ;i < pr.getDatas().size(); i ++) {
 					WxMemberHomeWork gwwi = (WxMemberHomeWork) pr.getDatas().get(i);
@@ -238,13 +267,12 @@ public class GdController {
 					}
 				}
 				GdHomeWorkItems gwi = gdService.queryHomeWorkItem(LoginUserUtil.getLeaseholderId(request), homeworkId);
-				return JSONObject.toJSONString(gdService.downloadWorkerItemsReport(pr.getDatas(),gwi));
-			}else {
-				return AjaxWebUtil.sendAjaxResponse(request, response, false,"没有匹配的数据", "没有匹配的数据");
+				gdService.downloadWorkerItemsReport(pr.getDatas(),gwi,response);
 			}
+			return null;
 		}catch(Exception e) {
-			log.error("gd kaike error.",e);
-			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+			e.printStackTrace();
+			return null;
 		}
 	}
 }
