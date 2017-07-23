@@ -158,7 +158,7 @@ public class GdService {
 		cm.setMakeCount(0);
 		cm.setName(homeworkWorkersItem.getName());
 		cm.setSex(homeworkWorkersItem.getSex());
-		//TODO 查询问卷的使用类型
+		//查询问卷的制证类型
 		WxHomeWork whw = wxHomeWorkDao.queryById(homeworkWorkersItem.getHomeworkId());
 		if (null != whw && (!StringUtils.isEmpty(whw.getCategoryId()))) {
 			Dictionary dictionary = dictionaryDao.queryByCode(whw.getCategoryId());

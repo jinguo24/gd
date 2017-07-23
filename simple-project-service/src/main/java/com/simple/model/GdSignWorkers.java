@@ -17,6 +17,12 @@ public class GdSignWorkers implements Serializable{
 	private String showCreateTime;
 	private String name;
 	private String sex="";
+	private String nation="";//民族
+	private String address="";//住址
+	private String validtermOfStart="";//身份证有效开始日期
+	private String validtermOfEnd="";//身份证有效截止日期
+	private String department="";//签发机关
+	
 	public String getId() {
 		return id;
 	}
@@ -64,5 +70,38 @@ public class GdSignWorkers implements Serializable{
 	}
 	public void setSex(String sex) {
 		this.sex = sex;
+	}
+	public String getNation() {
+		return nation;
+	}
+	public void setNation(String nation) {
+		this.nation = nation;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getValidtermOfStart() {
+		return validtermOfStart;
+	}
+	public void setValidtermOfStart(String validtermOfStart) {
+		this.validtermOfStart = validtermOfStart;
+	}
+	public String getValidtermOfEnd() {
+		return validtermOfEnd;
+	}
+	public void setValidtermOfEnd(String validtermOfEnd) {
+		this.validtermOfEnd = validtermOfEnd;
+	}
+	public String getDepartment() {
+		return department;
+	}
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+	public void setShowCreateTime(String showCreateTime) {
+		this.showCreateTime = showCreateTime;
 	}
 }
