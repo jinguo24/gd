@@ -325,10 +325,10 @@ public class ApiController {
 	@ResponseBody
 	public String checkVersion(String tanentId,HttpServletRequest request, HttpServletResponse response) {
 		try {
-			boolean isvalid = isValid(tanentId,null);
-			if (!isvalid) {
-				return AjaxWebUtil.sendAjaxResponse(request, response, false,"教室无效", null);
-			}
+			//boolean isvalid = isValid(tanentId,null);
+			//if (!isvalid) {
+			//	return AjaxWebUtil.sendAjaxResponse(request, response, false,"教室无效", null);
+			//}
 			CheckVersion registers = appService.queryValidApp(tanentId);
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", registers);
 		}catch(Exception e) {
