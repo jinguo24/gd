@@ -1,7 +1,5 @@
 package com.simple.common.excel;
 
-import java.io.BufferedOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,18 +78,9 @@ public class DownLoadExcel {
 	public static void download(List datas,List<String> titles,DownLoadExcutor downloadExcutor,HttpServletResponse response) {
         try {
             Workbook workbook = getWorkbook(datas,titles,downloadExcutor);
-            // 清空response
-            response.reset();
-            // 设置response的Header
             String filename = DateUtil.date2StringWhitNoSpiltSeconds(new Date())+"."+ExcelUtil.OFFICE_EXCEL_2010_POSTFIX;
-            response.setContentType("application/x-msdownload");
-            //String inlineType = "attachment"; // 是否内联附件
-            response.setHeader("Content-Disposition","attachment;filename=\"" + filename + "\"");
-            OutputStream out=response.getOutputStream();
-            workbook.write(out);
-            out.flush();
-            out.close();
-        } catch (IOException ex) {
+            ExcelUtil.pushToResponse(workbook, response,filename);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }

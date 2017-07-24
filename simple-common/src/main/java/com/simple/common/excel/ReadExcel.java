@@ -11,6 +11,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -22,6 +25,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.simple.common.config.EnvPropertiesConfiger;
+import com.simple.common.util.DateUtil;
 import com.simple.common.util.PrimaryKeyUtil;
 import com.simple.common.util.ResponseInfo;
 import com.simple.common.util.ResponseStatus;
@@ -41,74 +45,132 @@ public class ReadExcel {
      * Read the Excel 2010
      * @param path the path of the excel file
      * @return
+     * @throws Exception 
      * @throws IOException
      */
-    public static ResponseInfo read(InputStream is,ObjectExcutor excutor,String suffix) {
-        Workbook workbook = ExcelUtil.getWorkBook(is,suffix);
-        if ( null == workbook) {
-        	return new ResponseInfo(new ResponseStatus(false,"读取文件失败"), "读取文件失败"); 
+    public static ResponseInfo readReturnFile(InputStream is,ObjectExcutor excutor,String suffix) throws Exception {
+    	ValidateResult vr = validateWorkBook(is,excutor,suffix);
+        if (vr.ispass) {
+        	return new ResponseInfo(new ResponseStatus(true,"校验成功"), vr.getDatas());
+        }else {
+        	String filefolder = ERROR_FILE_DIR+System.currentTimeMillis();
+        	String fileName = PrimaryKeyUtil.getUUID()+".xlsx";
+        	ExcelUtil.createFile(vr.getWorkbook(),EnvPropertiesConfiger.getValue("uploadDir")+filefolder,fileName);
+        	return new ResponseInfo(new ResponseStatus(false,"3","读取文件失败"), filefolder+"/"+fileName);
         }
-        for (int numSheet = 0; numSheet < workbook.getNumberOfSheets(); numSheet++) {
-            Sheet xssfSheet = workbook.getSheetAt(numSheet);
-            if (xssfSheet == null) {
-                continue;
-            }
-            boolean ispass  =  true;
-            List list = new ArrayList();
-            for (int rowNum = 1; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
-            	Row xssfRow = xssfSheet.getRow(rowNum);
-            	try {
-	                if (xssfRow != null) {
-	                	  Iterator<Cell> cells = xssfRow.cellIterator();
-	                	  int cellindex = 0;
-	                	  if ( null != cells ) {
-	                		  List<String> celllist= new ArrayList<String>();
-	                		  while (cells.hasNext()) {
-	                			  Cell cell = cells.next();
-	                			  celllist.add(getValue(cell));
-	                			  cellindex ++;
-	                		  }
-	                		  try {
-		                		  Object o = excutor.getObject(celllist);
-		                		  if ( null != o ) {
-		                      		  list.add(o);
-		                      	  }
-	                		  }catch(Exception e) {
-	                			  //TODO 处理出现的错误
-	                			  Cell errorCell = xssfRow.createCell(cellindex,Cell.CELL_TYPE_STRING);
-	                			  errorCell.setCellValue(e.getLocalizedMessage());
-	                			  ispass = false;
-	                		  }
-	                	  }
-	                }
-               }catch(Exception e) {
-            	   e.printStackTrace();
-            	   ispass = false;
-            	   //将错误信息写到文件里面,xssfRow添加一列备注信息
-            	   	  Iterator<Cell> cells = xssfRow.cellIterator();
-	             	  int cellindex = 0;
-	             	  if ( null != cells ) {
-	             		  while (cells.hasNext()) {
-	             			  cellindex ++;
-	             		  }
-	             	  }
-            	   Cell errorCell = xssfRow.createCell(cellindex,Cell.CELL_TYPE_STRING);
-     			   errorCell.setCellValue(e.getLocalizedMessage());
-               }
-            }
-            
-            if (ispass) {
-            	return new ResponseInfo(new ResponseStatus(true,"校验成功"), list);
-            }else {
-            	String filefolder = ERROR_FILE_DIR+System.currentTimeMillis();
-            	String fileName = PrimaryKeyUtil.getUUID()+".xlsx";
-            	ExcelUtil.createFile(workbook,EnvPropertiesConfiger.getValue("uploadDir")+filefolder,fileName);
-            	return new ResponseInfo(new ResponseStatus(false,"3","读取文件失败"), filefolder+"/"+fileName);
-            }
-        }
-        return new ResponseInfo(new ResponseStatus(false,"读取文件失败"), "读取文件失败");
     }
     
+    public static ResponseInfo readReturnWorkBook(InputStream is,ObjectExcutor excutor,String suffix) throws Exception {
+    	ValidateResult vr = validateWorkBook(is,excutor,suffix);
+        if (vr.ispass) {
+        	return new ResponseInfo(new ResponseStatus(true,"校验成功"), vr.getDatas());
+        }else {
+        	return new ResponseInfo(new ResponseStatus(false,"读取文件失败"), vr.getWorkbook());
+        }
+    }
+    
+    public static String readReturnPage(InputStream is,ObjectExcutor excutor,String suffix,HttpServletRequest request,HttpServletResponse response) {
+    	try {
+			ValidateResult vr = validateWorkBook(is,excutor,suffix);
+			if (vr.ispass) {
+				request.setAttribute("msg", "导入成功，共 "+vr.getDatas().size()+" 条数据。");
+				return "msg";
+			}else {
+				String filename = DateUtil.date2StringWhitNoSpiltSeconds(new Date())+"-error."+suffix;
+				ExcelUtil.pushToResponse(vr.getWorkbook(), response, filename);
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+    }
+    
+    
+    private static class ValidateResult {
+    	public ValidateResult(Workbook workbook, boolean ispass, List datas) {
+			this.workbook = workbook;
+			this.ispass = ispass;
+			this.datas = datas;
+		}
+		private Workbook workbook;
+    	private boolean ispass = true;
+    	private List datas;
+		public Workbook getWorkbook() {
+			return workbook;
+		}
+		public void setWorkbook(Workbook workbook) {
+			this.workbook = workbook;
+		}
+		public boolean isIspass() {
+			return ispass;
+		}
+		public void setIspass(boolean ispass) {
+			this.ispass = ispass;
+		}
+		public List getDatas() {
+			return datas;
+		}
+		public void setDatas(List datas) {
+			this.datas = datas;
+		}
+    }
+    
+    private static ValidateResult validateWorkBook(InputStream is,ObjectExcutor excutor,String suffix) throws Exception{
+    	Workbook workbook = ExcelUtil.getWorkBook(is,suffix);
+    	if ( null == workbook) {
+        	throw new RuntimeException("未获取到workbook");
+        }
+    	Sheet xssfSheet = workbook.getSheetAt(0);
+        if (xssfSheet == null) {
+        	throw new RuntimeException("sheet页获取失败");
+        }
+        boolean ispass  =  true;
+        List list = new ArrayList();
+        for (int rowNum = 1; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
+        	Row xssfRow = xssfSheet.getRow(rowNum);
+        	try {
+                if (xssfRow != null) {
+                	  Iterator<Cell> cells = xssfRow.cellIterator();
+                	  int cellindex = 0;
+                	  if ( null != cells ) {
+                		  List<String> celllist= new ArrayList<String>();
+                		  while (cells.hasNext()) {
+                			  Cell cell = cells.next();
+                			  celllist.add(getValue(cell));
+                			  cellindex ++;
+                		  }
+                		  try {
+	                		  Object o = excutor.getObject(celllist);
+	                		  if ( null != o ) {
+	                      		  list.add(o);
+	                      	  }
+                		  }catch(Exception e) {
+                			  e.printStackTrace();
+                			  //处理出现的错误
+                			  Cell errorCell = xssfRow.createCell(cellindex,Cell.CELL_TYPE_STRING);
+                			  errorCell.setCellValue(e.getLocalizedMessage());
+                			  ispass = false;
+                		  }
+                	  }
+                }
+           }catch(Exception e) {
+        	   e.printStackTrace();
+        	   ispass = false;
+        	   //将错误信息写到文件里面,xssfRow添加一列备注信息
+        	   	  Iterator<Cell> cells = xssfRow.cellIterator();
+             	  int cellindex = 0;
+             	  if ( null != cells ) {
+             		  while (cells.hasNext()) {
+             			  cellindex ++;
+             		  }
+             	  }
+        	   Cell errorCell = xssfRow.createCell(cellindex,Cell.CELL_TYPE_STRING);
+ 			   errorCell.setCellValue(e.getLocalizedMessage());
+           }
+        }
+        return new ValidateResult(workbook, ispass, list);
+    }
     
     
     /*万能处理方案：

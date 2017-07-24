@@ -5,10 +5,17 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.simple.common.util.DateUtil;
 
 public class ExcelUtil {
 	public static final String OFFICE_EXCEL_2003_POSTFIX = "xls";
@@ -61,5 +68,22 @@ public class ExcelUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+    }
+	
+	public static void pushToResponse(Workbook workbook,HttpServletResponse response,String filename) {
+        try {
+            // 清空response
+            response.reset();
+            // 设置response的Header
+            response.setContentType("application/x-msdownload");
+            //String inlineType = "attachment"; // 是否内联附件
+            response.setHeader("Content-Disposition","attachment;filename=\"" + filename + "\"");
+            OutputStream out=response.getOutputStream();
+            workbook.write(out);
+            out.flush();
+            out.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }
