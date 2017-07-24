@@ -98,9 +98,9 @@ public class TClassService {
 		classStudentDao.updateNianjiById(id, njbh, njmaps.get(njbh), bjbh, bjmc);
 	}
 	
-	public ResponseInfo validateFile(File file,final String leaseholderId,final String njbh) throws IOException {
+	public ResponseInfo validateFile(File file,final String leaseholderId,final String njbh) throws Exception {
 		String suffix = file.getName().substring(file.getName().lastIndexOf(".")+1);
-		return ReadExcel.read(new FileInputStream(file),new ObjectExcutor(){
+		return ReadExcel.readReturnFile(new FileInputStream(file),new ObjectExcutor(){
 				@Override
 				public Object getObject(List<String> cellValues) {
 						String xn = null;

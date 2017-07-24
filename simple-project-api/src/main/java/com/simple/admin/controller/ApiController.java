@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.simple.common.util.AjaxWebUtil;
-import com.simple.common.util.DateUtil;
 import com.simple.common.util.DesEncrypt;
 import com.simple.common.util.MD5;
 import com.simple.model.AppLog;
@@ -32,7 +31,6 @@ import com.simple.model.RegisterImage;
 import com.simple.model.SysUser;
 import com.simple.model.api.AllClass;
 import com.simple.model.api.AllCourse;
-import com.simple.model.api.AllKaiKe;
 import com.simple.model.api.BanJi;
 import com.simple.model.api.CheckVersion;
 import com.simple.model.api.KaiKe;
@@ -101,7 +99,7 @@ public class ApiController {
 			if (!user.getSqmm().equals(MD5.stringMD5(password))) {
 				return AjaxWebUtil.sendAjaxResponse(request, response, false,"登录失败:密码错误.", null);
 			}
-			return AjaxWebUtil.sendAjaxResponse(request, response, true,"登录成功", new UserInfo(user.getXxmc(),user.getXxbh(),user.getTanentid()));
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"登录成功", new UserInfo(user.getXxmc(),user.getXxbh(),user.getTanentid(),user.getZzdw()));
 		}catch(Exception e) {
 			log.error("登录失败",e);
 			return AjaxWebUtil.sendAjaxResponse(request, response, false,"登录失败", e.getLocalizedMessage());
