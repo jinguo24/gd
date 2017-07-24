@@ -3,6 +3,8 @@ package com.simple.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.simple.common.util.DateUtil;
+
 public class GdCardMake implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -59,6 +61,9 @@ public class GdCardMake implements Serializable {
 	}
 	public void setMakeTime(Date makeTime) {
 		this.makeTime = makeTime;
+		if ( null != makeTime) {
+			this.showMakeTime = DateUtil.date2AllString(makeTime);
+		}
 	}
 	public int getMakeCount() {
 		return makeCount;
@@ -74,9 +79,6 @@ public class GdCardMake implements Serializable {
 	}
 	public String getShowMakeTime() {
 		return showMakeTime;
-	}
-	public void setShowMakeTime(String showMakeTime) {
-		this.showMakeTime = showMakeTime;
 	}
 	public String getCardImage() {
 		return cardImage;
