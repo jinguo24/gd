@@ -27,8 +27,12 @@ public class KeCheng implements Serializable{
 		return kctp;
 	}
 	public void setKctp(String kctp) {
-		if (!StringUtils.isEmpty(kctp)&&(!kctp.startsWith("http"))) {
-			this.kctp = EnvPropertiesConfiger.getValue("fileDomain")+kctp;
+		if (!StringUtils.isEmpty(kctp)) {
+			if (!kctp.startsWith("http")) {
+				this.kctp = EnvPropertiesConfiger.getValue("fileDomain")+kctp;
+			}else {
+				this.kctp = kctp;
+			}
 		}
 	}
 	public String getName() {

@@ -32,8 +32,12 @@ public class KeChengInfo implements Serializable{
 		return kctp;
 	}
 	public void setKctp(String kctp) {
-		if (!StringUtils.isEmpty(kctp)&&(!kctp.startsWith("http"))) {
-			this.kctp = EnvPropertiesConfiger.getValue("fileDomain")+kctp.replace("\\", "/");
+		if (!StringUtils.isEmpty(kctp)) {
+			if (!kctp.startsWith("http")) {
+				this.kctp = EnvPropertiesConfiger.getValue("fileDomain")+kctp.replace("\\", "/");
+			}else {
+				this.kctp = kctp.replace("\\", "/");
+			}
 		}
 	}
 	public String getName() {
@@ -70,8 +74,12 @@ public class KeChengInfo implements Serializable{
 		return kjdz;
 	}
 	public void setKjdz(String kjdz) {
-		if (!StringUtils.isEmpty(kjdz)&&(!kjdz.startsWith("http"))) {
-			this.kjdz = EnvPropertiesConfiger.getValue("fileDomain")+kjdz.replace("\\", "/");
+		if (!StringUtils.isEmpty(kjdz)) {
+			if (!kjdz.startsWith("http")) {
+				this.kjdz = EnvPropertiesConfiger.getValue("fileDomain")+kjdz.replace("\\", "/");
+			}else {
+				this.kjdz = kjdz.replace("\\", "/");
+			}
 		}
 	}
 	public String getTeacherWenjuan() {
@@ -138,8 +146,12 @@ public class KeChengInfo implements Serializable{
 		this.flag = flag;
 	}
 	public void setDmtkjdz(String dmtkjdz) {
-		if (!StringUtils.isEmpty(dmtkjdz)&&(!dmtkjdz.startsWith("http"))) {
-			this.dmtkjdz = EnvPropertiesConfiger.getValue("fileDomain")+dmtkjdz;
+		if (!StringUtils.isEmpty(dmtkjdz)) {
+			if (!dmtkjdz.startsWith("http")) {
+				this.dmtkjdz = EnvPropertiesConfiger.getValue("fileDomain")+dmtkjdz;
+			}else {
+				this.dmtkjdz = dmtkjdz;
+			}
 		}
 	}
 }
