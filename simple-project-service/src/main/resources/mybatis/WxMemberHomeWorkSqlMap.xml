@@ -25,6 +25,7 @@
   	select 
   	<include refid="Base_Column_List"></include>
   	from wx_memberhomework where 1=1
+  	<if test="gsId != null and gsId != ''" > and SignID = #{gsId} </if>
   	<if test="schoolId != null and schoolId != ''" > and SchoolID = #{schoolId} </if>
   	<if test="studentNo != null and studentNo != ''" > and StudentNo = #{studentNo} </if>
   	<if test="homeworkId > 0 " > and HomeworkID = #{homeworkId} </if>
@@ -38,11 +39,24 @@
 	select 
   	count(1)
   	from wx_memberhomework where 1=1 
+  	<if test="gsId != null and gsId != ''" > and SignID = #{gsId} </if>
   	<if test="schoolId != null and schoolId != ''" > and SchoolID = #{schoolId} </if>
   	<if test="studentNo != null and studentNo != ''" > and StudentNo = #{studentNo} </if>
   	<if test="homeworkId > 0 " > and HomeworkID = #{homeworkId} </if>
   	<if test="beginTime != null and beginTime != ''" > and CreateTime &gt;= #{beginTime} </if>
 	<if test="endTime != null and endTime != ''" > and CreateTime &lt;= #{endTime} </if>
+  </select>
+  
+  <select id="queryPassCount" parameterType="java.util.Map" resultType="int">
+	select 
+  	count(1)
+  	from wx_memberhomework where 1=1 
+  	<if test="gsId != null and gsId != ''" > and SignID = #{gsId} </if>
+  	<if test="schoolId != null and schoolId != ''" > and SchoolID = #{schoolId} </if>
+  	<if test="homeworkId > 0 " > and HomeworkID = #{homeworkId} </if>
+  	<if test="beginTime != null and beginTime != ''" > and CreateTime &gt;= #{beginTime} </if>
+	<if test="endTime != null and endTime != ''" > and CreateTime &lt;= #{endTime} </if>
+	and Score &gt;= #{minScore}
   </select>
   
 </mapper>

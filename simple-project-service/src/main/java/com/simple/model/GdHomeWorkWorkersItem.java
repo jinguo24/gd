@@ -26,6 +26,7 @@ public class GdHomeWorkWorkersItem implements Serializable {
 	private String tanentName;
 	private int hasMake;
 	private Date makeTime;
+	private String homeworkDescri;
 	public int getId() {
 		return id;
 	}
@@ -133,5 +134,11 @@ public class GdHomeWorkWorkersItem implements Serializable {
 	}
 	public void setMakeTime(Date makeTime) {
 		this.makeTime = makeTime;
+	}
+	public String getHomeworkDescri() {
+		return homeworkDescri;
+	}
+	public void setHomeworkDescri(String homeworkDescri) {
+		this.homeworkDescri = homeworkDescri;
 	}
 }

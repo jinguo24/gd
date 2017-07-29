@@ -59,6 +59,11 @@ public class GdService {
 		gdSignDao.addGdSign(gdSign);
 	}
 	
+	public GdSign querySignById(String gsId) {
+		return gdSignDao.queryById(gsId);
+	}
+	
+	
 	public GdSign queryByTHD(String tanentId,int homeworkId,Date date) {
 		return gdSignDao.queryByTHD(tanentId, homeworkId, date);
 	}
@@ -73,8 +78,12 @@ public class GdService {
 	
 	public PageResult queryWorkers(String gsid,int pageIndex,int pageSize) {
 		List<GdSignWorkers> registers = gdSignWordersDao.query(gsid, pageIndex, pageSize);
-		int count = gdSignWordersDao.queryCount(gsid);
+		int count = queryWorkersCount(gsid);
 		return new PageResult(count,pageSize,pageIndex,registers);
+	}
+	
+	public int queryWorkersCount(String gsid) {
+		return gdSignWordersDao.queryCount(gsid);
 	}
 	
 	public PageResult queryHomeWorks(String tanentId,int pageIndex,int pageSize) {
@@ -195,11 +204,26 @@ public class GdService {
 		}
 	}
 	
-	public PageResult queryHomeworkWorkersItem(String tanentId,String cardNo,int homeworkId,String beginTime,
-			String endTime,int pageIndex,int pageSize) {
-		List<GdHomeWorkWorkersItem> registers = gdHomeWorkWorkersItemDao.query(tanentId, cardNo, homeworkId, beginTime, endTime, pageIndex, pageSize);
-		int count = gdHomeWorkWorkersItemDao.queryCount(tanentId, cardNo, homeworkId, beginTime, endTime);
+	public PageResult queryHomeworkWorkersItem(String gsId,String tanentId,String cardNo,int homeworkId,String beginTime,
+			String endTime,int zongheScore,int pageIndex,int pageSize) {
+		List<GdHomeWorkWorkersItem> registers = gdHomeWorkWorkersItemDao.query(gsId,tanentId, cardNo, homeworkId, beginTime, endTime,zongheScore, pageIndex, pageSize);
+		int count = queryHomeworkWorkersCount(gsId,tanentId, cardNo, homeworkId, beginTime, endTime,zongheScore);
 		return new PageResult(count,pageSize,pageIndex,registers);
+	}
+	
+	public int queryHomeworkWorkersCount(String gsId,String tanentId,String cardNo,int homeworkId,String beginTime,
+			String endTime,int zongheScore) {
+		return gdHomeWorkWorkersItemDao.queryCount(gsId,tanentId, cardNo, homeworkId, beginTime, endTime,zongheScore);
+	}
+	
+	public int queryHomeworkWorkersPassCount(String gsId,String tanentId,String cardNo,int homeworkId,String beginTime,
+			String endTime) {
+		return gdHomeWorkWorkersItemDao.queryPassCount(gsId, tanentId, cardNo, homeworkId, beginTime, endTime);
+	}
+	
+	public int queryHomeworkWorkersUnPassCount(String gsId,String tanentId,String cardNo,int homeworkId,String beginTime,
+			String endTime) {
+		return gdHomeWorkWorkersItemDao.queryUnPassCount(gsId, tanentId, cardNo, homeworkId, beginTime, endTime);
 	}
 	
 	public GdHomeWorkWorkersItem queryHomeworkWorkersItem(String gdSignId,String cardNo) {
@@ -210,11 +234,21 @@ public class GdService {
 		gdHomeWorkWorkersItemDao.delete(gdSignId, cardNo);
 	}
 	
-	public PageResult queryWxMemberHomeWork(String schoolId,String studentNo,int homeworkId,String beginTime,
+	public PageResult queryWxMemberHomeWork(String gsId,String schoolId,String studentNo,int homeworkId,String beginTime,
 			String endTime,int pageIndex,int pageSize) {
-		List<WxMemberHomeWork> registers = wxMemberHomeWorkDao.queryList(schoolId, studentNo, homeworkId, beginTime, endTime, pageIndex, pageSize);
-		int count = wxMemberHomeWorkDao.queryCount(schoolId, studentNo, homeworkId, beginTime, endTime);
+		List<WxMemberHomeWork> registers = wxMemberHomeWorkDao.queryList(gsId,schoolId, studentNo, homeworkId, beginTime, endTime, pageIndex, pageSize);
+		int count = queryWxMemberHomeWorkCount(gsId,schoolId, studentNo, homeworkId, beginTime, endTime);
 		return new PageResult(count,pageSize,pageIndex,registers);
+	}
+	
+	public int queryWxMemberHomeWorkCount(String gsId,String schoolId,String studentNo,int homeworkId,String beginTime,
+			String endTime) {
+		return wxMemberHomeWorkDao.queryCount(gsId,schoolId, studentNo, homeworkId, beginTime, endTime);
+	}
+	
+	public int queryWxMemberHomeWorkPassCount(String gsId,String schoolId,int homeworkId,String beginTime,
+			String endTime,double minScore){
+		return wxMemberHomeWorkDao.queryPassCount(gsId, schoolId, homeworkId, beginTime, endTime, minScore);
 	}
 	
 	public WxMemberHomeWork queryWxMemberHomeWork(String schoolId,String studentNo,String signId,int homeworkId) {

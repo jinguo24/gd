@@ -24,11 +24,13 @@ public class GdHomeWorkWorkersItemDao extends BaseIbatisDao {
 		this.sqlSession.insert("gdhomeworkWorkersItem.update", homeworkWorkersItem);
 	}
 	
-	public List<GdHomeWorkWorkersItem> query(String tanentId,String cardNo,int homeworkId,String beginTime,String endTime,int pageIndex,int pageSize) {
+	public List<GdHomeWorkWorkersItem> query(String gsid,String tanentId,String cardNo,int homeworkId,String beginTime,String endTime,int zongheScore,int pageIndex,int pageSize) {
 		Map param = new HashMap();
+		param.put("gsId", gsid);
 		param.put("tanentId", tanentId);
 		param.put("cardNo", cardNo);
 		param.put("homeworkId", homeworkId);
+		param.put("zongheScore", zongheScore);
 		param.put("beginTime", beginTime);
 		param.put("endTime", endTime);
 		if (pageIndex < 1) {
@@ -39,14 +41,38 @@ public class GdHomeWorkWorkersItemDao extends BaseIbatisDao {
 		return this.sqlSession.selectList("gdhomeworkWorkersItem.query",param);
 	}
 	
-	public int queryCount(String tanentId,String cardNo,int homeworkId,String beginTime,String endTime) {
+	public int queryCount(String gsid,String tanentId,String cardNo,int homeworkId,String beginTime,String endTime,int zongheScore) {
 		Map param = new HashMap();
+		param.put("gsId", gsid);
+		param.put("tanentId", tanentId);
+		param.put("cardNo", cardNo);
+		param.put("homeworkId", homeworkId);
+		param.put("zongheScore", zongheScore);
+		param.put("beginTime", beginTime);
+		param.put("endTime", endTime);
+		return this.sqlSession.selectOne("gdhomeworkWorkersItem.queryCount",param);
+	}
+	
+	public int queryPassCount(String gsid,String tanentId,String cardNo,int homeworkId,String beginTime,String endTime) {
+		Map param = new HashMap();
+		param.put("gsId", gsid);
 		param.put("tanentId", tanentId);
 		param.put("cardNo", cardNo);
 		param.put("homeworkId", homeworkId);
 		param.put("beginTime", beginTime);
 		param.put("endTime", endTime);
-		return this.sqlSession.selectOne("gdhomeworkWorkersItem.queryCount",param);
+		return this.sqlSession.selectOne("gdhomeworkWorkersItem.queryPassCount",param);
+	}
+	
+	public int queryUnPassCount(String gsid,String tanentId,String cardNo,int homeworkId,String beginTime,String endTime) {
+		Map param = new HashMap();
+		param.put("gsId", gsid);
+		param.put("tanentId", tanentId);
+		param.put("cardNo", cardNo);
+		param.put("homeworkId", homeworkId);
+		param.put("beginTime", beginTime);
+		param.put("endTime", endTime);
+		return this.sqlSession.selectOne("gdhomeworkWorkersItem.queryUnPassCount",param);
 	}
 	
 	public GdHomeWorkWorkersItem queryOne(String gdSignId,String cardNo) {

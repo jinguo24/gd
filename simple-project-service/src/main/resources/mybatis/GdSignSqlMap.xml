@@ -23,4 +23,10 @@
   	<include refid="Base_Column_List"></include>
   	from gd_sign where tanent_id = #{tanentId} and homework_id = #{homeworkId} and create_date = #{createDate}
   </select>
+  
+  <select id="queryById" resultMap="BaseResultMap" parameterType="String">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from gd_sign where id = #{id}
+  </select>
 </mapper>

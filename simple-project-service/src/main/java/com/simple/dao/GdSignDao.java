@@ -31,4 +31,8 @@ public class GdSignDao extends BaseIbatisDao {
 		param.put("createDate", DateUtil.date2String(date));
 		return this.sqlSession.selectOne("gdsign.queryByTHD",param);
 	}
+	
+	public GdSign queryById(String gsId) {
+		return this.sqlSession.selectOne("gdsign.queryById",gsId);
+	}
 }

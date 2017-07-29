@@ -27,9 +27,12 @@
   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
   	select 
   	<include refid="Base_Column_List"></include>
-  	from gd_homework_workers_items where tanent_id = #{tanentId} 
+  	from gd_homework_workers_items where 1=1
+  	<if test="gsId != null and gsId != ''" > and gd_sign_id = #{gsId} </if>
+  	<if test="tanentId != null and tanentId != ''" > and tanent_id = #{tanentId}  </if>
   	<if test="cardNo != null and cardNo != ''" > and card_no = #{cardNo} </if>
   	<if test="homeworkId > 0 " > and homework_id = #{homeworkId} </if>
+  	<if test="zongheScore > 0 " > and zonghe = #{zongheScore} </if>
   	<if test="beginTime != null and beginTime != ''" > and sign_time &gt;= #{beginTime} </if>
 	<if test="endTime != null and endTime != ''" > and sign_time &lt;= #{endTime} </if>
   	order by id desc
@@ -39,7 +42,34 @@
   <select id="queryCount" parameterType="java.util.Map" resultType="int">
 	select 
   	count(1)
-  	from gd_homework_workers_items where tanent_id = #{tanentId} 
+  	from gd_homework_workers_items where 1=1
+  	<if test="gsId != null and gsId != ''" > and gd_sign_id = #{gsId} </if>
+  	<if test="tanentId != null and tanentId != ''" > and tanent_id = #{tanentId}  </if>
+  	<if test="cardNo != null and cardNo != ''" > and card_no = #{cardNo} </if>
+  	<if test="homeworkId > 0 " > and homework_id = #{homeworkId} </if>
+  	<if test="zongheScore > 0 " > and zonghe = #{zongheScore} </if>
+  	<if test="beginTime != null and beginTime != ''" > and sign_time &gt;= #{beginTime} </if>
+	<if test="endTime != null and endTime != ''" > and sign_time &lt;= #{endTime} </if>
+  </select>
+  
+  <select id="queryPassCount" parameterType="java.util.Map" resultType="int">
+	select 
+  	count(1)
+  	from gd_homework_workers_items where zonghe &gt;= 80
+  	<if test="gsId != null and gsId != ''" > and gd_sign_id = #{gsId} </if>
+  	<if test="tanentId != null and tanentId != ''" > and tanent_id = #{tanentId}  </if>
+  	<if test="cardNo != null and cardNo != ''" > and card_no = #{cardNo} </if>
+  	<if test="homeworkId > 0 " > and homework_id = #{homeworkId} </if>
+  	<if test="beginTime != null and beginTime != ''" > and sign_time &gt;= #{beginTime} </if>
+	<if test="endTime != null and endTime != ''" > and sign_time &lt;= #{endTime} </if>
+  </select>
+  
+  <select id="queryUnPassCount" parameterType="java.util.Map" resultType="int">
+	select 
+  	count(1)
+  	from gd_homework_workers_items where zonghe &lt;= 70
+  	<if test="gsId != null and gsId != ''" > and gd_sign_id = #{gsId} </if>
+  	<if test="tanentId != null and tanentId != ''" > and tanent_id = #{tanentId}  </if>
   	<if test="cardNo != null and cardNo != ''" > and card_no = #{cardNo} </if>
   	<if test="homeworkId > 0 " > and homework_id = #{homeworkId} </if>
   	<if test="beginTime != null and beginTime != ''" > and sign_time &gt;= #{beginTime} </if>
@@ -47,7 +77,7 @@
   </select>
 
   <update id="update" parameterType="com.simple.model.GdHomeWorkWorkersItem">
-    update gd_homework_workers_items set item_json = #{itemJson} ,zonghe = #{zonghe}
+    update gd_homework_workers_items set item_json = #{itemJson} ,zonghe = #{zonghe},create_time=#{createTime}
     where gd_sign_id=#{gdSignId} and card_no = #{cardNo}
   </update>
   

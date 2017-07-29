@@ -1,6 +1,7 @@
 package com.simple.admin.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ import com.simple.model.GdSignWorkers;
 import com.simple.model.PageResult;
 import com.simple.model.WxHomeWork;
 import com.simple.model.WxMemberHomeWork;
+import com.simple.model.api.GdSingReport;
 import com.simple.service.ClassRegistorService;
 import com.simple.service.GdService;
 @Controller
@@ -172,7 +174,7 @@ public class GdController {
 			if (StringUtils.isEmpty(cardNo)) {
 				return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", null);
 			}
-			PageResult pr =gdService.queryWxMemberHomeWork(null, cardNo, 0, null, null, pageIndex, pageSize);
+			PageResult pr =gdService.queryWxMemberHomeWork(null,null, cardNo, 0, null, null, pageIndex, pageSize);
 			if ( null != pr && null != pr.getDatas()) {
 				for (int i =0 ;i < pr.getDatas().size(); i ++) {
 					WxMemberHomeWork gwwi = (WxMemberHomeWork) pr.getDatas().get(i);
@@ -208,6 +210,8 @@ public class GdController {
 			WxHomeWork whw = gdService.queryWxHomeWork(gwwi.getHomeworkId());
 			if (null != whw) {
 				gwwi.setHomeworkName(whw.getTitle());
+				gwwi.setHomeworkDescri("洞口坠落体验 安全绳缓降体验  平台倾倒体验  防护栏推到体验 安全帽撞击体验 安全鞋防砸体验  重物搬运体验  挡土墙体验 工地用电安全体验  平衡木体验设备 安全防护用品体验  钢丝绳使用方法 止血包扎 爬梯体验  小型配电箱防护网  尝试认识与学习  心肺复苏体验 \n"+  
+						"评语：经过系统培训本学员顺利通过安立方安全教育体验馆所有项目，特发此证以示证明。");
 			}
 			//查询分数和考试时间
 			WxMemberHomeWork wmhw = gdService.queryWxMemberHomeWork(gwwi.getTanentId(), cardNo, gwwi.getGdSignId(), gwwi.getHomeworkId());
@@ -220,6 +224,40 @@ public class GdController {
 				gwwi.setMakeTime(gcm.getMakeTime());
 			}
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", gwwi);
+		}catch(Exception e) {
+			log.error("gd sign error.",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+	
+	@RequestMapping(value = "signItemsInfo",method=RequestMethod.GET)
+	@ResponseBody
+	public String signItemsInfo(String gsid,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			GdSingReport gsr = new GdSingReport();
+			GdSign gs = gdService.querySignById(gsid);
+			if ( null != gs) {
+				WxHomeWork homework = gdService.queryWxHomeWork(gs.getHomeworkId());
+				double minvalue = homework.getScore().doubleValue()*0.6;
+				int homeworkId = gs.getHomeworkId();
+				gsr.setSignCounts(gdService.queryWorkersCount(gsid));
+				gsr.setJudgePass(gdService.queryHomeworkWorkersPassCount(gsid, gs.getTanentId(), null, gs.getHomeworkId(), null, null));
+				gsr.setBujigeCounts(gdService.queryHomeworkWorkersUnPassCount(gsid, gs.getTanentId(), null, gs.getHomeworkId(), null, null));
+				gsr.setJigeCounts(gdService.queryHomeworkWorkersCount(gsid, gs.getTanentId(), null, gs.getHomeworkId(), null, null, 80));
+				gsr.setLianghaoCounts(gdService.queryHomeworkWorkersCount(gsid, gs.getTanentId(), null, gs.getHomeworkId(), null, null, 90));
+				gsr.setYouxiuCounts(gdService.queryHomeworkWorkersCount(gsid, gs.getTanentId(), null, gs.getHomeworkId(), null, null, 100));
+				gsr.setHomeworkCounts(gdService.queryWxMemberHomeWorkCount(gsid, gs.getTanentId(), null, gs.getHomeworkId(), null, null));
+				gsr.setHomeworkDescri("");
+				gsr.setJudgeDate(gs.getCreateDate());
+				gsr.setHomeworkId(homeworkId);
+				gsr.setHomeworkPass(gdService.queryWxMemberHomeWorkPassCount(gsid, gs.getTanentId(), gs.getHomeworkId(), null, null, minvalue));
+				ClassRegister cr = classRegisterService.getClassRegister(gs.getTanentId(), null);
+				if ( null != cr ) {
+					gsr.setTanentName(cr.getJsmc());
+				}
+				
+			}
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", gsr);
 		}catch(Exception e) {
 			log.error("gd sign error.",e);
 			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());

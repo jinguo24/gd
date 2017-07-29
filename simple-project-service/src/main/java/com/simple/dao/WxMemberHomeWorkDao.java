@@ -27,12 +27,13 @@ public class WxMemberHomeWorkDao extends BaseIbatisDao {
 		return this.sqlSession.selectOne("wxmemberhomework.queryOne",param);
 	}
 	
-	public List<WxMemberHomeWork> queryList(String schoolId,String studentNo,int homeworkId,String beginTime,
+	public List<WxMemberHomeWork> queryList(String gsId,String schoolId,String studentNo,int homeworkId,String beginTime,
 			String endTime,int pageIndex,int pageSize) {
 		Map param = new HashMap();
 		param.put("schoolId", schoolId);
 		param.put("studentNo", studentNo);
 		param.put("homeworkId", homeworkId);
+		param.put("gsId", gsId);
 		param.put("beginTime", beginTime);
 		param.put("endTime", endTime);
 		if (pageIndex<1) {
@@ -43,14 +44,27 @@ public class WxMemberHomeWorkDao extends BaseIbatisDao {
 		return this.sqlSession.selectList("wxmemberhomework.query",param);
 	}
 	
-	public int queryCount(String schoolId,String studentNo,int homeworkId,String beginTime,
+	public int queryCount(String gsId,String schoolId,String studentNo,int homeworkId,String beginTime,
 			String endTime) {
 		Map param = new HashMap();
 		param.put("schoolId", schoolId);
 		param.put("studentNo", studentNo);
 		param.put("homeworkId", homeworkId);
+		param.put("gsId", gsId);
 		param.put("beginTime", beginTime);
 		param.put("endTime", endTime);
 		return this.sqlSession.selectOne("wxmemberhomework.queryCount",param);
+	}
+	
+	public int queryPassCount(String gsId,String schoolId,int homeworkId,String beginTime,
+			String endTime,double minScore) {
+		Map param = new HashMap();
+		param.put("schoolId", schoolId);
+		param.put("homeworkId", homeworkId);
+		param.put("gsId", gsId);
+		param.put("minScore", minScore);
+		param.put("beginTime", beginTime);
+		param.put("endTime", endTime);
+		return this.sqlSession.selectOne("wxmemberhomework.queryPassCount",param);
 	}
 }

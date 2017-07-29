@@ -134,7 +134,7 @@ public class GdController {
 	public String homeworkWorkersItemList(String cardNo,Integer homeworkId,String beginTime,String endTime, int page,
 			int pageSize,HttpServletRequest request, HttpServletResponse response) {
 		try {
-			PageResult pr = gdService.queryWxMemberHomeWork(LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, page, pageSize);
+			PageResult pr = gdService.queryWxMemberHomeWork(null,LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, page, pageSize);
 			if ( null != pr && null != pr.getDatas()) {
 				for (int i =0 ;i < pr.getDatas().size(); i ++) {
 					WxMemberHomeWork gwwi = (WxMemberHomeWork) pr.getDatas().get(i);
@@ -175,7 +175,7 @@ public class GdController {
 	@RequestMapping(value = "homeworkWorkersItemExport",method=RequestMethod.GET)
 	public void homeworkWorkersItemExport(String cardNo,Integer homeworkId,String beginTime,String endTime,HttpServletRequest request, HttpServletResponse response) {
 		try {
-			PageResult pr = gdService.queryWxMemberHomeWork(LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, 1, 60000);
+			PageResult pr = gdService.queryWxMemberHomeWork(null,LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, 1, 60000);
 			if ( null != pr && null != pr.getDatas()) {
 				for (int i =0 ;i < pr.getDatas().size(); i ++) {
 					WxMemberHomeWork gwwi = (WxMemberHomeWork) pr.getDatas().get(i);
@@ -254,6 +254,7 @@ public class GdController {
 				}
 				gi.setZonghe(zonghe);
 			}
+			gi.setCreateTime(new Date());
 			gdService.updateGdHomeWorkWorkersItem(gi);
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"更新成功", null);
 		}catch(Exception e) {
@@ -291,7 +292,7 @@ public class GdController {
 			if (null == homeworkId || homeworkId <= 0) {
 				return "请选择问卷导出";
 			}
-			PageResult pr = gdService.queryWxMemberHomeWork(LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, 1, 60000);
+			PageResult pr = gdService.queryWxMemberHomeWork(null,LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, 1, 60000);
 			if ( null != pr && null != pr.getDatas()) {
 				for (int i =0 ;i < pr.getDatas().size(); i ++) {
 					WxMemberHomeWork gwwi = (WxMemberHomeWork) pr.getDatas().get(i);
