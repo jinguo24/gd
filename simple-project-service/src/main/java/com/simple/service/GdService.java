@@ -120,6 +120,9 @@ public class GdService {
 		if (StringUtils.isEmpty(homeworkWorkersItem.getItemJson())) {
 			return false;
 		}
+		if (homeworkWorkersItem.getZonghe()<80) {
+			return false;
+		}
 		String[] ivs = homeworkWorkersItem.getItemJson().split(",");
 		boolean ispass = true;
 		//查询考试成绩，如果小于60%，则不通过

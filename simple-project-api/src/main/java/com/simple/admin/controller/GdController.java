@@ -18,7 +18,6 @@ import com.simple.common.util.AjaxWebUtil;
 import com.simple.common.util.PrimaryKeyUtil;
 import com.simple.model.ClassRegister;
 import com.simple.model.GdCardMake;
-import com.simple.model.GdHomeWorkItems;
 import com.simple.model.GdHomeWorkWorkersItem;
 import com.simple.model.GdSign;
 import com.simple.model.GdSignWorkers;
@@ -188,6 +187,39 @@ public class GdController {
 				}
 			}
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", pr);
+		}catch(Exception e) {
+			log.error("gd sign error.",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+	
+	@RequestMapping(value = "studentItemsInfo",method=RequestMethod.GET)
+	@ResponseBody
+	public String studentItemsInfo(String gsid,String cardNo,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			GdHomeWorkWorkersItem gwwi =gdService.queryHomeworkWorkersItem(gsid, cardNo);
+			if (null == gwwi) {
+				return AjaxWebUtil.sendAjaxResponse(request, response, false,"没有记录", null);
+			}
+			ClassRegister cr = classRegisterService.getClassRegister(gwwi.getTanentId(), null);
+			if ( null != cr ) {
+				gwwi.setTanentName(cr.getJsmc());
+			}
+			WxHomeWork whw = gdService.queryWxHomeWork(gwwi.getHomeworkId());
+			if (null != whw) {
+				gwwi.setHomeworkName(whw.getTitle());
+			}
+			//查询分数和考试时间
+			WxMemberHomeWork wmhw = gdService.queryWxMemberHomeWork(gwwi.getTanentId(), cardNo, gwwi.getGdSignId(), gwwi.getHomeworkId());
+			if ( null != wmhw) {
+				gwwi.setScore(wmhw.getScore());
+				gwwi.setHomeworkTime(wmhw.getCreateTime());
+			}
+			GdCardMake gcm = gdService.queryCardMake(cardNo, gwwi.getHomeworkId());
+			if ( null != gcm) {
+				gwwi.setMakeTime(gcm.getMakeTime());
+			}
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", gwwi);
 		}catch(Exception e) {
 			log.error("gd sign error.",e);
 			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());

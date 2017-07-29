@@ -29,9 +29,10 @@
 		<result column="BBH" property="bbh" jdbcType="VARCHAR"/>
 		<result column="APPXZDZ" property="appxzdz" jdbcType="DATE"/>
 		<result column="CJSJ" property="cjsj" jdbcType="DATE"/>
+		<result column="XXMC" property="xxmc" jdbcType="VARCHAR"/>
   </resultMap>
    <select id="queryValid" resultMap="CheckVersionResultMap" parameterType="String">
-  	select  BBH,CJSJ,APPXZDZ
+  	select  BBH,CJSJ,APPXZDZ,XXMC
   	from t_app where TANENTID=#{tanentId} and DQYXZT = 1 limit 0,1
   </select>
   

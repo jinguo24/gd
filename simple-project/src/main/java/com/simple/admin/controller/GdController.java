@@ -156,10 +156,11 @@ public class GdController {
 							for (int j = 0 ; j < items.length; j++ ) {
 								sb.append(items[j]+":0,");
 							}
-							if (sb.length()>0) {
-								gwwi.setContent(sb.toString().substring(0,sb.length()-1));
-							}
+							sb.append("综合评分:0");
+							gwwi.setContent(sb.toString());
 						}
+					}else {
+						gwwi.setContent(gwwi.getContent()+",综合评分:"+wi.getZonghe());
 					}
 					//TODO 查询是否已经制证
 				}
@@ -234,14 +235,53 @@ public class GdController {
 			if ( null != cardMake && cardMake.getMakeCount() > 0 ) {
 				return AjaxWebUtil.sendAjaxResponse(request, response, false,"已经制过证，不能修改", null);
 			}
-			
-			gi.setCreateTime(new Date());
-			gi.setItemJson(itemJson);
+			if (!StringUtils.isEmpty(itemJson)) {
+				StringBuffer realItemJson = new StringBuffer();
+				int zonghe = 0;
+				String[] ivs = itemJson.split(",");
+				if ( null != ivs ) {
+					for (String iv : ivs) {
+						String[] is = iv.split(":");
+						if (!"综合评分".equals(is[0])) {
+							realItemJson.append(is[0]).append(":").append(Integer.parseInt(is[1])).append(",");
+						}else {
+							zonghe = Integer.parseInt(is[1]);
+						}
+					}
+				}
+				if (realItemJson.length()>0) {
+					gi.setItemJson(realItemJson.toString().substring(0,realItemJson.length()-1));
+				}
+				gi.setZonghe(zonghe);
+			}
 			gdService.updateGdHomeWorkWorkersItem(gi);
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"更新成功", null);
 		}catch(Exception e) {
 			log.error("gd kaike error.",e);
 			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+	
+	public static void main(String[] args) {
+		String itemJson = "安全意识:80,操作规范性:70,理论学习:80,综合评分:80";
+		if (!StringUtils.isEmpty(itemJson)) {
+			StringBuffer realItemJson = new StringBuffer();
+			int zonghe = 0;
+			String[] ivs = itemJson.split(",");
+			if ( null != ivs ) {
+				for (String iv : ivs) {
+					String[] is = iv.split(":");
+					if (!"综合评分".equals(is[0])) {
+						realItemJson.append(is[0]).append(":").append(Integer.parseInt(is[1])).append(",");
+					}else {
+						zonghe = Integer.parseInt(is[1]);
+					}
+				}
+			}
+			if (realItemJson.length()>0) {
+				System.out.println(realItemJson.toString().substring(0,realItemJson.length()-1));
+			}
+			System.out.println(zonghe);
 		}
 	}
 	

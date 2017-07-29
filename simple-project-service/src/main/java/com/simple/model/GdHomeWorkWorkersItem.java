@@ -15,6 +15,7 @@ public class GdHomeWorkWorkersItem implements Serializable {
 	private String sex;
 	private String cardImage;
 	private String itemJson;
+	private int zonghe;
 	private int homeworkId;
 	private String homeworkName;
 	private Date signTime;
@@ -24,6 +25,7 @@ public class GdHomeWorkWorkersItem implements Serializable {
 	private String tanentId;
 	private String tanentName;
 	private int hasMake;
+	private Date makeTime;
 	public int getId() {
 		return id;
 	}
@@ -119,5 +121,17 @@ public class GdHomeWorkWorkersItem implements Serializable {
 	}
 	public void setCardImage(String cardImage) {
 		this.cardImage = cardImage;
+	}
+	public int getZonghe() {
+		return zonghe;
+	}
+	public void setZonghe(int zonghe) {
+		this.zonghe = zonghe;
+	}
+	public Date getMakeTime() {
+		return makeTime;
+	}
+	public void setMakeTime(Date makeTime) {
+		this.makeTime = makeTime;
 	}
 }

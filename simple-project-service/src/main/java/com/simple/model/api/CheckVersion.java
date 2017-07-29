@@ -10,6 +10,7 @@ public class CheckVersion implements Serializable{
 	private String bbh;
 	private Date cjsj;
 	private String appxzdz;
+	private String xxmc;
 	public String getBbh() {
 		return bbh;
 	}
@@ -27,5 +28,11 @@ public class CheckVersion implements Serializable{
 	}
 	public void setAppxzdz(String appxzdz) {
 		this.appxzdz = appxzdz;
+	}
+	public String getXxmc() {
+		return xxmc;
+	}
+	public void setXxmc(String xxmc) {
+		this.xxmc = xxmc;
 	}
 }
