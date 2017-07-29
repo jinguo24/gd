@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONObject;
 import com.simple.admin.util.LoginUserUtil;
 import com.simple.common.util.AjaxWebUtil;
+import com.simple.constant.Constant;
 import com.simple.model.GdCardMake;
 import com.simple.model.GdHomeWorkItems;
 import com.simple.model.GdHomeWorkWorkersItem;
@@ -156,11 +157,11 @@ public class GdController {
 							for (int j = 0 ; j < items.length; j++ ) {
 								sb.append(items[j]+":0,");
 							}
-							sb.append("综合评分:0");
+							sb.append(Constant.ZONGHECHNEGJI+":0");
 							gwwi.setContent(sb.toString());
 						}
 					}else {
-						gwwi.setContent(gwwi.getContent()+",综合评分:"+wi.getZonghe());
+						gwwi.setContent(gwwi.getContent()+","+Constant.ZONGHECHNEGJI+":"+wi.getZonghe());
 					}
 					//TODO 查询是否已经制证
 				}
@@ -242,7 +243,7 @@ public class GdController {
 				if ( null != ivs ) {
 					for (String iv : ivs) {
 						String[] is = iv.split(":");
-						if (!"综合评分".equals(is[0])) {
+						if (!Constant.ZONGHECHNEGJI.equals(is[0])) {
 							realItemJson.append(is[0]).append(":").append(Integer.parseInt(is[1])).append(",");
 						}else {
 							zonghe = Integer.parseInt(is[1]);
@@ -260,29 +261,6 @@ public class GdController {
 		}catch(Exception e) {
 			log.error("gd kaike error.",e);
 			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
-		}
-	}
-	
-	public static void main(String[] args) {
-		String itemJson = "安全意识:80,操作规范性:70,理论学习:80,综合评分:80";
-		if (!StringUtils.isEmpty(itemJson)) {
-			StringBuffer realItemJson = new StringBuffer();
-			int zonghe = 0;
-			String[] ivs = itemJson.split(",");
-			if ( null != ivs ) {
-				for (String iv : ivs) {
-					String[] is = iv.split(":");
-					if (!"综合评分".equals(is[0])) {
-						realItemJson.append(is[0]).append(":").append(Integer.parseInt(is[1])).append(",");
-					}else {
-						zonghe = Integer.parseInt(is[1]);
-					}
-				}
-			}
-			if (realItemJson.length()>0) {
-				System.out.println(realItemJson.toString().substring(0,realItemJson.length()-1));
-			}
-			System.out.println(zonghe);
 		}
 	}
 	

@@ -17,6 +17,7 @@ import com.simple.common.excel.DownLoadExcel;
 import com.simple.common.excel.DownLoadExcutor;
 import com.simple.common.util.DateUtil;
 import com.simple.common.util.PrimaryKeyUtil;
+import com.simple.constant.Constant;
 import com.simple.dao.DictionaryDao;
 import com.simple.dao.GdCardMakeDao;
 import com.simple.dao.GdHomeWorkItemsDao;
@@ -129,7 +130,7 @@ public class GdService {
 		if (StringUtils.isEmpty(homeworkWorkersItem.getItemJson())) {
 			return false;
 		}
-		if (homeworkWorkersItem.getZonghe()<80) {
+		if (homeworkWorkersItem.getZonghe()<Constant.minScore) {
 			return false;
 		}
 		String[] ivs = homeworkWorkersItem.getItemJson().split(",");
@@ -144,7 +145,7 @@ public class GdService {
 		if (null == whw) {
 			return false;
 		}
-		if ((whw.getScore().doubleValue()*0.6) > wmhw.getScore().doubleValue()) {
+		if ((whw.getScore().doubleValue()*Constant.scoreRate) > wmhw.getScore().doubleValue()) {
 			return false;
 		}
 		
@@ -153,7 +154,7 @@ public class GdService {
 			if (!StringUtils.isEmpty(iv)) {
 				String[] is = iv.split(":");
 				int v = Integer.parseInt(is[1]);
-				if (v < 80) {
+				if (v < Constant.minScore) {
 					ispass = false;
 					break;
 				}
@@ -285,11 +286,12 @@ public class GdService {
 			titles[3] = "工人姓名";
 			titles[4] = "考试成绩";
 			titles[5] = "考试时间";
+			titles[6] = Constant.ZONGHECHNEGJI;
 			for (int i = 0 ; i < ites.length; i ++ ) {
-				titles[6+i] = ites[i];
+				titles[7+i] = ites[i];
 			}
 		}else {
-			titles = new String[]{"工地名称","试卷","身份证号码","工人姓名","考试成绩","考试时间"};
+			titles = new String[]{"工地名称","试卷","身份证号码","工人姓名","考试成绩","考试时间",Constant.ZONGHECHNEGJI};
 		}
 		final String[] finalTitiles = titles;
 		DownLoadExcel.download(items, Arrays.asList(titles), new DownLoadExcutor() {
@@ -317,7 +319,7 @@ public class GdService {
 								}
 							}
 						}
-						for (int i=6 ; i< finalTitiles.length; i++) {
+						for (int i=7 ; i< finalTitiles.length; i++) {
 							sl.add(StringUtils.trimToEmpty(cmap.get(finalTitiles[i])));
 						}
 					}

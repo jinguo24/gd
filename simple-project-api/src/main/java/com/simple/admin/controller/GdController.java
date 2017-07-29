@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.simple.common.util.AjaxWebUtil;
 import com.simple.common.util.PrimaryKeyUtil;
+import com.simple.constant.Constant;
 import com.simple.model.ClassRegister;
 import com.simple.model.GdCardMake;
 import com.simple.model.GdHomeWorkWorkersItem;
@@ -210,8 +211,7 @@ public class GdController {
 			WxHomeWork whw = gdService.queryWxHomeWork(gwwi.getHomeworkId());
 			if (null != whw) {
 				gwwi.setHomeworkName(whw.getTitle());
-				gwwi.setHomeworkDescri("洞口坠落体验 安全绳缓降体验  平台倾倒体验  防护栏推到体验 安全帽撞击体验 安全鞋防砸体验  重物搬运体验  挡土墙体验 工地用电安全体验  平衡木体验设备 安全防护用品体验  钢丝绳使用方法 止血包扎 爬梯体验  小型配电箱防护网  尝试认识与学习  心肺复苏体验 \n"+  
-						"评语：经过系统培训本学员顺利通过安立方安全教育体验馆所有项目，特发此证以示证明。");
+				gwwi.setHomeworkDescri(Constant.REPORT_CONTENT);
 			}
 			//查询分数和考试时间
 			WxMemberHomeWork wmhw = gdService.queryWxMemberHomeWork(gwwi.getTanentId(), cardNo, gwwi.getGdSignId(), gwwi.getHomeworkId());
@@ -238,7 +238,7 @@ public class GdController {
 			GdSign gs = gdService.querySignById(gsid);
 			if ( null != gs) {
 				WxHomeWork homework = gdService.queryWxHomeWork(gs.getHomeworkId());
-				double minvalue = homework.getScore().doubleValue()*0.6;
+				double minvalue = homework.getScore().doubleValue()*Constant.minScore;
 				int homeworkId = gs.getHomeworkId();
 				gsr.setSignCounts(gdService.queryWorkersCount(gsid));
 				gsr.setJudgePass(gdService.queryHomeworkWorkersPassCount(gsid, gs.getTanentId(), null, gs.getHomeworkId(), null, null));
@@ -247,7 +247,7 @@ public class GdController {
 				gsr.setLianghaoCounts(gdService.queryHomeworkWorkersCount(gsid, gs.getTanentId(), null, gs.getHomeworkId(), null, null, 90));
 				gsr.setYouxiuCounts(gdService.queryHomeworkWorkersCount(gsid, gs.getTanentId(), null, gs.getHomeworkId(), null, null, 100));
 				gsr.setHomeworkCounts(gdService.queryWxMemberHomeWorkCount(gsid, gs.getTanentId(), null, gs.getHomeworkId(), null, null));
-				gsr.setHomeworkDescri("");
+				gsr.setHomeworkDescri(Constant.REPORT_CONTENT);
 				gsr.setJudgeDate(gs.getCreateDate());
 				gsr.setHomeworkId(homeworkId);
 				gsr.setHomeworkPass(gdService.queryWxMemberHomeWorkPassCount(gsid, gs.getTanentId(), gs.getHomeworkId(), null, null, minvalue));
