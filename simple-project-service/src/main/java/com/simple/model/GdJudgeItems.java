@@ -6,14 +6,12 @@ import org.springframework.util.StringUtils;
 
 import freemarker.template.utility.StringUtil;
 
-public class GdHomeWorkItems implements Serializable {
+public class GdJudgeItems implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String tanentId;
 	private String tanentName;
-	private int homeworkId;
-	private String homeworkName;
 	private String itemNames;
 	public int getId() {
 		return id;
@@ -27,12 +25,6 @@ public class GdHomeWorkItems implements Serializable {
 	public void setTanentId(String tanentId) {
 		this.tanentId = tanentId;
 	}
-	public int getHomeworkId() {
-		return homeworkId;
-	}
-	public void setHomeworkId(int homeworkId) {
-		this.homeworkId = homeworkId;
-	}
 	public String getItemNames() {
 		return itemNames;
 	}
@@ -45,16 +37,13 @@ public class GdHomeWorkItems implements Serializable {
 	public void setTanentName(String tanentName) {
 		this.tanentName = tanentName;
 	}
-	public String getHomeworkName() {
-		return homeworkName;
-	}
-	public void setHomeworkName(String homeworkName) {
-		this.homeworkName = homeworkName;
-	}
 	public String[] getItemNameArray() {
 		if (!StringUtils.isEmpty(this.itemNames)) {
 			return this.itemNames.split(",");
 		}
 		return null;
+	}
+	public void initItems() {
+		
 	}
 }

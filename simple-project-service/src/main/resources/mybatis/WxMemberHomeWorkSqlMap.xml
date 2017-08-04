@@ -18,7 +18,14 @@
   <select id="queryOne" resultMap="BaseResultMap" parameterType="java.util.Map">
   	select 
   	<include refid="Base_Column_List"></include>
-  	from wx_memberhomework where HomeworkID = #{homeworkId} and StudentNo = #{studentNo} and SignID = #{signId} and SchoolID = #{schoolId}
+  	from wx_memberhomework where SignID = #{signId} and StudentNo = #{studentNo}
+  </select>
+  
+  <select id="queryLastOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from wx_memberhomework where SchoolID = #{schoolId} and StudentNo = #{studentNo}
+  	order by CreateTime desc limit 0, 1
   </select>
   
   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">

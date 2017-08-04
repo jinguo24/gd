@@ -1,16 +1,17 @@
 package com.simple.dao;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.simple.common.mybatis.annotation.DatabaseTemplate;
 import com.simple.common.mybatis.dao.BaseIbatisDao;
+import com.simple.common.util.DateUtil;
 import com.simple.model.GdSignWorkers;
 
 @Repository
@@ -30,10 +31,28 @@ public class GdSignWorkersDao extends BaseIbatisDao {
 		return this.sqlSession.selectOne("gdsignworkers.queryBySC",param);
 	}
 	
+	public GdSignWorkers queryByTCC(String tanentId,String cardNo,Date createDate) {
+		Map param = new HashMap();
+		param.put("tanentId", tanentId);
+		param.put("cardNo", cardNo);
+		param.put("createDate", DateUtil.date2String(createDate));
+		return this.sqlSession.selectOne("gdsignworkers.queryBySC",param);
+	}
 	
-	public List<GdSignWorkers> query(String gsid,int pageIndex,int pageSize) {
+	public void updateGdSignWorker(GdSignWorkers gdSignWorkers) {
+		this.sqlSession.update("gdsignworkers.update", gdSignWorkers);
+	}
+	
+	
+	public List<GdSignWorkers> query(String gsid,String tanentId,String groupName,String cardNo,Date date,
+			String leaderName,int pageIndex,int pageSize) {
 		Map param = new HashMap();
 		param.put("gdSignId", gsid);
+		param.put("tanentId", tanentId);
+		param.put("groupName", groupName);
+		param.put("cardNo", cardNo);
+		param.put("createDate", DateUtil.date2String(date));
+		param.put("leaderName", leaderName);
 		if (pageIndex < 1) {
 			pageIndex = 1;
 		}
@@ -42,9 +61,15 @@ public class GdSignWorkersDao extends BaseIbatisDao {
 		return this.sqlSession.selectList("gdsignworkers.query",param);
 	}
 	
-	public int queryCount(String gsid) {
+	public int queryCount(String gsid,String tanentId,String groupName,String cardNo,Date date,String leaderName) {
 		Map param = new HashMap();
 		param.put("gdSignId", gsid);
+		param.put("gdSignId", gsid);
+		param.put("tanentId", tanentId);
+		param.put("groupName", groupName);
+		param.put("cardNo", cardNo);
+		param.put("createDate", DateUtil.date2String(date));
+		param.put("leaderName", leaderName);
 		return this.sqlSession.selectOne("gdsignworkers.queryCount",param);
 	}
 }

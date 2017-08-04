@@ -24,12 +24,12 @@ public class GdSignDao extends BaseIbatisDao {
 		this.sqlSession.insert("gdsign.insert", gdSign);
 	}
 	
-	public GdSign queryByTHD(String tanentId,int homeworkId,Date date) {
+	public GdSign queryByTGD(String tanentId,String groupName,Date date) {
 		Map param = new HashMap();
 		param.put("tanentId", tanentId);
-		param.put("homeworkId", homeworkId);
+		param.put("groupName", groupName);
 		param.put("createDate", DateUtil.date2String(date));
-		return this.sqlSession.selectOne("gdsign.queryByTHD",param);
+		return this.sqlSession.selectOne("gdsign.queryByTGD",param);
 	}
 	
 	public GdSign queryById(String gsId) {

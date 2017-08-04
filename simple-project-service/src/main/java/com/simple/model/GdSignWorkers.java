@@ -1,6 +1,7 @@
 package com.simple.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.simple.common.util.DateUtil;
@@ -11,9 +12,13 @@ public class GdSignWorkers implements Serializable{
 
 	private String id;
 	private String gsid;
+	private String tanentId;
 	private String cardNo;
+	private String groupName;
+	private String leaderName;
 	private String cardImage="";
 	private Date createTime;
+	private Date createDate;
 	private String showCreateTime;
 	private String name;
 	private String sex="";
@@ -22,6 +27,9 @@ public class GdSignWorkers implements Serializable{
 	private String validtermOfStart="";//身份证有效开始日期
 	private String validtermOfEnd="";//身份证有效截止日期
 	private String department="";//签发机关
+	private String itemJson;
+	private Date judgeTime;
+	private int zonghe;
 	
 	public String getId() {
 		return id;
@@ -103,5 +111,47 @@ public class GdSignWorkers implements Serializable{
 	}
 	public void setShowCreateTime(String showCreateTime) {
 		this.showCreateTime = showCreateTime;
+	}
+	public String getGroupName() {
+		return groupName;
+	}
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+	public String getLeaderName() {
+		return leaderName;
+	}
+	public void setLeaderName(String leaderName) {
+		this.leaderName = leaderName;
+	}
+	public String getTanentId() {
+		return tanentId;
+	}
+	public void setTanentId(String tanentId) {
+		this.tanentId = tanentId;
+	}
+	public Date getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	public String getItemJson() {
+		return itemJson;
+	}
+	public void setItemJson(String itemJson) {
+		this.itemJson = itemJson;
+	}
+	public Date getJudgeTime() {
+		return judgeTime;
+	}
+	public void setJudgeTime(Date judgeTime) {
+		this.judgeTime = judgeTime;
+	}
+	public int getZonghe() {
+		return zonghe;
+	}
+	public void setZonghe(int zonghe) {
+		this.zonghe = zonghe;
 	}
 }

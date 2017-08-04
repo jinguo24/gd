@@ -5,23 +5,24 @@
 		<id column="id" property="id" jdbcType="VARCHAR"/>
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
 		<result column="tanent_id" property="tanentId" jdbcType="VARCHAR"/>
-		<result column="homework_id" property="homeworkId" jdbcType="INTEGER"/>
+		<result column="group_name" property="groupName" jdbcType="VARCHAR"/>
+		<result column="leader_name" property="leaderName" jdbcType="VARCHAR"/>
 		<result column="status" property="status" jdbcType="INTEGER"/>
 		<result column="create_date" property="createDate" jdbcType="DATE"/>
   </resultMap>
   <sql id="Base_Column_List" >
-	id,create_time,tanent_id,homework_id,status,create_date
+	id,create_time,tanent_id,group_name,leader_name,status,create_date
   </sql>
   
     <insert id="insert" parameterType="com.simple.model.GdSign">
-  	insert into gd_sign (id,create_time,tanent_id,homework_id,status,create_date) 
-  		values (#{id},#{createTime},#{tanentId},#{homeworkId},#{status},#{createDate})
+  	insert into gd_sign (id,create_time,tanent_id,group_name,leader_name,status,create_date) 
+  		values (#{id},#{createTime},#{tanentId},#{groupName},#{leaderName},#{status},#{createDate})
   </insert>
   
-  <select id="queryByTHD" resultMap="BaseResultMap" parameterType="java.util.Map">
+  <select id="queryByTGD" resultMap="BaseResultMap" parameterType="java.util.Map">
   	select 
   	<include refid="Base_Column_List"></include>
-  	from gd_sign where tanent_id = #{tanentId} and homework_id = #{homeworkId} and create_date = #{createDate}
+  	from gd_sign where tanent_id = #{tanentId} and group_name = #{groupName} and create_date = #{createDate}
   </select>
   
   <select id="queryById" resultMap="BaseResultMap" parameterType="String">

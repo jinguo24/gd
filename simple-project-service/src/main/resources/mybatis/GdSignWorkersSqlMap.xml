@@ -4,9 +4,13 @@
   <resultMap id="BaseResultMap" type="com.simple.model.GdSignWorkers" >
 		<id column="id" property="id" jdbcType="VARCHAR"/>
 		<result column="gd_sign_id" property="gsid" jdbcType="VARCHAR"/>
+		<result column="tanent_id" property="tanentId" jdbcType="VARCHAR"/>
 		<result column="card_no" property="cardNo" jdbcType="VARCHAR"/>
 		<result column="card_image" property="cardImage" jdbcType="VARCHAR"/>
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="create_date" property="createDate" jdbcType="DATE"/>
+		<result column="group_name" property="groupName" jdbcType="VARCHAR"/>
+		<result column="leader_name" property="leaderName" jdbcType="VARCHAR"/>
 		<result column="name" property="name" jdbcType="VARCHAR"/>
 		<result column="sex" property="sex" jdbcType="VARCHAR"/>
 		<result column="nation" property="nation" jdbcType="VARCHAR"/>
@@ -14,15 +18,26 @@
 		<result column="validtermOfStart" property="validtermOfStart" jdbcType="VARCHAR"/>
 		<result column="validtermOfEnd" property="validtermOfEnd" jdbcType="VARCHAR"/>
 		<result column="department" property="department" jdbcType="VARCHAR"/>
+		<result column="item_json" property="itemJson" jdbcType="VARCHAR"/>
+		<result column="judge_time" property="judgeTime" jdbcType="TIMESTAMP"/>
+		<result column="zonghe" property="zonghe" jdbcType="INTEGER"/>
   </resultMap>
   <sql id="Base_Column_List" >
-	id,gd_sign_id,card_no,card_image,create_time,name,sex,nation,address,validtermOfStart,validtermOfEnd,department
+	id,gd_sign_id,tanent_id,card_no,card_image,create_time,create_date,group_name,leader_name,name,sex,nation,
+	address,validtermOfStart,validtermOfEnd,department,item_json,judge_time,zonghe
   </sql>
   
-    <insert id="insert" parameterType="com.simple.model.GdSignWorkers">
-  	insert into gd_sign_workers (id,gd_sign_id,card_no,card_image,create_time,name,sex,nation,address,validtermOfStart,validtermOfEnd,department) 
-  		values (#{id},#{gsid},#{cardNo},#{cardImage},#{createTime},#{name},#{sex},#{nation},#{address},#{validtermOfStart},#{validtermOfEnd},#{department})
+  <insert id="insert" parameterType="com.simple.model.GdSignWorkers">
+  	insert into gd_sign_workers (id,gd_sign_id,tanent_id,card_no,card_image,create_time,create_date,group_name,leader_name,name,sex,nation,address,
+  			validtermOfStart,validtermOfEnd,department,item_json,judge_time,zonghe) 
+  		values (#{id},#{gsid},#{tanentId},#{cardNo},#{cardImage},#{createTime},#{createDate},#{groupName},#{leaderName},#{name},#{sex},#{nation},
+  			#{address},#{validtermOfStart},#{validtermOfEnd},#{department},#{itemJson},#{judgeTime},#{zonghe})
   </insert>
+  
+  <update id="update" parameterType="com.simple.model.GdSignWorkers" >
+  	update gd_sign_workers set item_json = #{itemJson},judge_time = #{judgeTime},zonghe = #{zonghe} 
+  	where gd_sign_id = #{gsid} and card_no = #{cardNo}
+  </update>
   
   <select id="queryBySC" resultMap="BaseResultMap" parameterType="java.util.Map">
   	select 
@@ -30,15 +45,33 @@
   	from gd_sign_workers where gd_sign_id = #{gdSignId} and card_no = #{cardNo}
   </select>
   
+    <select id="queryByTCC" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from gd_sign_workers where card_no = #{cardNo} and tanent_id = #{tanentId}  and create_date = #{createDate} 
+  </select>
+  
   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
   	select 
   	<include refid="Base_Column_List"></include>
-  	from gd_sign_workers where gd_sign_id = #{gdSignId}
+  	from gd_sign_workers where 1=1
+  	<if test="gdSignId != null and gdSignId != ''" > and gd_sign_id = #{gdSignId} </if>
+  	<if test="tanentId != null and tanentId != ''" > and tanent_id = #{tanentId} </if>
+  	<if test="groupName != null and groupName != ''" > and group_name like CONCAT('%',#{groupName},'%') </if>
+  	<if test="cardNo != null and cardNo != ''" > and card_no = #{cardNo} </if>
+  	<if test="createDate != null and createDate != ''" > and create_date = #{createDate} </if>
+  	<if test="leaderName != null and leaderName != ''" > and leader_name like CONCAT('%',#{leaderName},'%') </if>
   	limit #{begin},#{size}
   </select>
   
   <select id="queryCount" parameterType="java.util.Map" resultType="int">
-	SELECT count(1) FROM gd_sign_workers where gd_sign_id = #{gdSignId}
+	SELECT count(1) FROM gd_sign_workers where 1=1
+	<if test="gdSignId != null and gdSignId != ''" > and gd_sign_id = #{gdSignId} </if>
+  	<if test="tanentId != null and tanentId != ''" > and tanent_id = #{tanentId} </if>
+  	<if test="groupName != null and groupName != ''" > and group_name like CONCAT('%',#{groupName},'%') </if>
+  	<if test="cardNo != null and cardNo != ''" > and card_no = #{cardNo} </if>
+  	<if test="createDate != null and createDate != ''" > and create_date = #{createDate} </if>
+  	<if test="leaderName != null and leaderName != ''" > and leader_name like CONCAT('%',#{leaderName},'%') </if>
   </select>
   
   

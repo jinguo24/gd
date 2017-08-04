@@ -1,6 +1,7 @@
 package com.simple.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.simple.common.util.DateUtil;
@@ -9,21 +10,23 @@ public class GdCardMake implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private int id;
+	private String id;
+	private String tanentId="";
 	private String cardNo="";
-	private int homeworkId;
 	private String name="";
 	private String sex="";
 	private String sequenceNo="";
 	private String cardImage="";
-	private String type="";
 	private Date makeTime;
 	private String showMakeTime="";
 	private int makeCount;
-	public int getId() {
+	private BigDecimal totalScore = new BigDecimal(0);
+	private BigDecimal score = new BigDecimal(0);
+	private String homeWorkTime="";
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getCardNo() {
@@ -31,12 +34,6 @@ public class GdCardMake implements Serializable {
 	}
 	public void setCardNo(String cardNo) {
 		this.cardNo = cardNo;
-	}
-	public int getHomeworkId() {
-		return homeworkId;
-	}
-	public void setHomeworkId(int homeworkId) {
-		this.homeworkId = homeworkId;
 	}
 	public String getName() {
 		return name;
@@ -71,12 +68,6 @@ public class GdCardMake implements Serializable {
 	public void setMakeCount(int makeCount) {
 		this.makeCount = makeCount;
 	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
 	public String getShowMakeTime() {
 		return showMakeTime;
 	}
@@ -85,5 +76,29 @@ public class GdCardMake implements Serializable {
 	}
 	public void setCardImage(String cardImage) {
 		this.cardImage = cardImage;
+	}
+	public BigDecimal getTotalScore() {
+		return totalScore;
+	}
+	public void setTotalScore(BigDecimal totalScore) {
+		this.totalScore = totalScore;
+	}
+	public BigDecimal getScore() {
+		return score;
+	}
+	public void setScore(BigDecimal score) {
+		this.score = score;
+	}
+	public String getHomeWorkTime() {
+		return homeWorkTime;
+	}
+	public void setHomeWorkTime(String homeWorkTime) {
+		this.homeWorkTime = homeWorkTime;
+	}
+	public String getTanentId() {
+		return tanentId;
+	}
+	public void setTanentId(String tanentId) {
+		this.tanentId = tanentId;
 	}
 }

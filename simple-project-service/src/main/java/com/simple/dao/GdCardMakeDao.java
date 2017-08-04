@@ -22,10 +22,10 @@ public class GdCardMakeDao extends BaseIbatisDao {
 		this.sqlSession.update("gdcardmake.insert",cardMake);
 	}
 	
-	public List<GdCardMake> queryList(String cardNo,int homeworkId,String name, int status,int pageIndex,int pageSize) {
+	public List<GdCardMake> queryList(String tanentId,String cardNo,String name, int status,int pageIndex,int pageSize) {
 		Map param = new HashMap();
+		param.put("tanentId", tanentId);
 		param.put("cardNo", cardNo);
-		param.put("homeworkId", homeworkId);
 		param.put("name", name);
 		param.put("status", status);
 		if (pageIndex < 1) {
@@ -36,10 +36,10 @@ public class GdCardMakeDao extends BaseIbatisDao {
 		return this.sqlSession.selectList("gdcardmake.query",param);
 	}
 
-	public int queryCount(String cardNo,int homeworkId,String name, int status) {
+	public int queryCount(String tanentId,String cardNo,String name, int status) {
 		Map param = new HashMap();
+		param.put("tanentId", tanentId);
 		param.put("cardNo", cardNo);
-		param.put("homeworkId", homeworkId);
 		param.put("name", name);
 		param.put("status", status);
 		return this.sqlSession.selectOne("gdcardmake.queryCount",param);
@@ -49,17 +49,17 @@ public class GdCardMakeDao extends BaseIbatisDao {
 		this.sqlSession.update("gdcardmake.update",cardMake);
 	}
 	
-	public GdCardMake queryOne(String cardNo,int homeworkId) {
+	public GdCardMake queryOne(String tanentId,String cardNo) {
 		Map param = new HashMap();
+		param.put("tanentId", tanentId);
 		param.put("cardNo", cardNo);
-		param.put("homeworkId", homeworkId);
 		return this.sqlSession.selectOne("gdcardmake.queryOne",param);
 	}
 	
-	public void delete(String cardNo,int homeworkId) {
+	public void delete(String tanentId,String cardNo) {
 		Map param = new HashMap();
+		param.put("tanentId", tanentId);
 		param.put("cardNo", cardNo);
-		param.put("homeworkId", homeworkId);
 		this.sqlSession.delete("gdcardmake.delete",param);
 	}
 }

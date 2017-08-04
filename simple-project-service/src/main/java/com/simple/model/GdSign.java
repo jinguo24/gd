@@ -12,7 +12,8 @@ public class GdSign implements Serializable{
 	private Date createTime;
 	private String showCreateTime;
 	private String tanentId;
-	private int homeworkId;
+	private String groupName;
+	private String leaderName;
 	private int status;
 	private Date createDate;
 	public String getId() {
@@ -36,12 +37,6 @@ public class GdSign implements Serializable{
 	public void setTanentId(String tanentId) {
 		this.tanentId = tanentId;
 	}
-	public int getHomeworkId() {
-		return homeworkId;
-	}
-	public void setHomeworkId(int homeworkId) {
-		this.homeworkId = homeworkId;
-	}
 	public int getStatus() {
 		return status;
 	}
@@ -56,5 +51,17 @@ public class GdSign implements Serializable{
 	}
 	public String getShowCreateTime() {
 		return showCreateTime;
+	}
+	public String getGroupName() {
+		return groupName;
+	}
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+	public String getLeaderName() {
+		return leaderName;
+	}
+	public void setLeaderName(String leaderName) {
+		this.leaderName = leaderName;
 	}
 }

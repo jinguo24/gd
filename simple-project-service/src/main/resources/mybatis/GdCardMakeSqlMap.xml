@@ -2,32 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="gdcardmake" >
   <resultMap id="BaseResultMap" type="com.simple.model.GdCardMake" >
-		<id column="id" property="id" jdbcType="INTEGER"/>
+		<id column="id" property="id" jdbcType="VARCHAR"/>
+		<result column="tanent_id" property="tanentId" jdbcType="VARCHAR"/>
 		<result column="card_no" property="cardNo" jdbcType="VARCHAR"/>
-		<result column="homework_id" property="homeworkId" jdbcType="INTEGER"/>
 		<result column="name" property="name" jdbcType="VARCHAR"/>
 		<result column="card_image" property="cardImage" jdbcType="VARCHAR"/>
 		<result column="sex" property="sex" jdbcType="VARCHAR"/>
 		<result column="sequence_no" property="sequenceNo" jdbcType="VARCHAR"/>
 		<result column="make_time" property="makeTime" jdbcType="TIMESTAMP"/>
 		<result column="make_count" property="makeCount" jdbcType="INTEGER"/>
-		<result column="type" property="type" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
-	id,card_no,homework_id,name,card_image,sex,sequence_no,make_time,make_count,type
+	id,tanent_id,card_no,name,card_image,sex,sequence_no,make_time,make_count
   </sql>
   
     <insert id="insert" parameterType="com.simple.model.GdCardMake">
-  	insert into gd_card_make (card_no,homework_id,name,card_image,sex,sequence_no,make_time,make_count,type) 
-  		values (#{cardNo},#{homeworkId},#{name},#{cardImage},#{sex},#{sequenceNo},#{makeTime},#{makeCount},#{type})
+  	insert into gd_card_make (id,tanent_id,card_no,name,card_image,sex,sequence_no,make_time,make_count) 
+  		values (#{id},#{tanentId},#{cardNo},#{name},#{cardImage},#{sex},#{sequenceNo},#{makeTime},#{makeCount})
   </insert>
   
   <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
   	select 
   	<include refid="Base_Column_List"></include>
   	from gd_card_make where 1=1 
+  	<if test="tanentId != null and tanentId != ''" > and tanent_id = #{tanentId} </if>
   	<if test="cardNo != null and cardNo != ''" > and card_no = #{cardNo} </if>
-  	<if test="homeworkId > 0 " > and homework_id = #{homeworkId} </if>
   	<if test="name != null and name != ''" > and name like CONCAT('%',#{name},'%') </if>
   	<if test="status == 1 " > and make_count &lt;= 0 </if>
   	<if test="status == 2 " > and make_count &gt;= 1 </if>
@@ -39,8 +38,8 @@
 	select 
   	count(1)
   	from gd_card_make where 1=1 
+  	<if test="tanentId != null and tanentId != ''" > and tanent_id = #{tanentId} </if>
   	<if test="cardNo != null and cardNo != ''" > and card_no = #{cardNo} </if>
-  	<if test="homeworkId > 0 " > and homework_id = #{homeworkId} </if>
   	<if test="name != null and name != ''" > and name like CONCAT('%',#{name},'%') </if>
   	<if test="status == 1 " > and make_count &lt;= 0 </if>
   	<if test="status == 2 " > and make_count &gt;= 1 </if>
@@ -48,17 +47,17 @@
 
   <update id="update" parameterType="com.simple.model.GdCardMake">
     update gd_card_make set make_time = #{makeTime} , make_count = make_count+1
-    where card_no=#{cardNo} and homework_id = #{homeworkId}
+    where card_no=#{cardNo}
   </update>
   
   <select id="queryOne" resultMap="BaseResultMap" parameterType="java.util.Map">
   	select 
   	<include refid="Base_Column_List"></include>
-  	from gd_card_make where card_no=#{cardNo} and homework_id = #{homeworkId}
+  	from gd_card_make where tanent_id = #{tanentId} and card_no=#{cardNo}
   </select>
   
   <delete id="delete" parameterType="java.util.Map">
-  	delete from gd_card_make where card_no=#{cardNo} and homework_id = #{homeworkId}
+  	delete from gd_card_make where tanent_id = #{tanentId} and card_no=#{cardNo}
   </delete>
   
 </mapper>
