@@ -64,7 +64,7 @@ public class GdController {
 	
 	@RequestMapping(value = "sign",method=RequestMethod.POST)
 	@ResponseBody
-	public String sign(String gsid,String cardNo,String cardImage,String name,String sex,int homeworkId,
+	public String sign(String gsid,String cardNo,String cardImage,String name,String sex,
 			String tanentId,String people,String address,String validtermOfStart,String validtermOfEnd,String department,
 			HttpServletRequest request, HttpServletResponse response) {
 		try {
