@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="gdhomeworkItems" >
-  <resultMap id="BaseResultMap" type="com.simple.model.GdHomeWorkItems" >
+  <resultMap id="BaseResultMap" type="com.simple.model.GdJudgeItems" >
 		<id column="id" property="id" jdbcType="INTEGER"/>
 		<result column="tanent_id" property="tanentId" jdbcType="VARCHAR"/>
 		<result column="item_names" property="itemNames" jdbcType="VARCHAR"/>
@@ -10,12 +10,12 @@
 	id,tanent_id,item_names
   </sql>
   
-    <insert id="insert" parameterType="com.simple.model.GdHomeWorkItems">
+  <insert id="insert" parameterType="com.simple.model.GdJudgeItems">
   	insert into gd_homework_items (tanent_id,item_names) 
   		values (#{tanentId},#{itemNames})
   </insert>
   
-  <update id="update" parameterType="com.simple.model.GdHomeWorkItems">
+  <update id="update" parameterType="com.simple.model.GdJudgeItems">
     update gd_homework_items set item_names = #{itemNames} where tanent_id=#{tanentId}
   </update>
 
