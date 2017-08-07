@@ -66,6 +66,12 @@ public class GdService {
 		return gdSignDao.queryByTGD(tanentId, groupName, date);
 	}
 	
+	public PageResult querySigns(String tanentId,String groupName,String date,String leaderName,int pageIndex,int pageSize) {
+		List<GdSign> registers = gdSignDao.queryList(tanentId, groupName, date, leaderName, pageIndex, pageSize);
+		int count = gdSignDao.queryCount(tanentId, groupName, date, leaderName);
+		return new PageResult(count,pageSize,pageIndex,registers);
+	}
+	
 	public void addGdSignWorkers(GdSignWorkers gdSignWorkers) {
 		gdSignWordersDao.addGdSignWorkers(gdSignWorkers);
 	}

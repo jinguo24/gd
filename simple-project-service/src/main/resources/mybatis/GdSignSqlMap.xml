@@ -30,4 +30,26 @@
   	<include refid="Base_Column_List"></include>
   	from gd_sign where id = #{id}
   </select>
+  
+  <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from gd_sign where 1=1
+  	<if test="tanentId != null and tanentId != ''" > and tanent_id = #{tanentId} </if>
+  	<if test="groupName != null and groupName != ''" > and group_name like CONCAT('%',#{groupName},'%') </if>
+  	<if test="createDate != null and createDate != ''" > and create_time like CONCAT('%',#{createDate},'%') </if>
+  	<if test="leaderName != null and leaderName != ''" > and leader_name like CONCAT('%',#{leaderName},'%') </if>
+  	limit #{begin},#{size}
+  </select>
+  
+  <select id="queryCount" resultType="int" parameterType="java.util.Map">
+  	select 
+  	count(1)
+  	from gd_sign where 1=1
+  	<if test="tanentId != null and tanentId != ''" > and tanent_id = #{tanentId} </if>
+  	<if test="groupName != null and groupName != ''" > and group_name like CONCAT('%',#{groupName},'%') </if>
+  	<if test="createDate != null and createDate != ''" > and create_time like CONCAT('%',#{createDate},'%') </if>
+  	<if test="leaderName != null and leaderName != ''" > and leader_name like CONCAT('%',#{leaderName},'%') </if>
+  </select> 
+  
 </mapper>

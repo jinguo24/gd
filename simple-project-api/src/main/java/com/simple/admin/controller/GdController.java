@@ -1,6 +1,7 @@
 package com.simple.admin.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,18 +17,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.simple.common.util.AjaxWebUtil;
 import com.simple.common.util.DateUtil;
+import com.simple.common.util.DesEncrypt;
+import com.simple.common.util.MD5;
 import com.simple.common.util.PrimaryKeyUtil;
 import com.simple.constant.Constant;
 import com.simple.model.ClassRegister;
 import com.simple.model.GdCardMake;
-import com.simple.model.GdHomeWorkWorkersItem;
+import com.simple.model.GdJudgeItems;
 import com.simple.model.GdSign;
 import com.simple.model.GdSignWorkers;
 import com.simple.model.PageResult;
 import com.simple.model.WxHomeWork;
 import com.simple.model.WxMemberHomeWork;
-import com.simple.model.api.GdSingReport;
 import com.simple.service.ClassRegistorService;
+import com.simple.service.CourseService;
 import com.simple.service.GdService;
 @Controller
 @RequestMapping(value = "/gd")
@@ -38,6 +41,20 @@ public class GdController {
 	GdService gdService;
 	@Autowired
 	ClassRegistorService classRegisterService;
+	@Autowired
+	CourseService courseService;
+	
+	@RequestMapping(value = "kaikeList",method=RequestMethod.GET)
+	@ResponseBody
+	public String kaikeList(String tanentId,String groupName,String leaderName,String date,Integer pageIndex,Integer pageSize,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			PageResult gs = gdService.querySigns(tanentId, groupName, date, leaderName, pageIndex, pageSize);
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", gs);
+		}catch(Exception e) {
+			log.error("gd kaike error.",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
 	
 	@RequestMapping(value = "kaike",method=RequestMethod.POST)
 	@ResponseBody
@@ -147,6 +164,18 @@ public class GdController {
 		}
 	}
 	
+	@RequestMapping(value = "judgeItems",method=RequestMethod.GET)
+	@ResponseBody
+	public String judgeItems(String tanentId,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			GdJudgeItems gs = gdService.queryGdJudgeItem(tanentId);
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", gs);
+		}catch(Exception e) {
+			log.error("gd kaike error.",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+	
 	@RequestMapping(value = "signJudge",method=RequestMethod.POST)
 	@ResponseBody
 	public String updateHomeworkWorkersItem(String gsid,String cardNo,String itemJson,HttpServletRequest request, HttpServletResponse response) {
@@ -246,12 +275,47 @@ public class GdController {
 		}
 	}
 	
-
+	@RequestMapping(value = "authKeCheng",method=RequestMethod.GET)
+	@ResponseBody
+	public String authKeCheng(String tanentId,String njbh,int pageIndex,int pageSize,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			//先从系列里面查询出课程列表
+			List<String>  courseBhlist = classRegisterService.getAuthCourseIds(tanentId);
+			if ( null != courseBhlist && courseBhlist.size() > 0) {
+				//根据租户和课程ids来查询课程
+				PageResult registerPage = courseService.queryKeCheng(courseBhlist,null,null,njbh,pageIndex,pageSize);
+				return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", registerPage);
+			}
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", new PageResult(0,pageSize,pageIndex,null));
+		}catch(Exception e) {
+			log.error("更新失败",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
 	
-	
-	
-	
-	
-	
+	@RequestMapping(value = "changePassword",method=RequestMethod.POST)
+	@ResponseBody
+	public String authKeCheng(String token,String oldpwd,String newpwd,String tanentId,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			if (StringUtils.isEmpty(token) || StringUtils.isEmpty(oldpwd) || StringUtils.isEmpty(newpwd) ||StringUtils.isEmpty(tanentId)) {
+				return AjaxWebUtil.sendAjaxResponse(request, response, false,"参数错误", null);
+			}
+			String otoken = DesEncrypt.encrypt(oldpwd+newpwd+tanentId, com.simple.admin.constant.Constant.ENCRPTY_KEY_GLOBAL);
+			if (!token.equals(otoken)) {
+				return AjaxWebUtil.sendAjaxResponse(request, response, false,"参数错误", null);
+			}
+			String opwd = DesEncrypt.decrypt(oldpwd, com.simple.admin.constant.Constant.ENCRPTY_KEY_GLOBAL);
+			ClassRegister cr = classRegisterService.getClassRegister(tanentId, null);
+			if (!MD5.stringMD5(opwd).equals(cr.getSqmm())) {
+				return AjaxWebUtil.sendAjaxResponse(request, response, false,"密码错误", null);
+			}
+			String npwd = DesEncrypt.decrypt(newpwd, com.simple.admin.constant.Constant.ENCRPTY_KEY_GLOBAL);
+			classRegisterService.updatePassword(cr.getSqzh(), MD5.stringMD5(npwd));
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"更新成功", null);
+		}catch(Exception e) {
+			log.error("更新失败",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"更新失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
 	
 }
