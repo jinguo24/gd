@@ -72,8 +72,8 @@ public class CourseService {
 		courseDao.updateCourse(c);
 	}
 	
-	public List<CourseXl> queryXl(String xlbh,String xlmc) {
-		return courseXlDao.query(xlbh, xlmc, 1, 1000);
+	public List<CourseXl> queryXl(boolean isRoot,String xlbh,String xlmc) {
+		return courseXlDao.query(isRoot,xlbh, xlmc, 1, 1000);
 	}
 	
 	public List<CourseXl> queryXlByParentCode(String code) {
@@ -156,5 +156,25 @@ public class CourseService {
 		}
 		int count = courseRankingDao.queryCount();
 		return new PageResult(count,pageSize,pageIndex,rankings);
+	}
+	
+	public void updateCourseXl(CourseXl coursexl) {
+		courseXlDao.updateCourseXl(coursexl);
+	}
+	
+	public void addCourseXl(CourseXl coursexl) {
+		courseXlDao.addCourseXl(coursexl);
+	}
+	
+	public CourseXl queryXlById(int id) {
+		return courseXlDao.getById(id);
+	}
+	
+	public CourseXl queryXlByCode(String code) {
+		return courseXlDao.getByCode(code);
+	}
+	
+	public void deleteXlById(int id) {
+		courseXlDao.deleteById(id);
 	}
 }

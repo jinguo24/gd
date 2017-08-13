@@ -1,6 +1,8 @@
 package com.simple.admin.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,19 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSONObject;
 import com.simple.admin.util.LoginUserUtil;
 import com.simple.common.util.AjaxWebUtil;
 import com.simple.common.util.DateUtil;
 import com.simple.constant.Constant;
+import com.simple.model.ClassRegister;
 import com.simple.model.GdCardMake;
 import com.simple.model.GdJudgeItems;
-import com.simple.model.GdHomeWorkWorkersItem;
 import com.simple.model.GdSign;
 import com.simple.model.GdSignWorkers;
 import com.simple.model.PageResult;
-import com.simple.model.WxHomeWork;
-import com.simple.model.WxMemberHomeWork;
 import com.simple.service.ClassRegistorService;
 import com.simple.service.GdService;
 @Controller
@@ -41,13 +40,67 @@ public class GdController {
 	
 	@RequestMapping(value = "judgeItem",method=RequestMethod.GET)
 	@ResponseBody
-	public String homeworks(String tanentId,int page,int pageSize,HttpServletRequest request, HttpServletResponse response) {
+	public String judgeItem(String tanentId,int page,int pageSize,HttpServletRequest request, HttpServletResponse response) {
 		try {
 			GdJudgeItems gs = gdService.queryGdJudgeItem(tanentId);
-			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", gs);
+			PageResult pr = null;
+			if (null != gs) {
+				ClassRegister cr = classRegistorService.getClassRegister(tanentId, null);
+				if (null != cr) {
+					gs.setTanentName(cr.getJsmc());
+				}
+				List l = new ArrayList();
+				l.add(gs);
+				pr = new PageResult(1,pageSize,page,l);
+			}else {
+				pr = new PageResult(0,pageSize,page,null);
+			}
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", pr);
 		}catch(Exception e) {
 			log.error("gd kaike error.",e);
 			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+	
+	@RequestMapping(value = "currentJudgeItem",method=RequestMethod.GET)
+	@ResponseBody
+	public String currentJudgeItem(int page,int pageSize,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			GdJudgeItems gs = gdService.queryGdJudgeItem(LoginUserUtil.getLeaseholderId(request));
+			PageResult pr = null;
+			if (null != gs) {
+				gs.setTanentName(LoginUserUtil.getCurrentUser(request).getName());
+				List l = new ArrayList();
+				l.add(gs);
+				pr = new PageResult(1,pageSize,page,l);
+			}else {
+				pr = new PageResult(0,pageSize,page,null);
+			}
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", pr);
+		}catch(Exception e) {
+			log.error("gd kaike error.",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+	
+	@RequestMapping(value = "updateCurrentJudgeItem",method=RequestMethod.POST)
+	@ResponseBody
+	public String updateCurrentJudgeItem(String items,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			GdJudgeItems gs = gdService.queryGdJudgeItem(LoginUserUtil.getLeaseholderId(request));
+			if ( null == gs) {
+				gs = new GdJudgeItems();
+				gs.setTanentId(LoginUserUtil.getLeaseholderId(request));
+				gs.setItemNames(items);
+				gdService.addGdJudgeItems(gs);
+			}else {
+				gs.setItemNames(items);
+				gdService.updateGdJudgeItems(gs);
+			}
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"更新成功", gs);
+		}catch(Exception e) {
+			log.error("gd kaike error.",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"更新失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
 		}
 	}
 	
@@ -58,7 +111,7 @@ public class GdController {
 			GdJudgeItems gs = gdService.queryGdJudgeItem(tanentId);
 			if ( null == gs) {
 				gs = new GdJudgeItems();
-				gs.setTanentId(LoginUserUtil.getLeaseholderId(request));
+				gs.setTanentId(tanentId);
 				gs.setItemNames(items);
 				gdService.addGdJudgeItems(gs);
 			}else {

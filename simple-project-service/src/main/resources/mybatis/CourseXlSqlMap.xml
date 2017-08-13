@@ -10,20 +10,22 @@
 		<result column="CJR" property="cjr" jdbcType="VARCHAR"/>
 		<result column="CJSJ" property="cjsj" jdbcType="DATE"/>
 		<result column="PARENT_BH" property="parentbh" jdbcType="VARCHAR"/>
+		<result column="TM_COUNT" property="tmCount" jdbcType="INTEGER"/>
   </resultMap>
   <sql id="Base_Column_List" >
-	LINEID,KCXLBH,KCXLMC,BZ,KCTP,CJR,CJSJ,PARENT_BH
+	LINEID,KCXLBH,KCXLMC,BZ,KCTP,CJR,CJSJ,PARENT_BH,TM_COUNT
   </sql>
   
   <insert id="insert" parameterType="com.simple.model.CourseXl">
-  	insert into course_xl (KCXLBH,KCXLMC,BZ,KCTP,CJR,CJSJ,PARENT_BH) 
-  		values (#{kcxlbh},#{kcxlmc},#{bz},#{kctp},#{cjr},#{cjsj},#{parentbh})
+  	insert into course_xl (KCXLBH,KCXLMC,BZ,KCTP,CJR,CJSJ,PARENT_BH,TM_COUNT) 
+  		values (#{kcxlbh},#{kcxlmc},#{bz},#{kctp},#{cjr},#{cjsj},#{parentbh},#{tmCount})
   </insert>
   
    <select id="query" resultMap="BaseResultMap" parameterType="java.util.Map">
   	select 
   	<include refid="Base_Column_List"></include>
-  	from course_xl where PARENT_BH IS NULL OR  PARENT_BH = ''
+  	from course_xl where 1=1
+  	<if test="isRoot > 0 " > and (PARENT_BH IS NULL OR  PARENT_BH = '') </if>
   	<if test="kcxlbh != null and kcxlbh != ''" > and KCXLBH = #{kcxlbh} </if>
 	<if test="kcxlmc != null and kcxlmc != ''" > and KCXLMC like CONCAT('%',#{kcxlmc},'%') </if>
   	limit #{begin},#{size}
@@ -41,6 +43,18 @@
 		<if test="kcxlbh != null and kcxlbh != ''" > and KCXLBH = #{kcxlbh} </if>
 		<if test="kcxlmc != null and kcxlmc != ''" > and KCXLMC like CONCAT('%',#{kcxlmc},'%') </if>
   </select>
+
+  <select id="queryById" resultMap="BaseResultMap" parameterType="Integer">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from course_xl where LINEID = #{id}
+  </select>
+  
+  <select id="queryByCode" resultMap="BaseResultMap" parameterType="String">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from course_xl where KCXLBH = #{kcxlbh}
+  </select>
   
   <delete id="delete" parameterType="Integer">
   		delete from course_xl where LINEID = #{id};
@@ -52,7 +66,8 @@
 		KCXLMC          = #{kcxlmc}          ,
 		BZ            = #{bz}            ,
 		KCTP            = #{kctp}          ,
-		PARENT_BH       = #{parentbh}       
+		PARENT_BH       = #{parentbh}    ,
+		TM_COUNT        = #{tmCount}
   	where LINEID=#{lineid}
   </update>
   

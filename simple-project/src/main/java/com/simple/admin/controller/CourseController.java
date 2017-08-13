@@ -8,11 +8,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -187,7 +187,12 @@ public class CourseController {
 	@ResponseBody
 	public String xilie(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			List<CourseXl> xlie=  courseService.queryXl(null, null);
+			String isAll = request.getParameter("isAll");
+			boolean isRoot = true;
+			if ("1".equals(isAll)) {
+				isRoot = false;
+			}
+			List<CourseXl> xlie=  courseService.queryXl(isRoot,null, null);
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", xlie);
 		}catch(Exception e) {
 			log.error("更新失败",e);
@@ -446,6 +451,91 @@ public class CourseController {
 		}catch(Exception e) {
 			log.error("查询失败",e);
 			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+	
+	@RequestMapping(value = "queryCourseXl",method=RequestMethod.GET)
+	@ResponseBody
+	public String queryCourseXl(int lineid,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			CourseXl xl = courseService.queryXlById(lineid);
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", xl);
+		}catch(Exception e) {
+			log.error("查询失败",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+	
+	@RequestMapping(value = "updateCourseXl",method=RequestMethod.POST)
+	@ResponseBody
+	public String updateCourseXl(int lineid,String kcxlbh,String kcxlmc,String kctp,String tmCount,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			if (StringUtils.isEmpty(kcxlbh)) {
+				return AjaxWebUtil.sendAjaxResponse(request, response, false,"编号不能为空", null);
+			}
+			CourseXl xl = courseService.queryXlById(lineid);
+			if ( null == xl ) {
+				return AjaxWebUtil.sendAjaxResponse(request, response, false,"系列不存在", null);
+			}
+			
+			CourseXl xl0 = courseService.queryXlByCode(StringUtils.trimToNull(kcxlbh));
+			if ( null != xl0 && xl0.getLineid() != xl.getLineid()) {
+				return AjaxWebUtil.sendAjaxResponse(request, response, false,"编号已存在", null);
+			}
+			
+			xl.setKcxlbh(StringUtils.trimToNull(kcxlbh));
+			xl.setKcxlmc(StringUtils.trimToNull(kcxlmc));
+			xl.setKctp(kctp);
+			xl.setTmCount(Integer.parseInt(tmCount));
+			courseService.updateCourseXl(xl);
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"更新成功", null);
+		}catch(Exception e) {
+			log.error("查询失败",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"更新失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+	
+	@RequestMapping(value = "addCourseXl",method=RequestMethod.POST)
+	@ResponseBody
+	public String addCourseXl(String kcxlbh,String kcxlmc,String kctp,String tmCount,String parentbh,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			if (StringUtils.isEmpty(kcxlbh)) {
+				return AjaxWebUtil.sendAjaxResponse(request, response, false,"编号不能为空", null);
+			}
+			CourseXl xl = courseService.queryXlByCode(StringUtils.trimToNull(kcxlbh));
+			if ( null != xl) {
+				return AjaxWebUtil.sendAjaxResponse(request, response, false,"编号已存在", null);
+			}
+			xl = new CourseXl();
+			xl.setKcxlbh(StringUtils.trimToNull(kcxlbh));
+			xl.setKcxlmc(StringUtils.trimToNull(kcxlmc));
+			xl.setKctp(kctp);
+			xl.setTmCount(Integer.parseInt(tmCount));
+			xl.setParentbh(StringUtils.trimToNull(parentbh));
+			courseService.addCourseXl(xl);
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"添加成功", null);
+		}catch(Exception e) {
+			log.error("查询失败",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"添加失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+	
+	@RequestMapping(value = "deleteCourseXl",method=RequestMethod.GET)
+	@ResponseBody
+	public String deleteCourseXl(int lineid,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			CourseXl xl = courseService.queryXlById(lineid);
+			if (null != xl) {
+				List<CourseXl> xls = courseService.queryXlByParentCode(xl.getKcxlbh());
+				if ( null != xls && xls.size() > 0 ) {
+					return AjaxWebUtil.sendAjaxResponse(request, response, false,"存在子系列，不允许删除", null);
+				}
+				courseService.deleteXlById(lineid);
+			}
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"删除成功", "ok");
+		}catch(Exception e) {
+			log.error("查询失败",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"删除失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
 		}
 	}
 }

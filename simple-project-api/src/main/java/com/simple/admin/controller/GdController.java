@@ -190,10 +190,10 @@ public class GdController {
 				return AjaxWebUtil.sendAjaxResponse(request, response, false,"该身份证这次签到记录不存在", null);
 			}
 			
-			GdCardMake cardMake = gdService.queryCardMake(sign.getTanentId(),cardNo);
-			if ( null != cardMake && cardMake.getMakeCount() > 0 ) {
-				return AjaxWebUtil.sendAjaxResponse(request, response, false,"已经制过证，不能修改", null);
-			}
+			//GdCardMake cardMake = gdService.queryCardMake(sign.getTanentId(),cardNo);
+			//if ( null != cardMake && cardMake.getMakeCount() > 0 ) {
+			//	return AjaxWebUtil.sendAjaxResponse(request, response, false,"已经制过证，不能修改", null);
+			//}
 			if (!StringUtils.isEmpty(itemJson)) {
 				StringBuffer realItemJson = new StringBuffer();
 				int zonghe = 0;

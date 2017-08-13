@@ -7,13 +7,14 @@ public class CourseXl implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private int lineid         ;
-	private String kcxlbh         ;
-	private String kcxlmc         ;
-	private String kctp           ;
+	private String kcxlbh=""         ;
+	private String kcxlmc=""         ;
+	private String kctp=""           ;
 	private String bz           ;
 	private String cjr;
 	private Date cjsj;
-	private String parentbh;
+	private String parentbh = "";
+	private int tmCount;
 	
 	public int getLineid() {
 		return lineid;
@@ -62,5 +63,11 @@ public class CourseXl implements Serializable{
 	}
 	public void setParentbh(String parentbh) {
 		this.parentbh = parentbh;
+	}
+	public int getTmCount() {
+		return tmCount;
+	}
+	public void setTmCount(int tmCount) {
+		this.tmCount = tmCount;
 	}
 }

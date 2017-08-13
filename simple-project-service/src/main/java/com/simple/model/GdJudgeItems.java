@@ -10,9 +10,9 @@ public class GdJudgeItems implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private int id;
-	private String tanentId;
-	private String tanentName;
-	private String itemNames;
+	private String tanentId="";
+	private String tanentName="";
+	private String itemNames="";
 	public int getId() {
 		return id;
 	}

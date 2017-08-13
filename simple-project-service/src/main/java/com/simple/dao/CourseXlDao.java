@@ -19,14 +19,27 @@ public class CourseXlDao extends BaseIbatisDao {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
 
+	public CourseXl getById(int id) {
+		return this.sqlSession.selectOne("courseXl.queryById", id);
+	}
+	
+	public CourseXl getByCode(String code) {
+		return this.sqlSession.selectOne("courseXl.queryByCode", code);
+	}
+	
 	public void addCourseXl(CourseXl course) {
 		this.sqlSession.insert("courseXl.insert", course);
 	}
 	
-	public List<CourseXl> query(String xlbh,String xlmc,int pageIndex,int pageSize) {
+	public List<CourseXl> query(boolean isRoot,String xlbh,String xlmc,int pageIndex,int pageSize) {
 		Map param = new HashMap();
 		param.put("kcxlbh", xlbh);
 		param.put("kcxlmc", xlmc);
+		if (isRoot) {
+			param.put("isRoot", 1);
+		}else {
+			param.put("isRoot", 0);
+		}
 		if (pageIndex < 1) {
 			pageIndex = 1;
 		}
