@@ -64,12 +64,18 @@ public class GdSignWorkersDao extends BaseIbatisDao {
 	public int queryCount(String gsid,String tanentId,String groupName,String cardNo,Date date,String leaderName) {
 		Map param = new HashMap();
 		param.put("gdSignId", gsid);
-		param.put("gdSignId", gsid);
 		param.put("tanentId", tanentId);
 		param.put("groupName", groupName);
 		param.put("cardNo", cardNo);
 		param.put("createDate", DateUtil.date2String(date));
 		param.put("leaderName", leaderName);
 		return this.sqlSession.selectOne("gdsignworkers.queryCount",param);
+	}
+	
+	public int queryCount(String gsid,int zonghe) {
+		Map param = new HashMap();
+		param.put("gdSignId", gsid);
+		param.put("zonghe", zonghe);
+		return this.sqlSession.selectOne("gdsignworkers.queryJudgeCount",param);
 	}
 }

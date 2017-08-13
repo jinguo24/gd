@@ -74,6 +74,10 @@
   	<if test="leaderName != null and leaderName != ''" > and leader_name like CONCAT('%',#{leaderName},'%') </if>
   </select>
   
-  
+  <select id="queryJudgeCount" parameterType="java.util.Map" resultType="int">
+	SELECT count(1) FROM gd_sign_workers where gd_sign_id = #{gdSignId} 
+  	<if test="zonghe > 0 " > and zonghe = #{zonghe} </if>
+  	<if test="zonghe == -999 " > and (zonghe is null or zonghe = 0 or zonghe &gt;= 80) </if>
+  </select>  
   
 </mapper>

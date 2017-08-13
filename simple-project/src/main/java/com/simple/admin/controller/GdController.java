@@ -2,7 +2,9 @@ package com.simple.admin.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,10 +24,14 @@ import com.simple.common.util.DateUtil;
 import com.simple.constant.Constant;
 import com.simple.model.ClassRegister;
 import com.simple.model.GdCardMake;
+import com.simple.model.GdHomeWorkWorkersItem;
 import com.simple.model.GdJudgeItems;
 import com.simple.model.GdSign;
 import com.simple.model.GdSignWorkers;
 import com.simple.model.PageResult;
+import com.simple.model.WxHomeWork;
+import com.simple.model.WxMemberHomeWork;
+import com.simple.model.api.GdSingReport;
 import com.simple.service.ClassRegistorService;
 import com.simple.service.GdService;
 @Controller
@@ -202,168 +208,91 @@ public class GdController {
 		}
 	}
 	
-//	@RequestMapping(value = "homeworkWorkersItemList",method=RequestMethod.GET)
-//	@ResponseBody
-//	public String homeworkWorkersItemList(String cardNo,Integer homeworkId,String beginTime,String endTime, int page,
-//			int pageSize,HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			PageResult pr = gdService.queryWxMemberHomeWork(null,LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, page, pageSize);
-//			if ( null != pr && null != pr.getDatas()) {
-//				for (int i =0 ;i < pr.getDatas().size(); i ++) {
-//					WxMemberHomeWork gwwi = (WxMemberHomeWork) pr.getDatas().get(i);
-//					gwwi.setTanentName(LoginUserUtil.getCurrentUser(request).getName());
-//					//查询评分内容
-//					GdHomeWorkWorkersItem  wi = gdService.queryHomeworkWorkersItem(gwwi.getSignId(), gwwi.getStudentNo());
-//					if ( null != wi) {
-//						gwwi.setContent(wi.getItemJson());
-//					}
-//					WxHomeWork whw = gdService.queryWxHomeWork(gwwi.getHomeworkId());
-//					if (null != whw) {
-//						gwwi.setHomeworkName(whw.getTitle());
-//					}
-//					if (StringUtils.isEmpty(gwwi.getContent())) {
-//						GdJudgeItems ghi = gdService.queryHomeWorkItem(LoginUserUtil.getLeaseholderId(request));
-//						if (null != ghi && (null != ghi.getItemNameArray())) {
-//							StringBuffer sb = new StringBuffer();
-//							String[] items = ghi.getItemNameArray();
-//							for (int j = 0 ; j < items.length; j++ ) {
-//								sb.append(items[j]+":0,");
-//							}
-//							sb.append(Constant.ZONGHECHNEGJI+":0");
-//							gwwi.setContent(sb.toString());
-//						}
-//					}else {
-//						gwwi.setContent(gwwi.getContent()+","+Constant.ZONGHECHNEGJI+":"+wi.getZonghe());
-//					}
-//					//TODO 查询是否已经制证
-//				}
-//			}
-//			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", pr);
-//		}catch(Exception e) {
-//			log.error("gd kaike error.",e);
-//			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
-//		}
-//	}
-//
-//	@RequestMapping(value = "homeworkWorkersItemExport",method=RequestMethod.GET)
-//	public void homeworkWorkersItemExport(String cardNo,Integer homeworkId,String beginTime,String endTime,HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			PageResult pr = gdService.queryWxMemberHomeWork(null,LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, 1, 60000);
-//			if ( null != pr && null != pr.getDatas()) {
-//				for (int i =0 ;i < pr.getDatas().size(); i ++) {
-//					WxMemberHomeWork gwwi = (WxMemberHomeWork) pr.getDatas().get(i);
-//					gwwi.setTanentName(LoginUserUtil.getCurrentUser(request).getName());
-//					//查询评分内容
-//					GdHomeWorkWorkersItem  wi = gdService.queryHomeworkWorkersItem(gwwi.getSignId(), gwwi.getStudentNo());
-//					if ( null != wi) {
-//						gwwi.setContent(wi.getItemJson());
-//					}
-//					WxHomeWork whw = gdService.queryWxHomeWork(gwwi.getHomeworkId());
-//					if (null != whw) {
-//						gwwi.setHomeworkName(whw.getTitle());
-//					}
-//				}
-//				gdService.downloadWorkerItems(pr.getDatas(),response);
-//			}
-//		}catch(Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//	
-//	@RequestMapping(value = "homeworkWorkersItemInfo",method=RequestMethod.GET)
-//	@ResponseBody
-//	public String homeworkWorkersItemInfo(String cardNo,String gdSignId,HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			GdHomeWorkWorkersItem gwwi = gdService.queryHomeworkWorkersItem(gdSignId, cardNo);
-//			gwwi.setTanentName(LoginUserUtil.getCurrentUser(request).getName());
-//			WxHomeWork whw = gdService.queryWxHomeWork(gwwi.getHomeworkId());
-//			if (null != whw) {
-//				gwwi.setHomeworkName(whw.getTitle());
-//			}
-//			//查询分数和考试时间
-//			WxMemberHomeWork wmhw = gdService.queryWxMemberHomeWork(LoginUserUtil.getLeaseholderId(request), cardNo, gwwi.getGdSignId(), gwwi.getHomeworkId());
-//			if ( null != wmhw) {
-//				gwwi.setScore(wmhw.getScore());
-//				gwwi.setHomeworkTime(wmhw.getCreateTime());
-//			}
-//			//查询是否已经制证
-//			GdCardMake cardMake = gdService.queryCardMake(cardNo, gwwi.getHomeworkId());
-//			if ( null != cardMake && cardMake.getMakeCount() > 0 ) {
-//				gwwi.setHasMake(1);
-//			}
-//			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", gwwi);
-//		}catch(Exception e) {
-//			log.error("gd kaike error.",e);
-//			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
-//		}
-//	}
-//	
-//	@RequestMapping(value = "updateHomeworkWorkersItem",method=RequestMethod.POST)
-//	@ResponseBody
-//	public String updateHomeworkWorkersItem(String gdSignId,String cardNo,String itemJson,HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			//查询是否已经制证，如果已经制证，则不能修改
-//			GdHomeWorkWorkersItem gi = gdService.queryHomeworkWorkersItem(gdSignId, cardNo);
-//			GdCardMake cardMake = gdService.queryCardMake(cardNo, gi.getHomeworkId());
-//			if ( null != cardMake && cardMake.getMakeCount() > 0 ) {
-//				return AjaxWebUtil.sendAjaxResponse(request, response, false,"已经制过证，不能修改", null);
-//			}
-//			if (!StringUtils.isEmpty(itemJson)) {
-//				StringBuffer realItemJson = new StringBuffer();
-//				int zonghe = 0;
-//				String[] ivs = itemJson.split(",");
-//				if ( null != ivs ) {
-//					for (String iv : ivs) {
-//						String[] is = iv.split(":");
-//						if (!Constant.ZONGHECHNEGJI.equals(is[0])) {
-//							realItemJson.append(is[0]).append(":").append(Integer.parseInt(is[1])).append(",");
-//						}else {
-//							zonghe = Integer.parseInt(is[1]);
-//						}
-//					}
-//				}
-//				if (realItemJson.length()>0) {
-//					gi.setItemJson(realItemJson.toString().substring(0,realItemJson.length()-1));
-//				}
-//				gi.setZonghe(zonghe);
-//			}
-//			gi.setCreateTime(new Date());
-//			gdService.updateGdHomeWorkWorkersItem(gi);
-//			return AjaxWebUtil.sendAjaxResponse(request, response, true,"更新成功", null);
-//		}catch(Exception e) {
-//			log.error("gd kaike error.",e);
-//			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
-//		}
-//	}
-//	
-//	@RequestMapping(value = "homeworkWorkersItemReportExport",method=RequestMethod.GET)
-//	public String homeworkWorkersItemReportExport(String cardNo,Integer homeworkId,String beginTime,String endTime,HttpServletRequest request, HttpServletResponse response) {
-//		try {
-//			if (null == homeworkId || homeworkId <= 0) {
-//				return "请选择问卷导出";
-//			}
-//			PageResult pr = gdService.queryWxMemberHomeWork(null,LoginUserUtil.getLeaseholderId(request), cardNo, homeworkId, beginTime, endTime, 1, 60000);
-//			if ( null != pr && null != pr.getDatas()) {
-//				for (int i =0 ;i < pr.getDatas().size(); i ++) {
-//					WxMemberHomeWork gwwi = (WxMemberHomeWork) pr.getDatas().get(i);
-//					gwwi.setTanentName(LoginUserUtil.getCurrentUser(request).getName());
-//					//查询评分内容
-//					GdHomeWorkWorkersItem  wi = gdService.queryHomeworkWorkersItem(gwwi.getSignId(), gwwi.getStudentNo());
-//					if ( null != wi) {
-//						gwwi.setContent(wi.getItemJson());
-//					}
-//					WxHomeWork whw = gdService.queryWxHomeWork(gwwi.getHomeworkId());
-//					if (null != whw) {
-//						gwwi.setHomeworkName(whw.getTitle());
-//					}
-//				}
-//				GdJudgeItems gwi = gdService.queryHomeWorkItem(LoginUserUtil.getLeaseholderId(request));
-//				gdService.downloadWorkerItemsReport(pr.getDatas(),gwi,response);
-//			}
-//			return null;
-//		}catch(Exception e) {
-//			e.printStackTrace();
-//			return null;
-//		}
-//	}
+	private String scoreToJudge(int score) {
+		switch (score) {
+		case 70:
+			return "不及格";
+		case 80:
+			return "及格";
+		case 90:
+			return "良好";
+		case 100:
+			return "优秀";
+		default:
+			return "优秀";
+		}
+	}
+	@RequestMapping(value = "personReport",method=RequestMethod.GET)
+	public String studentItemsInfo(String gsid,String cardNo,HttpServletRequest request, HttpServletResponse response) {
+		GdSignWorkers gsw = gdService.querySignWorker(gsid, cardNo);
+		if ( null == gsw ) {
+			return "/gd/noworker";
+		}
+		ClassRegister cr = classRegistorService.getClassRegister(gsw.getTanentId(), null);
+		request.setAttribute("tanentName", null == cr ? "":cr.getJsmc());
+		request.setAttribute("gsw", gsw);
+		
+		String itemJson = gsw.getItemJson();
+		if (!StringUtils.isEmpty(itemJson)) {
+			String[] items = itemJson.split(",");
+			if ( null != items) {
+				Map<String,String> judgeItems = new HashMap<String,String>();
+				for (int i = 0 ; i < items.length; i ++) {
+					String[] kvs = items[i].split(":");
+					if ( null != kvs && kvs.length==2) {
+						judgeItems.put(kvs[0], scoreToJudge(Integer.parseInt(kvs[1])));
+					}
+				}
+				request.setAttribute("judgeItems", judgeItems);
+			}
+		}
+		
+		request.setAttribute("zonghe", scoreToJudge(gsw.getZonghe()));
+		//查询考试
+		WxMemberHomeWork wmhw = gdService.queryLastWxMemberHomeWork(gsw.getTanentId(), gsw.getCardNo());
+		request.setAttribute("homeworkTime", null == wmhw ? "":DateUtil.date2AllString(wmhw.getCreateTime()));
+		String jkcj = "合格";//机考成绩
+		if (null != wmhw) {
+			WxHomeWork homework = gdService.queryWxHomeWork(wmhw.getHomeworkId());
+			if (null != homework) {
+				double minvalue = homework.getScore().doubleValue()*Constant.minScore;
+				if (wmhw.getScore().doubleValue() < minvalue) {
+					jkcj = "不合格";
+				}
+			}
+		}
+		request.setAttribute("jkcj", jkcj);
+		
+		GdCardMake gcm = gdService.queryCardMake(gsw.getTanentId(),gsw.getCardNo());
+		request.setAttribute("maketime", null == gcm ?"":DateUtil.date2AllString(gcm.getMakeTime()));
+		return "/gd/personReport";
+	}
+	
+	@RequestMapping(value = "signReport",method=RequestMethod.GET)
+	public String signItemsInfo(String gsid,HttpServletRequest request, HttpServletResponse response) {
+		GdSingReport gsr = new GdSingReport();
+		GdSign gs = gdService.querySignById(gsid);
+		if (null == gs) {
+			return "/gd/nosign";
+		}
+		gsr.setSignCounts(gdService.queryWorkersCount(gsid, null, null, null, null, null));
+		//查询考试
+		gsr.setJudgePass(gdService.queryJudgeCounts(gsid, -999));
+		gsr.setBujigeCounts(gdService.queryJudgeCounts(gsid, 70));
+		gsr.setJigeCounts(gdService.queryJudgeCounts(gsid, 80));
+		gsr.setLianghaoCounts(gdService.queryJudgeCounts(gsid, 90));
+		gsr.setYouxiuCounts(gdService.queryJudgeCounts(gsid, 100));
+		gsr.setHomeworkCounts(gdService.queryWxMemberHomeWorkCount(gsid, gs.getTanentId(), null, 0, null, null));
+		gsr.setJudgeDate(DateUtil.date2String(new Date()));
+		gsr.setAllpersons(gdService.queryWxMemberHomeWorkCount(null, gs.getTanentId(), null, 0, null, null));
+		//TODO 考试合格
+		//gsr.setHomeworkPass(gdService.queryWxMemberHomeWorkPassCount(gsid, gs.getTanentId(), gs.getHomeworkId(), null, null, minvalue));
+		ClassRegister cr = classRegistorService.getClassRegister(gs.getTanentId(), null);
+		if ( null != cr ) {
+			gsr.setTanentName(cr.getJsmc());
+		}
+		request.setAttribute("gsr", gsr);
+		return "/gd/signReport";
+	}
+	
 }

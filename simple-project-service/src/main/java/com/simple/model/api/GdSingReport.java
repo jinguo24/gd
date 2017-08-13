@@ -9,9 +9,8 @@ public class GdSingReport implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private String tanentName="";
-	private int homeworkId;
 	private String homeworkDescri="";
-	private Date judgeDate=new Date();
+	private String judgeDate="";
 	private int signCounts;
 	private int homeworkCounts;
 	private int homeworkPass;
@@ -20,18 +19,13 @@ public class GdSingReport implements Serializable{
 	private int jigeCounts;
 	private int lianghaoCounts;
 	private int youxiuCounts;
+	private int allpersons;
 	
 	public String getTanentName() {
 		return tanentName;
 	}
 	public void setTanentName(String tanentName) {
 		this.tanentName = tanentName;
-	}
-	public int getHomeworkId() {
-		return homeworkId;
-	}
-	public void setHomeworkId(int homeworkId) {
-		this.homeworkId = homeworkId;
 	}
 	public String getHomeworkDescri() {
 		return homeworkDescri;
@@ -87,10 +81,16 @@ public class GdSingReport implements Serializable{
 	public void setYouxiuCounts(int youxiuCounts) {
 		this.youxiuCounts = youxiuCounts;
 	}
-	public Date getJudgeDate() {
+	public String getJudgeDate() {
 		return judgeDate;
 	}
-	public void setJudgeDate(Date judgeDate) {
+	public void setJudgeDate(String judgeDate) {
 		this.judgeDate = judgeDate;
+	}
+	public int getAllpersons() {
+		return allpersons;
+	}
+	public void setAllpersons(int allpersons) {
+		this.allpersons = allpersons;
 	}
 }

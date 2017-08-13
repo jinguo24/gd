@@ -94,6 +94,10 @@ public class GdService {
 		return new PageResult(count,pageSize,pageIndex,registers);
 	}
 	
+	public int queryJudgeCounts(String gsid,int zonghe) {
+		return gdSignWordersDao.queryCount(gsid, zonghe);
+	}
+	
 	public int queryWorkersCount(String gsid,String tanentId,String groupName,String cardNo,Date date,String leaderName) {
 		return gdSignWordersDao.queryCount(gsid, tanentId, groupName, cardNo, date, leaderName);
 	}
@@ -123,64 +127,6 @@ public class GdService {
 	public void deleteGdJudgeItem (String tanentId) {
 		gdHomeWorkItemDao.delete(tanentId);
 	}
-	
-//	public void addGdHomeWorkWorkersItem(GdHomeWorkWorkersItem homeworkWorkersItem) {
-//		gdHomeWorkWorkersItemDao.addGdHomeWorkWorkersItem(homeworkWorkersItem);
-//		if (isPass(homeworkWorkersItem)) {
-//			addGdCardMake(homeworkWorkersItem);
-//		}
-//	}
-	
-//	public void updateGdHomeWorkWorkersItem(GdHomeWorkWorkersItem homeworkWorkersItem) {
-//		gdHomeWorkWorkersItemDao.updateGdHomeWorkWorkersItem(homeworkWorkersItem);
-//		//如果每个项都是合格，则往制证表里面加入；如果有一项不合格，则从制证表中删除
-//		GdCardMake cm = gdCardMakeDao.queryOne(homeworkWorkersItem.getCardNo(), homeworkWorkersItem.getHomeworkId());
-//		if (isPass(homeworkWorkersItem)) {
-//			if (null == cm ) {
-//				try {
-//					addGdCardMake(homeworkWorkersItem);
-//				}catch(Exception e) {
-//				}
-//			}
-//		}else {
-//			if (null != cm ) {
-//				try {
-//					gdCardMakeDao.delete(homeworkWorkersItem.getCardNo(), homeworkWorkersItem.getHomeworkId());
-//				}catch(Exception e) {
-//				}
-//			}
-//		}
-//	}
-	
-//	public PageResult queryHomeworkWorkersItem(String gsId,String tanentId,String cardNo,int homeworkId,String beginTime,
-//			String endTime,int zongheScore,int pageIndex,int pageSize) {
-//		List<GdHomeWorkWorkersItem> registers = gdHomeWorkWorkersItemDao.query(gsId,tanentId, cardNo, homeworkId, beginTime, endTime,zongheScore, pageIndex, pageSize);
-//		int count = queryHomeworkWorkersCount(gsId,tanentId, cardNo, homeworkId, beginTime, endTime,zongheScore);
-//		return new PageResult(count,pageSize,pageIndex,registers);
-//	}
-	
-//	public int queryHomeworkWorkersCount(String gsId,String tanentId,String cardNo,int homeworkId,String beginTime,
-//			String endTime,int zongheScore) {
-//		return gdHomeWorkWorkersItemDao.queryCount(gsId,tanentId, cardNo, homeworkId, beginTime, endTime,zongheScore);
-//	}
-	
-//	public int queryHomeworkWorkersPassCount(String gsId,String tanentId,String cardNo,int homeworkId,String beginTime,
-//			String endTime) {
-//		return gdHomeWorkWorkersItemDao.queryPassCount(gsId, tanentId, cardNo, homeworkId, beginTime, endTime);
-//	}
-	
-//	public int queryHomeworkWorkersUnPassCount(String gsId,String tanentId,String cardNo,int homeworkId,String beginTime,
-//			String endTime) {
-//		return gdHomeWorkWorkersItemDao.queryUnPassCount(gsId, tanentId, cardNo, homeworkId, beginTime, endTime);
-//	}
-	
-//	public GdHomeWorkWorkersItem queryHomeworkWorkersItem(String gdSignId,String cardNo) {
-//		return gdHomeWorkWorkersItemDao.queryOne(gdSignId, cardNo);
-//	}
-//	
-//	public void delete (String gdSignId,String cardNo) {
-//		gdHomeWorkWorkersItemDao.delete(gdSignId, cardNo);
-//	}
 	
 	public PageResult queryWxMemberHomeWork(String gsId,String schoolId,String studentNo,int homeworkId,String beginTime,
 			String endTime,int pageIndex,int pageSize) {
