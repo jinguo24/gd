@@ -80,45 +80,45 @@
         <table>
             <tr>
                 <td>制表日期:</td>
-                <td>${gsr.judgeDate}</td>
+                <td><input type="checkbox" checked></td>
                 <td>23</td>
-                <td>2</td>
+                <td><input type="checkbox" checked></td>
             </tr>
             <tr>
                 <td>签到人数:</td>
-                <td>${gsr.signCounts}人</td>
+                <td><input type="checkbox" checked></td>
                 <td>2</td>
-                <td>2</td>
+                <td><input type="checkbox" checked></td>
             </tr>
             <tr>
                 <td>培训人数:</td>
-                <td>${gsr.homeworkCounts}人</td>
+                <td><input type="checkbox" checked></td>
                 <td>2</td>
-                <td>2</td>
+                <td><input type="checkbox" checked></td>
             </tr>
             <tr>
                 <td>问卷通过:</td>
-                <td>${gsr.homeworkPass}人</td>
+                <td><input type="checkbox" checked></td>
                 <td>2</td>
-                <td>2</td>
+                <td><input type="checkbox" checked></td>
             </tr>
             <tr>
                 <td>评价通过:</td>
-                <td>${gsr.judgePass}人</td>
+                <td><input type="checkbox" checked></td>
                 <td>2</td>
-                <td>2</td>
+                <td><input type="checkbox" checked></td>
             </tr>
             <tr>
                 <td>总得分率:</td>
-                <td>100人</td>
+                <td><input type="checkbox" checked></td>
                 <td>2</td>
-                <td>2</td>
+                <td><input type="checkbox" checked></td>
             </tr>
             <tr>
                 <td>累计培训人数:</td>
-                <td>100人</td>
+                <td><input type="checkbox" checked></td>
                 <td>2</td>
-                <td>2</td>
+                <td><input type="checkbox" checked></td>
             </tr>
         </table>
     </div>

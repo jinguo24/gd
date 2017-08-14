@@ -80,63 +80,63 @@
                 </tr>
                 <tr>
                     <td>体检</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                     <td>体检</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                 </tr>
                 <tr>
                     <td>体检</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                     <td>1</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                 </tr>
                 <tr>
                     <td>体检</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                     <td>1</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                 </tr>
                 <tr>
                     <td>体检</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                     <td>1</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                 </tr>
                 <tr>
                     <td>体检</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                     <td>1</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                 </tr>
                 <tr>
                     <td>体检</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                     <td>1</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                 </tr>
                 <tr>
                     <td>体检</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                     <td>1</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                 </tr>
                 <tr>
                     <td>体检</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                     <td>1</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                 </tr>
                 <tr>
                     <td>体检</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                     <td>1</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                 </tr>
                 <tr>
                     <td>体检</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                     <td>1</td>
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" checked></td>
                 </tr>
                 <tr>
                     <td colspan="2">评测人:工地管理员</td>
