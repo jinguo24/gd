@@ -67,7 +67,11 @@ public class GdSignWorkersDao extends BaseIbatisDao {
 		param.put("tanentId", tanentId);
 		param.put("groupName", groupName);
 		param.put("cardNo", cardNo);
-		param.put("createDate", DateUtil.date2String(date));
+		if (null != date) {
+			param.put("createDate", DateUtil.date2String(date));	
+		}else {
+			param.put("createDate", null);
+		}
 		param.put("leaderName", leaderName);
 		return this.sqlSession.selectOne("gdsignworkers.queryCount",param);
 	}

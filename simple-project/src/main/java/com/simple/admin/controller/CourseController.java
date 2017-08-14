@@ -482,11 +482,18 @@ public class CourseController {
 			if ( null != xl0 && xl0.getLineid() != xl.getLineid()) {
 				return AjaxWebUtil.sendAjaxResponse(request, response, false,"编号已存在", null);
 			}
+			if ((!StringUtils.isEmpty(xl.getParentbh())) && (!StringUtils.isEmpty(tmCount))) {
+				return AjaxWebUtil.sendAjaxResponse(request, response, false,"只有第一级才能设置题目数量", null);
+			}
+			
+			if (StringUtils.isEmpty(xl.getParentbh()) && (!StringUtils.isEmpty(tmCount))) {
+				xl.setTmCount(Integer.parseInt(tmCount));
+			}
 			
 			xl.setKcxlbh(StringUtils.trimToNull(kcxlbh));
 			xl.setKcxlmc(StringUtils.trimToNull(kcxlmc));
 			xl.setKctp(kctp);
-			xl.setTmCount(Integer.parseInt(tmCount));
+			
 			courseService.updateCourseXl(xl);
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"更新成功", null);
 		}catch(Exception e) {
@@ -510,7 +517,13 @@ public class CourseController {
 			xl.setKcxlbh(StringUtils.trimToNull(kcxlbh));
 			xl.setKcxlmc(StringUtils.trimToNull(kcxlmc));
 			xl.setKctp(kctp);
-			xl.setTmCount(Integer.parseInt(tmCount));
+			if ((!StringUtils.isEmpty(parentbh)) && (!StringUtils.isEmpty(tmCount))) {
+				return AjaxWebUtil.sendAjaxResponse(request, response, false,"只有第一级才能设置题目数量", null);
+			}
+			
+			if (StringUtils.isEmpty(parentbh) && (!StringUtils.isEmpty(tmCount))) {
+				xl.setTmCount(Integer.parseInt(tmCount));
+			}
 			xl.setParentbh(StringUtils.trimToNull(parentbh));
 			courseService.addCourseXl(xl);
 			return AjaxWebUtil.sendAjaxResponse(request, response, true,"添加成功", null);
