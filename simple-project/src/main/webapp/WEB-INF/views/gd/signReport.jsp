@@ -24,56 +24,55 @@
 
         .box_top{width: 394px;height: 226px;background: #fff;position: absolute;top:105px;right: 10px;}
     </style>
+    <script type="text/javascript" charset="utf-8" src="${projectpath}/cmsapi/js/report/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${projectpath}/cmsapi/js/report/core.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${projectpath}/cmsapi/js/report/echarts.min.js"></script>
 </head>
 <body>
+	<input type="hidden" value="${gsr.bujigeCounts}" id = "bujigeCounts">
+	<input type="hidden" value="${gsr.jigeCounts}" id = "jigeCounts">
+	<input type="hidden" value="${gsr.lianghaoCounts}" id = "lianghaoCounts">
+	<input type="hidden" value="${gsr.youxiuCounts}" id = "youxiuCounts">
     <div class="box">
-        <div class="box_top">${gsr.bujigeCounts}>>${gsr.jigeCounts}>>${gsr.lianghaoCounts}>>${gsr.youxiuCounts}</div>
+        <div class="box_top" id ="_chart"></div>
         <div class="head">
-            <h3>${tanentName}</h3>
+            <h3>${gsr.tanentName}</h3>
             <h3>安立方工地安全体验馆综合评测报告</h3>
         </div>
-        <table>
+        <table style="width: 50%">
             <tr>
                 <td>制表日期:</td>
                 <td>${gsr.judgeDate}</td>
-                <td>23</td>
-                <td>2</td>
+                
             </tr>
             <tr>
                 <td>签到人数:</td>
                 <td>${gsr.signCounts}人</td>
-                <td>2</td>
-                <td>2</td>
+                
             </tr>
             <tr>
                 <td>培训人数:</td>
                 <td>${gsr.homeworkCounts}人</td>
-                <td>2</td>
-                <td>2</td>
+                
             </tr>
             <tr>
                 <td>问卷通过:</td>
                 <td>${gsr.homeworkPass}人</td>
-                <td>2</td>
-                <td>2</td>
+                
             </tr>
             <tr>
                 <td>评价通过:</td>
                 <td>${gsr.judgePass}人</td>
-                <td>2</td>
-                <td>2</td>
+               
             </tr>
             <tr>
-                <td>总得分率:</td>
-                <td>100人</td>
-                <td>2</td>
-                <td>2</td>
+                <td>优秀人数:</td>
+                <td>${gsr.youxiuCounts}人</td>
+                
             </tr>
             <tr>
                 <td>累计培训人数:</td>
                 <td>${allpersons}人</td>
-                <td>2</td>
-                <td>2</td>
             </tr>
         </table>
         <h4>培训内容</h4>
@@ -123,5 +122,52 @@
             </tr>
         </table>
     </div>
+    <script>
+    var myChart = echarts.init(document.getElementById("_chart"));
+    function setOption(a,b,c,d){
+        var option  = {
+            title : {
+                text: '综合统计',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['不及格','及格','良好','优秀']
+            },
+            series : [
+                {
+                    name: '成绩',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:[
+                        {value:a, name:'不及格'},
+                        {value:b, name:'及格'},
+                        {value:c, name:'良好'},
+                        {value:d, name:'优秀'}
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        myChart.setOption(option);
+    }
+    var bujigeCounts = $("#bujigeCounts").val();
+    var jigeCounts = $("#jigeCounts").val();
+    var lianghaoCounts = $("#lianghaoCounts").val();
+    var youxiuCounts = $("#youxiuCounts").val();
+    setOption(bujigeCounts,jigeCounts,lianghaoCounts,youxiuCounts);
+</script>
 </body>
 </html>

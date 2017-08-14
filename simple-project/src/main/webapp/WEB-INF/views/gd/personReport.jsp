@@ -21,8 +21,12 @@
         table tr td:nth-of-type(3){width: 140px;}
         table tr td:nth-of-type(4){width: 90px;}
     </style>
+    <script type="text/javascript" charset="utf-8" src="${projectpath}/cmsapi/js/report/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${projectpath}/cmsapi/js/report/jq.qrcode.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${projectpath}/cmsapi/js/report/core.js"></script>
 </head>
 <body>
+		<input type="hidden" value="${gsw.cardNo}" id="cardNo" />
         <div class="box">
             <div class="head">
                 <h3>${tanentName}</h3>
@@ -32,7 +36,7 @@
                 <tr>
                     <td colspan="2">基本信息</td>
 
-                    <td colspan="2" rowspan="5">${gsw.cardImage}</td>
+                    <td colspan="2" rowspan="5"><img src="${gsw.cardImage}" /></td>
                 </tr>
                 <tr>
 
@@ -56,7 +60,7 @@
                 <tr>
                     <td>机考成绩</td>
                     <td>${jkcj}</td>
-                    <td colspan="2" rowspan="5">二维码</td>
+                    <td colspan="2" rowspan="5"><div id = "code"></div></td>
                 </tr>
                 <c:if test="${not empty judgeItems}">
                 	<c:forEach items="${judgeItems}" var="judmap">
@@ -142,3 +146,13 @@
         </div>
 </body>
 </html>
+
+<script>
+var cardNo = $("#cardNo").val();
+$("#code").qrcode({
+        render: "canvas", //table方式
+        width: 125, //宽度
+        height:125, //高度
+        text: "http://gd.class.zhongguoanquanjiaoyu.com/out.html?cardNo= "+cardNo //任意内容
+});
+</script>
