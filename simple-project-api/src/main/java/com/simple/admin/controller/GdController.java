@@ -318,4 +318,32 @@ public class GdController {
 		}
 	}
 	
+	@RequestMapping(value = "studentHomeWorkList",method=RequestMethod.GET)
+	@ResponseBody
+	public String studentHomeWorkList(String cardNo,int pageIndex,int pageSize,HttpServletRequest request, HttpServletResponse response) {
+		try {
+			if (StringUtils.isEmpty(cardNo)) {
+				return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", null);
+			}
+			PageResult pr =gdService.queryWxMemberHomeWork(null,null, cardNo, 0, null, null, pageIndex, pageSize);
+			if ( null != pr && null != pr.getDatas()) {
+				for (int i =0 ;i < pr.getDatas().size(); i ++) {
+					WxMemberHomeWork gwwi = (WxMemberHomeWork) pr.getDatas().get(i);
+					ClassRegister cr = classRegisterService.getClassRegister(gwwi.getSchoolId(), null);
+					if ( null != cr ) {
+						gwwi.setTanentName(cr.getJsmc());
+					}
+					WxHomeWork whw = gdService.queryWxHomeWork(gwwi.getHomeworkId());
+					if (null != whw) {
+						gwwi.setHomeworkName(whw.getTitle());
+					}
+				}
+			}
+			return AjaxWebUtil.sendAjaxResponse(request, response, true,"查询成功", pr);
+		}catch(Exception e) {
+			log.error("gd sign error.",e);
+			return AjaxWebUtil.sendAjaxResponse(request, response, false,"查询失败:"+e.getLocalizedMessage(), e.getLocalizedMessage());
+		}
+	}
+	
 }
