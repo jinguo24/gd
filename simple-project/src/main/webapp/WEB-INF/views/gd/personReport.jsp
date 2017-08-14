@@ -153,6 +153,6 @@ $("#code").qrcode({
         render: "canvas", //table方式
         width: 125, //宽度
         height:125, //高度
-        text: "http://gd.class.zhongguoanquanjiaoyu.com/out.html?cardNo= "+cardNo //任意内容
+        text: "http://gd.class.zhongguoanquanjiaoyu.com/out.html?cardNo="+cardNo //任意内容
 });
 </script>
