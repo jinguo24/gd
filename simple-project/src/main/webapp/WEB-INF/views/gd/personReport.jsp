@@ -27,7 +27,7 @@
 </head>
 <body>
 		<input type="hidden" value="${gsw.cardNo}" id="cardNo" />
-        <div class="box">
+        <div class="box" style="margin-top:30px">
             <div class="head">
                 <h3>${tanentName}</h3>
                 <h3>安立方工地安全体验馆综合评测报告</h3>
@@ -79,65 +79,59 @@
                     <td colspan="4">培训内容</td>
                 </tr>
                 <tr>
-                    <td>体检</td>
-                    <td><input type="checkbox" checked></td>
-                    <td>体检</td>
-                    <td><input type="checkbox" checked></td>
-                </tr>
-                <tr>
-                    <td>体检</td>
-                    <td><input type="checkbox" checked></td>
-                    <td>1</td>
-                    <td><input type="checkbox" checked></td>
-                </tr>
-                <tr>
-                    <td>体检</td>
-                    <td><input type="checkbox" checked></td>
-                    <td>1</td>
-                    <td><input type="checkbox" checked></td>
-                </tr>
-                <tr>
-                    <td>体检</td>
-                    <td><input type="checkbox" checked></td>
-                    <td>1</td>
-                    <td><input type="checkbox" checked></td>
-                </tr>
-                <tr>
-                    <td>体检</td>
-                    <td><input type="checkbox" checked></td>
-                    <td>1</td>
-                    <td><input type="checkbox" checked></td>
-                </tr>
-                <tr>
-                    <td>体检</td>
-                    <td><input type="checkbox" checked></td>
-                    <td>1</td>
-                    <td><input type="checkbox" checked></td>
-                </tr>
-                <tr>
-                    <td>体检</td>
-                    <td><input type="checkbox" checked></td>
-                    <td>1</td>
-                    <td><input type="checkbox" checked></td>
-                </tr>
-                <tr>
-                    <td>体检</td>
-                    <td><input type="checkbox" checked></td>
-                    <td>1</td>
-                    <td><input type="checkbox" checked></td>
-                </tr>
-                <tr>
-                    <td>体检</td>
-                    <td><input type="checkbox" checked></td>
-                    <td>1</td>
-                    <td><input type="checkbox" checked></td>
-                </tr>
-                <tr>
-                    <td>体检</td>
-                    <td><input type="checkbox" checked></td>
-                    <td>1</td>
-                    <td><input type="checkbox" checked></td>
-                </tr>
+                <td>洞口坠落体验</td>
+                <td><input type="checkbox" checked></td>
+                <td>安全防护用品体验</td>
+                <td><input type="checkbox" checked></td>
+            </tr>
+            <tr>
+                <td>安全绳缓降体验</td>
+                <td><input type="checkbox" checked></td>
+                <td>钢丝绳使用方法</td>
+                <td><input type="checkbox" checked></td>
+            </tr>
+            <tr>
+                <td>平台倾倒体验</td>
+                <td><input type="checkbox" checked></td>
+                <td>止血包扎</td>
+                <td><input type="checkbox" checked></td>
+            </tr>
+            <tr>
+                <td>防护栏推到体验</td>
+                <td><input type="checkbox" checked></td>
+                <td>爬梯体验</td>
+                <td><input type="checkbox" checked></td>
+            </tr>
+            <tr>
+                <td>安全帽撞击体验</td>
+                <td><input type="checkbox" checked></td>
+                <td>小型配电箱防护网</td>
+                <td><input type="checkbox" checked></td>
+            </tr>
+            <tr>
+                <td>安全鞋防砸体验</td>
+                <td><input type="checkbox" checked></td>
+                <td>尝试认识与学习</td>
+                <td><input type="checkbox" checked></td>
+            </tr>
+            <tr>
+                <td>重物搬运体验</td>
+                <td><input type="checkbox" checked></td>
+                <td>心肺复苏体验</td>
+                <td><input type="checkbox" checked></td>
+            </tr>
+            <tr>
+                <td>挡土墙体验</td>
+                <td><input type="checkbox" checked></td>
+                <td>平衡木体验设备</td>
+                <td><input type="checkbox" checked></td>
+            </tr>  
+            <tr>
+                <td>工地用电安全体验</td>
+                <td><input type="checkbox" checked></td>
+                <td></td>
+                <td></td>
+            </tr> 
                 <tr>
                     <td colspan="2">评测人:工地管理员</td>
                     <td colspan="2">发证日期:${maketime}</td>

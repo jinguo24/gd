@@ -33,7 +33,7 @@
 	<input type="hidden" value="${gsr.jigeCounts}" id = "jigeCounts">
 	<input type="hidden" value="${gsr.lianghaoCounts}" id = "lianghaoCounts">
 	<input type="hidden" value="${gsr.youxiuCounts}" id = "youxiuCounts">
-    <div class="box">
+    <div class="box" style="margin-top:30px">
         <div class="box_top" id ="_chart"></div>
         <div class="head">
             <h3>${gsr.tanentName}</h3>
@@ -79,47 +79,59 @@
 
         <table>
             <tr>
-                <td>制表日期:</td>
-                <td><input type="checkbox" checked></td>
-                <td>23</td>
-                <td><input type="checkbox" checked></td>
+                <td>洞口坠落体验</td>
+                <td>√</td>
+                <td>安全防护用品体验</td>
+                <td>√</td>
             </tr>
             <tr>
-                <td>签到人数:</td>
-                <td><input type="checkbox" checked></td>
-                <td>2</td>
-                <td><input type="checkbox" checked></td>
+                <td>安全绳缓降体验</td>
+                <td>√</td>
+                <td>钢丝绳使用方法</td>
+                <td>√</td>
             </tr>
             <tr>
-                <td>培训人数:</td>
-                <td><input type="checkbox" checked></td>
-                <td>2</td>
-                <td><input type="checkbox" checked></td>
+                <td>平台倾倒体验</td>
+                <td>√</td>
+                <td>止血包扎</td>
+                <td>√</td>
             </tr>
             <tr>
-                <td>问卷通过:</td>
-                <td><input type="checkbox" checked></td>
-                <td>2</td>
-                <td><input type="checkbox" checked></td>
+                <td>防护栏推到体验</td>
+                <td>√</td>
+                <td>爬梯体验</td>
+                <td>√</td>
             </tr>
             <tr>
-                <td>评价通过:</td>
-                <td><input type="checkbox" checked></td>
-                <td>2</td>
-                <td><input type="checkbox" checked></td>
+                <td>安全帽撞击体验</td>
+                <td>√</td>
+                <td>小型配电箱防护网</td>
+                <td>√</td>
             </tr>
             <tr>
-                <td>总得分率:</td>
-                <td><input type="checkbox" checked></td>
-                <td>2</td>
-                <td><input type="checkbox" checked></td>
+                <td>安全鞋防砸体验</td>
+                <td>√</td>
+                <td>尝试认识与学习</td>
+                <td>√</td>
             </tr>
             <tr>
-                <td>累计培训人数:</td>
-                <td><input type="checkbox" checked></td>
-                <td>2</td>
-                <td><input type="checkbox" checked></td>
+                <td>重物搬运体验</td>
+                <td>√</td>
+                <td>心肺复苏体验</td>
+                <td>√</td>
             </tr>
+            <tr>
+                <td>挡土墙体验</td>
+                <td>√</td>
+                <td>平衡木体验设备</td>
+                <td>√</td>
+            </tr>  
+            <tr>
+                <td>工地用电安全体验</td>
+                <td>√</td>
+                <td></td>
+                <td></td>
+            </tr>                       
         </table>
     </div>
     <script>
