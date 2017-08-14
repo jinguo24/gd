@@ -22,6 +22,7 @@ public class WxMemberHomeWork implements Serializable {
 	private Date createTime;
 	private String showCreateTime="";
 	private String content="";
+	private boolean passed;
 	public int getId() {
 		return id;
 	}
@@ -93,5 +94,11 @@ public class WxMemberHomeWork implements Serializable {
 	}
 	public String getShowCreateTime() {
 		return showCreateTime;
+	}
+	public boolean isPassed() {
+		return passed;
+	}
+	public void setPassed(boolean passed) {
+		this.passed = passed;
 	}
 }

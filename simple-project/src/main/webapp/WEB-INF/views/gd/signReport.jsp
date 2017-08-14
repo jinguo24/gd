@@ -27,7 +27,7 @@
 </head>
 <body>
     <div class="box">
-        <div class="box_top"></div>
+        <div class="box_top">${gsr.bujigeCounts}>>${gsr.jigeCounts}>>${gsr.lianghaoCounts}>>${gsr.youxiuCounts}</div>
         <div class="head">
             <h3>${tanentName}</h3>
             <h3>安立方工地安全体验馆综合评测报告</h3>

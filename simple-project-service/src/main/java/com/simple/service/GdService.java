@@ -141,8 +141,8 @@ public class GdService {
 	}
 	
 	public int queryWxMemberHomeWorkPassCount(String gsId,String schoolId,int homeworkId,String beginTime,
-			String endTime,double minScore){
-		return wxMemberHomeWorkDao.queryPassCount(gsId, schoolId, homeworkId, beginTime, endTime, minScore);
+			String endTime){
+		return wxMemberHomeWorkDao.queryPassCount(gsId, schoolId, homeworkId, beginTime, endTime);
 	}
 	
 	public WxMemberHomeWork queryWxMemberHomeWork(String studentNo,String signId) {

@@ -285,8 +285,7 @@ public class GdController {
 		gsr.setHomeworkCounts(gdService.queryWxMemberHomeWorkCount(gsid, gs.getTanentId(), null, 0, null, null));
 		gsr.setJudgeDate(DateUtil.date2String(new Date()));
 		gsr.setAllpersons(gdService.queryWxMemberHomeWorkCount(null, gs.getTanentId(), null, 0, null, null));
-		//TODO 考试合格
-		//gsr.setHomeworkPass(gdService.queryWxMemberHomeWorkPassCount(gsid, gs.getTanentId(), gs.getHomeworkId(), null, null, minvalue));
+		gsr.setHomeworkPass(gdService.queryWxMemberHomeWorkPassCount(gsid, gs.getTanentId(), 0, null, null));
 		ClassRegister cr = classRegistorService.getClassRegister(gs.getTanentId(), null);
 		if ( null != cr ) {
 			gsr.setTanentName(cr.getJsmc());

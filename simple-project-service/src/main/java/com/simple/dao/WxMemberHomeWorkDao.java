@@ -64,12 +64,11 @@ public class WxMemberHomeWorkDao extends BaseIbatisDao {
 	}
 	
 	public int queryPassCount(String gsId,String schoolId,int homeworkId,String beginTime,
-			String endTime,double minScore) {
+			String endTime) {
 		Map param = new HashMap();
 		param.put("schoolId", schoolId);
 		param.put("homeworkId", homeworkId);
 		param.put("gsId", gsId);
-		param.put("minScore", minScore);
 		param.put("beginTime", beginTime);
 		param.put("endTime", endTime);
 		return this.sqlSession.selectOne("wxmemberhomework.queryPassCount",param);

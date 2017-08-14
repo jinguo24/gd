@@ -10,6 +10,7 @@
 		<result column="SignID" property="signId" jdbcType="VARCHAR"/>
 		<result column="Score" property="score" jdbcType="DECIMAL"/>
 		<result column="CreateTime" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="Passed" property="passed" jdbcType="BOOLEAN"/>
   </resultMap>
   <sql id="Base_Column_List" >
 	ID,HomeworkID,SchoolID,StudentNo,StudentName,SignID,Score,CreateTime
@@ -57,13 +58,12 @@
   <select id="queryPassCount" parameterType="java.util.Map" resultType="int">
 	select 
   	count(1)
-  	from wx_memberhomework where 1=1 
+  	from wx_memberhomework where Passed = true
   	<if test="gsId != null and gsId != ''" > and SignID = #{gsId} </if>
   	<if test="schoolId != null and schoolId != ''" > and SchoolID = #{schoolId} </if>
   	<if test="homeworkId > 0 " > and HomeworkID = #{homeworkId} </if>
   	<if test="beginTime != null and beginTime != ''" > and CreateTime &gt;= #{beginTime} </if>
 	<if test="endTime != null and endTime != ''" > and CreateTime &lt;= #{endTime} </if>
-	and Score &gt;= #{minScore}
   </select>
   
 </mapper>
