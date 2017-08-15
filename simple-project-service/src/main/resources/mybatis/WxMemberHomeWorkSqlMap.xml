@@ -13,7 +13,7 @@
 		<result column="Passed" property="passed" jdbcType="BOOLEAN"/>
   </resultMap>
   <sql id="Base_Column_List" >
-	ID,HomeworkID,SchoolID,StudentNo,StudentName,SignID,Score,CreateTime
+	ID,HomeworkID,SchoolID,StudentNo,StudentName,SignID,Score,CreateTime,Passed
   </sql>
   
   <select id="queryOne" resultMap="BaseResultMap" parameterType="java.util.Map">
