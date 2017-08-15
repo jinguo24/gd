@@ -68,15 +68,52 @@
             <tr>
                 <td>优秀人数:</td>
                 <td>${gsr.youxiuCounts}人</td>
-                
             </tr>
             <tr>
                 <td>累计培训人数:</td>
-                <td>${allpersons}人</td>
+                <td>${gsr.allpersons}人</td>
+            </tr>
+        </table>
+        <h4>受训工种</h4>
+        <table>
+            <tr>
+                <td>钢筋工</td>
+                <td>√</td>
+                <td>混凝土工</td>
+                <td>√</td>
+            </tr>
+            <tr>
+                <td>木工</td>
+                <td>√</td>
+                <td>电工</td>
+                <td>√</td>
+            </tr>
+            <tr>
+                <td>水暖工</td>
+                <td>√</td>
+                <td>架子工</td>
+                <td>√</td>
+            </tr>
+            <tr>
+                <td>测量放线工</td>
+                <td>√</td>
+                <td>杂工</td>
+                <td>√</td>
+            </tr>
+            <tr>
+                <td>砌筑工</td>
+                <td>√</td>
+                <td>油漆工</td>
+                <td>√</td>
+            </tr>
+            <tr>
+                <td>机械工</td>
+                <td>√</td>
+                <td></td>
+                <td></td>
             </tr>
         </table>
         <h4>培训内容</h4>
-
         <table>
             <tr>
                 <td>洞口坠落体验</td>

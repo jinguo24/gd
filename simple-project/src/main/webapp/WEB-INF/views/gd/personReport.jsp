@@ -62,7 +62,7 @@
                     <td>${jkcj}</td>
                     <td colspan="2" rowspan="5"><div id = "code"></div></td>
                 </tr>
-                <c:if test="${not empty judgeItems}">
+                <c:if test="${not empty judgeItems }">
                 	<c:forEach items="${judgeItems}" var="judmap">
                 		<tr>
 	                    	<td>${judmap.key}</td>

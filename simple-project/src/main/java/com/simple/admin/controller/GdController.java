@@ -9,11 +9,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -232,33 +232,47 @@ public class GdController {
 		request.setAttribute("tanentName", null == cr ? "":cr.getJsmc());
 		request.setAttribute("gsw", gsw);
 		
-		String itemJson = gsw.getItemJson();
-		if (!StringUtils.isEmpty(itemJson)) {
-			String[] items = itemJson.split(",");
-			if ( null != items) {
+		
+		GdJudgeItems gji = gdService.queryGdJudgeItem(gsw.getTanentId());
+		if ( null != gji) {
+			String[] itemNames = gji.getItemNameArray();
+			if ( null != itemNames) {
+				String itemJson = gsw.getItemJson();
 				Map<String,String> judgeItems = new HashMap<String,String>();
-				for (int i = 0 ; i < items.length; i ++) {
-					String[] kvs = items[i].split(":");
-					if ( null != kvs && kvs.length==2) {
-						judgeItems.put(kvs[0], scoreToJudge(Integer.parseInt(kvs[1])));
+				if (!StringUtils.isEmpty(itemJson)) {
+					String[] items = itemJson.split(",");
+					if ( null != items) {
+						for (int i = 0 ; i < items.length; i ++) {
+							String[] kvs = items[i].split(":");
+							if ( null != kvs && kvs.length==2) {
+								judgeItems.put(kvs[0], scoreToJudge(Integer.parseInt(kvs[1])));
+							}
+						}
 					}
 				}
-				request.setAttribute("judgeItems", judgeItems);
+				Map<String,String> judgeConfigItems = new HashMap<String,String>();
+				for (int i = 0 ; i < itemNames.length ; i ++) {
+					String itemName = itemNames[i];
+					String iv = judgeItems.get(itemName);
+					if (StringUtils.isEmpty(iv)) {
+						judgeConfigItems.put(itemName, "优秀");
+					}else {
+						judgeConfigItems.put(itemName, iv);
+					}
+					
+				}
+				request.setAttribute("judgeItems", judgeConfigItems);
 			}
+			
 		}
-		
 		request.setAttribute("zonghe", scoreToJudge(gsw.getZonghe()));
 		//查询考试
 		WxMemberHomeWork wmhw = gdService.queryLastWxMemberHomeWork(gsw.getTanentId(), gsw.getCardNo());
 		request.setAttribute("homeworkTime", null == wmhw ? "":DateUtil.date2AllString(wmhw.getCreateTime()));
 		String jkcj = "合格";//机考成绩
 		if (null != wmhw) {
-			WxHomeWork homework = gdService.queryWxHomeWork(wmhw.getHomeworkId());
-			if (null != homework) {
-				double minvalue = homework.getScore().doubleValue()*Constant.minScore;
-				if (wmhw.getScore().doubleValue() < minvalue) {
-					jkcj = "不合格";
-				}
+			if (!wmhw.isPassed()) {
+				jkcj = "不合格";
 			}
 		}
 		request.setAttribute("jkcj", jkcj);
