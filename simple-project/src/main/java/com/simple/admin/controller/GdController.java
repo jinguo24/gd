@@ -232,7 +232,6 @@ public class GdController {
 		request.setAttribute("tanentName", null == cr ? "":cr.getJsmc());
 		request.setAttribute("gsw", gsw);
 		
-		
 		GdJudgeItems gji = gdService.queryGdJudgeItem(gsw.getTanentId());
 		if ( null != gji) {
 			String[] itemNames = gji.getItemNameArray();
@@ -259,16 +258,19 @@ public class GdController {
 					}else {
 						judgeConfigItems.put(itemName, iv);
 					}
-					
 				}
 				request.setAttribute("judgeItems", judgeConfigItems);
 			}
-			
 		}
 		request.setAttribute("zonghe", scoreToJudge(gsw.getZonghe()));
 		//查询考试
 		WxMemberHomeWork wmhw = gdService.queryLastWxMemberHomeWork(gsw.getTanentId(), gsw.getCardNo());
-		request.setAttribute("homeworkTime", null == wmhw ? "":DateUtil.date2AllString(wmhw.getCreateTime()));
+		if ( null == wmhw || null == wmhw.getCreateTime()) {
+			request.setAttribute("homeworkTime", "");
+		}else {
+			request.setAttribute("homeworkTime", DateUtil.date2AllString(wmhw.getCreateTime()));
+		}
+		
 		String jkcj = "合格";//机考成绩
 		if (null != wmhw) {
 			if (!wmhw.isPassed()) {
@@ -278,7 +280,11 @@ public class GdController {
 		request.setAttribute("jkcj", jkcj);
 		
 		GdCardMake gcm = gdService.queryCardMake(gsw.getTanentId(),gsw.getCardNo());
-		request.setAttribute("maketime", null == gcm ?"":DateUtil.date2AllString(gcm.getMakeTime()));
+		if ( null == gcm || null == gcm.getMakeTime()) {
+			request.setAttribute("maketime", "");
+		}else {
+			request.setAttribute("maketime", DateUtil.date2AllString(gcm.getMakeTime()));
+		}
 		return "/gd/personReport";
 	}
 	
