@@ -270,7 +270,6 @@ public class GdController {
 		}else {
 			request.setAttribute("homeworkTime", DateUtil.date2AllString(wmhw.getCreateTime()));
 		}
-		log.info(">>>>>>>>>>>>>>>>>ispassed:"+wmhw.getId()+">>>>"+wmhw.isPassed());
 		String jkcj = "合格";//机考成绩
 		if (null != wmhw && (!wmhw.isPassed())) {
 			jkcj = "不合格";
