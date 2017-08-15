@@ -132,6 +132,7 @@ public class GdController {
 				gcm.setName(name);
 				gcm.setSex(sex);
 				gcm.setTanentId(sign.getTanentId());
+				gcm.setSequenceNo(PrimaryKeyUtil.getShortId());
 				gdService.addGdCardMake(gcm);
 			}
 			
