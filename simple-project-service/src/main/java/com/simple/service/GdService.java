@@ -89,9 +89,13 @@ public class GdService {
 	}
 	
 	public PageResult queryWorkers(String gsid,String tanentId,String groupName,String cardNo,Date date,String leaderName,int pageIndex,int pageSize) {
-		List<GdSignWorkers> registers = gdSignWordersDao.query(gsid, tanentId, groupName, cardNo, date, leaderName, pageIndex, pageSize);
+		List<GdSignWorkers> registers = queryWorkerList(gsid, tanentId, groupName, cardNo, date, leaderName, pageIndex, pageSize);
 		int count = queryWorkersCount(gsid, tanentId, groupName, cardNo, date, leaderName);
 		return new PageResult(count,pageSize,pageIndex,registers);
+	}
+	
+	public List<GdSignWorkers> queryWorkerList(String gsid,String tanentId,String groupName,String cardNo,Date date,String leaderName,int pageIndex,int pageSize) {
+		return gdSignWordersDao.query(gsid, tanentId, groupName, cardNo, date, leaderName, pageIndex, pageSize);
 	}
 	
 	public int queryJudgeCounts(String gsid,int zonghe) {

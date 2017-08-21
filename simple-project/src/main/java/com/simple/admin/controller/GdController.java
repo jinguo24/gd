@@ -307,6 +307,7 @@ public class GdController {
 		if ( null != cr ) {
 			gsr.setTanentName(cr.getJsmc());
 		}
+		gsr.setWorkers(gdService.queryWorkerList(gsid, gs.getTanentId(), gs.getGroupName(), null, null, null, 1, 1000));
 		request.setAttribute("gsr", gsr);
 		return "/gd/signReport";
 	}

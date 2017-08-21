@@ -51,7 +51,7 @@ public class GdSignWorkersDao extends BaseIbatisDao {
 		param.put("tanentId", tanentId);
 		param.put("groupName", groupName);
 		param.put("cardNo", cardNo);
-		param.put("createDate", DateUtil.date2String(date));
+		param.put("createDate", date == null ? null:DateUtil.date2String(date));
 		param.put("leaderName", leaderName);
 		if (pageIndex < 1) {
 			pageIndex = 1;

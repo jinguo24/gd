@@ -170,6 +170,39 @@
                 <td></td>
             </tr>                       
         </table>
+        <h4>培训人员名单</h4>
+        <table>
+        	<tr>
+                <td>姓名</td>
+                <td>性别</td>
+                <td>身份证号</td>
+                <td>综合成绩</td>
+            </tr>
+            <c:if test="${not empty gsr.workers }">
+               	<c:forEach items="${gsr.workers}" var="workers">
+               		<tr>
+                    	<td>${workers.name}</td>
+                    	<td>${workers.sex}</td>
+                    	<td>${workers.cardNo}</td>
+                    	<c:if test="${workers.zonghe==0}">
+                    		<td>优秀</td>
+                    	</c:if>
+                    	<c:if test="${workers.zonghe==70}">
+                    		<td>不及格</td>
+                    	</c:if>
+                    	<c:if test="${workers.zonghe==80}">
+                    		<td>及格</td>
+                    	</c:if> 
+                    	<c:if test="${workers.zonghe==90}">
+                    		<td>良好</td>
+                    	</c:if>                    	
+                    	<c:if test="${workers.zonghe==100}">
+                    		<td>优秀</td>
+                    	</c:if>                     	
+                	</tr>
+               	</c:forEach>
+            </c:if>
+        </table>
     </div>
     <script>
     var myChart = echarts.init(document.getElementById("_chart"));

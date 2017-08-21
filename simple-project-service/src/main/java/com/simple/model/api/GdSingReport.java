@@ -1,8 +1,9 @@
 package com.simple.model.api;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
+import java.util.List;
+
+import com.simple.model.GdSignWorkers;
 
 public class GdSingReport implements Serializable{
 
@@ -20,6 +21,7 @@ public class GdSingReport implements Serializable{
 	private int lianghaoCounts;
 	private int youxiuCounts;
 	private int allpersons;
+	private List<GdSignWorkers> workers;
 	
 	public String getTanentName() {
 		return tanentName;
@@ -92,5 +94,11 @@ public class GdSingReport implements Serializable{
 	}
 	public void setAllpersons(int allpersons) {
 		this.allpersons = allpersons;
+	}
+	public List<GdSignWorkers> getWorkers() {
+		return workers;
+	}
+	public void setWorkers(List<GdSignWorkers> workers) {
+		this.workers = workers;
 	}
 }
